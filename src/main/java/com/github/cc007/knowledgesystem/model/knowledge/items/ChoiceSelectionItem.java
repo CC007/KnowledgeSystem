@@ -1,0 +1,46 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.github.cc007.knowledgesystem.model.knowledge.items;
+
+import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
+import java.util.List;
+
+/**
+ *
+ * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
+ */
+public class ChoiceSelectionItem extends KnowledgeItem<Integer> {
+
+    protected final List<String> options;
+
+    public ChoiceSelectionItem(String name, List<String> options, KnowledgeOrigin origin, boolean goal) {
+        super(name, origin, goal);
+        this.options = options;
+    }
+
+    public ChoiceSelectionItem(String name, List<String> options, Integer index, KnowledgeOrigin origin, boolean goal) {
+        super(name, index, origin, goal);
+        this.options = options;
+    }
+
+    public ChoiceSelectionItem(ChoiceSelectionItem item, Integer value) {
+        super(item, value);
+        this.options = item.options;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public String getSelectedValue() {
+        return options.get(value);
+    }
+
+    public Integer getIndex() {
+        return value;
+    }
+
+}
