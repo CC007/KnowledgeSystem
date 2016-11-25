@@ -98,3 +98,15 @@ h1 {
 	font-weight: 900;
 }
 
+.button {
+    color: #005e39;
+    text-align: center;
+    display: block;
+    padding: 10px;
+}
+
+.button:hover {
+	background-color: #005e39;
+	color: white;
+}
+

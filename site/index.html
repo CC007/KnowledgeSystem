@@ -2,15 +2,16 @@
 
 <html>
 
-<link rel="stylesheet" type="text/css" href="default.css">
+<link rel="stylesheet" type="text/css" href="./css/default.css">
 <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,900" rel="stylesheet">
 
 <head>
-	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>	
 </head>
 
 <body>
-
+<!-- Loads the script that handles the dialogue -->	
+<script src="./js/client.js"></script>	
 
 <div id="header">
 	<div id="contactBar">
@@ -25,19 +26,20 @@
 	<div id="navBar">
 		<ul id="nav">
 			<li><a href="index.html"> START </a></li>
-			<li><a href="index.html?p=details"> DETAILS</a></li>
+			<li><a href="index.html?p=details"> DETAILS </a></li>
 			<li><a href="index.html?p=about"> ABOUT </a></li>
 		</ul>
 	</div>
 </div>
 
 <div id="content">
-<h1>Is dit een vraag?</h1>
-content enzo
-
-
+	<div id="ajax">
+		<h1>AJAX playground</h1>
+		<div class="button">
+			<p id="magicButtonText">Magic</p>
+		</div>
+	</div>	
 </div>
-
 	
 </body>
 
