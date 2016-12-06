@@ -53,10 +53,11 @@ public class InferenceSystem {
                     }
                 }
             }
-            if(goalFound){
+            if (goalFound) {
                 break;
             }
             System.out.println("[ctrl] User input required");
+            boolean change = false;
             for (Rule rule : ruleBase) {
                 System.out.println("[ctrl]  Checking if rule needs user input");
                 if (!rule.checkConditions(knowledgeBase, true)) {
@@ -74,10 +75,14 @@ public class InferenceSystem {
                                     continue;
                                 default:
                                     knowledgeBase.setItem(view.inquire(item));
+                                    change = true;
                             }
                         }
                     }
                 }
+            }
+            if (!change) {
+                break;
             }
         }
         view.showResult(goalItem, knowledgeBase);

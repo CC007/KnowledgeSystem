@@ -11,7 +11,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
  *
  * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
  */
-public class BooleanItem extends KnowledgeItem<Boolean>{
+public class BooleanItem extends KnowledgeItem<Boolean> {
 
     public BooleanItem(String name, KnowledgeOrigin origin, boolean goal) {
         super(name, origin, goal);
@@ -21,8 +21,13 @@ public class BooleanItem extends KnowledgeItem<Boolean>{
         super(name, value, origin, goal);
     }
 
-    public BooleanItem(BooleanItem item, Boolean value) {
-        super(item, value);
+    public BooleanItem(BooleanItem item) {
+        super(item);
+    }
+
+    @Override
+    public String getDefaultQuestion() {
+        return "Give the boolean value of " + name;
     }
     
     

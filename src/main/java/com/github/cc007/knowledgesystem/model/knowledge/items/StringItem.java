@@ -21,8 +21,15 @@ public class StringItem extends KnowledgeItem<String>{
         super(name, value, origin, goal);
     }
 
-    public StringItem(StringItem item, String value) {
-        super(item, value);
+    public StringItem(StringItem item) {
+        super(item);
     }
+
+    @Override
+    public String getDefaultQuestion() {
+        return "Give the text value of " + name;
+    }
+    
+    
 
 }

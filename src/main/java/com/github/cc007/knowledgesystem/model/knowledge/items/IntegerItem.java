@@ -11,7 +11,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
  *
  * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
  */
-public class IntegerItem extends KnowledgeItem<Integer>{
+public class IntegerItem extends KnowledgeItem<Integer> {
 
     public IntegerItem(String name, KnowledgeOrigin origin, boolean goal) {
         super(name, origin, goal);
@@ -21,9 +21,13 @@ public class IntegerItem extends KnowledgeItem<Integer>{
         super(name, value, origin, goal);
     }
 
-    public IntegerItem(IntegerItem item, Integer value) {
-        super(item, value);
+    public IntegerItem(IntegerItem item) {
+        super(item);
     }
 
-    
+    @Override
+    public String getDefaultQuestion() {
+        return "Give the integer value of " + name;
+    }
+
 }

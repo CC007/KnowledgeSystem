@@ -6,6 +6,8 @@
 package com.github.cc007.knowledgesystem.model.knowledge.items;
 
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -15,45 +17,59 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
 public abstract class KnowledgeItem<T> {
 
     protected final String name;
-    protected final T value;
-    protected final boolean valueSet;
     protected final KnowledgeOrigin origin;
     protected final boolean goal;
+    protected T value;
+    protected String question;
+    protected String tip;
+    protected String goalResponse;
 
     public KnowledgeItem(String name, KnowledgeOrigin origin, boolean goal) {
         this.name = name;
-        this.value = null;
-        this.valueSet = false;
         this.origin = origin;
         this.goal = goal;
+
+        this.value = null;
+        this.question = null;
+        this.tip = null;
+        this.goalResponse = null;
     }
 
     public KnowledgeItem(String name, T value, KnowledgeOrigin origin, boolean goal) {
-        this.name = name;
-        this.value = value;
-        this.valueSet = true;
-        this.origin = origin;
-        this.goal = goal;
+        this(name, origin, goal);
+        setValue(value);
     }
 
-    public KnowledgeItem(KnowledgeItem<T> item, T value) {
-        this.name = item.getName();
+    public KnowledgeItem(KnowledgeItem<T> item) {
+        this(item.name, item.origin, item.goal);
+        setValue(item.value);
+        setQuestion(item.question);
+        setTip(item.tip);
+        setGoalResponse(item.goalResponse);
+    }
+
+    public final KnowledgeItem<T> setValue(T value) {
         this.value = value;
-        this.valueSet = true;
-        this.origin = item.getOrigin();
-        this.goal = item.isGoal();
+        return this;
+    }
+
+    public final KnowledgeItem<T> setQuestion(String question) {
+        this.question = question;
+        return this;
+    }
+
+    public final KnowledgeItem<T> setTip(String tip) {
+        this.tip = tip;
+        return this;
+    }
+
+    public final KnowledgeItem<T> setGoalResponse(String goalResponse) {
+        this.goalResponse = goalResponse;
+        return this;
     }
 
     public String getName() {
         return name;
-    }
-
-    public T getValue() {
-        return value;
-    }
-
-    public boolean isValueSet() {
-        return valueSet;
     }
 
     public KnowledgeOrigin getOrigin() {
@@ -63,7 +79,45 @@ public abstract class KnowledgeItem<T> {
     public boolean isGoal() {
         return goal;
     }
-    
-    
+
+    public T getValue() {
+        return value;
+    }
+
+    public boolean isValueSet() {
+        return value != null;
+    }
+
+    public String getQuestion() {
+        if (question == null) {
+            return getDefaultQuestion();
+        }
+        return question;
+    }
+
+    public abstract String getDefaultQuestion();
+
+    public String getTip() {
+        return tip;
+    }
+
+    public boolean hasTip() {
+        return tip != null;
+    }
+
+    public String getGoalResponse() {
+        if (goalResponse == null) {
+            return getDefaultGoalResponse();
+        }
+        String result = goalResponse;
+        Pattern p = Pattern.compile("%value%");
+        Matcher m = p.matcher(result);
+        result = m.replaceAll(value + "");
+        return result;
+    }
+
+    public String getDefaultGoalResponse() {
+        return "The value of the goal variable " + name + " is: " + value;
+    }
 
 }
