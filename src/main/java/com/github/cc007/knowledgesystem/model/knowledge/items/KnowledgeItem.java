@@ -19,15 +19,19 @@ public abstract class KnowledgeItem<T> {
     protected final String name;
     protected final KnowledgeOrigin origin;
     protected final boolean goal;
+    protected final String type;
+    
     protected T value;
     protected String question;
     protected String tip;
     protected String goalResponse;
 
+
     public KnowledgeItem(String name, KnowledgeOrigin origin, boolean goal) {
         this.name = name;
         this.origin = origin;
         this.goal = goal;
+        this.type = getType();
 
         this.value = null;
         this.question = null;
@@ -47,6 +51,10 @@ public abstract class KnowledgeItem<T> {
         setTip(item.tip);
         setGoalResponse(item.goalResponse);
     }
+
+    protected abstract String getType();
+
+    public abstract KnowledgeItem<T> copy();
 
     public final KnowledgeItem<T> setValue(T value) {
         this.value = value;

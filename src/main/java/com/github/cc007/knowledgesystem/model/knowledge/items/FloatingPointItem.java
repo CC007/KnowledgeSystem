@@ -24,7 +24,17 @@ public class FloatingPointItem extends KnowledgeItem<Double> {
     public FloatingPointItem(FloatingPointItem item) {
         super(item);
     }
-    
+
+    @Override
+    protected String getType() {
+        return "decimal";
+    }
+
+    @Override
+    public FloatingPointItem copy() {
+        return new FloatingPointItem(this);
+    }
+
     @Override
     public String getDefaultQuestion() {
         return "Give the decimal value of " + name;

@@ -26,9 +26,18 @@ public class BooleanItem extends KnowledgeItem<Boolean> {
     }
 
     @Override
+    protected String getType() {
+        return "boolean";
+    }
+
+    @Override
+    public BooleanItem copy() {
+        return new BooleanItem(this);
+    }
+
+    @Override
     public String getDefaultQuestion() {
         return "Give the boolean value of " + name;
     }
-    
-    
+
 }

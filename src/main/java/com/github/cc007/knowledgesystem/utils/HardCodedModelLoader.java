@@ -39,18 +39,18 @@ public class HardCodedModelLoader extends ModelLoader {
         //fill the rule base with the rules
         Condition moreThan1000RPM = new ValueCondition("rpm", 1000, ValueOperator.GREATER);
         Condition alarmIsNotOn = new EqualityCondition("alarm", "on", false);
-        KnowledgeItem alarmOn = new StringItem((StringItem) knowledgeBase.getItem("alarm")).setValue("on");
+        KnowledgeItem alarmOn = knowledgeBase.getItem("alarm").copy().setValue("on");
         ruleBase.addRule(new RuleBuilder(alarmOn).addCondition(alarmIsNotOn).addCondition(moreThan1000RPM).build());
         
         Condition alarmIsOn = new EqualityCondition("alarm", "on", true);
         Condition pumpIsLeaking = new EqualityCondition("leaking", 0, true);
         Condition hasNoBrokenSealProblem = new EqualityCondition("problem", "broken seal", false);
-        KnowledgeItem brokenSealProblem = new StringItem((StringItem) knowledgeBase.getItem("problem")).setValue("broken seal");
+        KnowledgeItem brokenSealProblem = knowledgeBase.getItem("problem").copy().setValue("broken seal");
         ruleBase.addRule(new RuleBuilder(brokenSealProblem).addCondition(hasNoBrokenSealProblem).addCondition(alarmIsOn).addCondition(pumpIsLeaking).build());
         
         Condition ove9000 = new ValueCondition("OVE", 9000.0, ValueOperator.GREATER);
         Condition hasBrokenSealProblem = new EqualityCondition("problem", "broken seal", true);
-        KnowledgeItem helloWorld = new StringItem((StringItem) knowledgeBase.getItem("hello")).setValue("world");
+        KnowledgeItem helloWorld = knowledgeBase.getItem("hello").copy().setValue("world");
         ruleBase.addRule(new RuleBuilder(helloWorld).addCondition(ove9000).addCondition(hasBrokenSealProblem).build());
     }
 }

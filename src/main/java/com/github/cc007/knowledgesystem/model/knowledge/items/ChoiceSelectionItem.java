@@ -29,13 +29,23 @@ public class ChoiceSelectionItem extends KnowledgeItem<Integer> {
     public ChoiceSelectionItem(ChoiceSelectionItem item) {
         super(item);
         this.options = item.options;
-    } 
-    
+    }
+
+    @Override
+    protected String getType() {
+        return "integer";
+    }
+
+    @Override
+    public ChoiceSelectionItem copy() {
+        return new ChoiceSelectionItem(this);
+    }
+
     @Override
     public String getDefaultQuestion() {
         return "Choose one of the following for " + name + ":";
     }
-    
+
     public List<String> getOptions() {
         return options;
     }
@@ -43,16 +53,16 @@ public class ChoiceSelectionItem extends KnowledgeItem<Integer> {
     public String getSelectedValue() {
         return options.get(value);
     }
-    
+
     public Integer getSelectedIndex() {
         return value;
     }
-    
-    public String getValue(Integer index){
+
+    public String getValue(Integer index) {
         return options.get(index);
     }
-    
-    public Integer getIndex(String value){
+
+    public Integer getIndex(String value) {
         return options.indexOf(value);
     }
 

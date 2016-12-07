@@ -7,7 +7,6 @@ package com.github.cc007.knowledgesystem.model.rules.conditions;
 
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
-import java.math.BigInteger;
 
 /**
  *

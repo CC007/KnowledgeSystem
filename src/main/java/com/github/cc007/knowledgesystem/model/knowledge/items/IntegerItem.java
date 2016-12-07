@@ -26,6 +26,16 @@ public class IntegerItem extends KnowledgeItem<Integer> {
     }
 
     @Override
+    protected String getType() {
+        return "integer";
+    }
+
+    @Override
+    public IntegerItem copy() {
+        return new IntegerItem(this);
+    }
+
+    @Override
     public String getDefaultQuestion() {
         return "Give the integer value of " + name;
     }

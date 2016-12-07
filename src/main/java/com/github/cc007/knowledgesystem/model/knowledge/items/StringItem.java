@@ -11,7 +11,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
  *
  * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
  */
-public class StringItem extends KnowledgeItem<String>{
+public class StringItem extends KnowledgeItem<String> {
 
     public StringItem(String name, KnowledgeOrigin origin, boolean goal) {
         super(name, origin, goal);
@@ -26,10 +26,18 @@ public class StringItem extends KnowledgeItem<String>{
     }
 
     @Override
+    protected String getType() {
+        return "text";
+    }
+
+    @Override
+    public StringItem copy() {
+        return new StringItem(this);
+    }
+
+    @Override
     public String getDefaultQuestion() {
         return "Give the text value of " + name;
     }
-    
-    
 
 }
