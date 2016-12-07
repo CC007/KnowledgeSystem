@@ -33,17 +33,23 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                         var response = JSON.parse(xhr.responseText);
+                        console.log(response.knowledge.origin);
                         if(response.knowledge.origin == "CHOICESELECTION"){
                             
-                            var node = document.createElement("select");
-                            for(int i=0;i < response.knowlegde
-                            var node = document.createElement("option");                
-                            node.setAttribute("name", response.name);              
-                            node.setAttribute("name", response.name);
-                            document.getElementById("myList").appendChild(node);   
+                            var node = document.createElement("select");          
+                            node.setAttribute("name", response.knowledge.name);
+                            for(var i=0; i < response.knowledge.options.length; i++){
+                                
+                                var optionNode = document.createElement("option");                 
+                                node.setAttribute("value", response.knowledge.options[i]);
+                                var textNode = document.createTextNode(response.knowledge.options[i]);
+                                optionNode.appendChild(textNode);
+                                node.appendChild(optionNode);
+                            }
+                            document.getElementById("question").appendChild(node);   
                         }
                     }
-                }
+                };
                 xhr.open(form.method, form.action, true);
                 xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
@@ -63,7 +69,7 @@
 
 <body onload="init()">
 <!-- Loads the script that handles the dialogue -->	
-<script src="./js/client.js"></script>	
+<!--script src="./js/client.js"></script-->	
 
 <div id="header">
 	<div id="contactBar">
