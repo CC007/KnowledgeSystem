@@ -18,7 +18,7 @@ public class EqualityCondition<T> extends Condition {
     private final boolean equal;
 
     public EqualityCondition(String knowledgeItemName, T value) {
-        this(knowledgeItemName, value, false);
+        this(knowledgeItemName, value, true);
     }
 
     public EqualityCondition(String knowledgeItemName, T value, boolean equal) {
