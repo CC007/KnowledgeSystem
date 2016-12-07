@@ -6,8 +6,6 @@
 
     <link rel="stylesheet" type="text/css" href="./css/default.css">
     <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,900" rel="stylesheet">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-    <script type="text/javascript" src="http://www.json.org/json2.js"></script>
     <script type="text/javascript">
         function init(){
             var form = document.getElementById("question");
@@ -34,19 +32,29 @@
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
-                        alert(xhr.responseText);
+                        var response = JSON.parse(xhr.responseText);
+                        if(response.knowledge.origin == "CHOICESELECTION"){
+                            
+                            var node = document.createElement("select");
+                            for(int i=0;i < response.knowlegde
+                            var node = document.createElement("option");                
+                            node.setAttribute("name", response.name);              
+                            node.setAttribute("name", response.name);
+                            document.getElementById("myList").appendChild(node);   
+                        }
                     }
                 }
                 xhr.open(form.method, form.action, true);
                 xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
                 // send the collected data as JSON
-                xhr.send(JSON.stringify(request));
+                var json = JSON.stringify(request);
+                alert(json);
+                xhr.send(json);
 
                 xhr.onloadend = function () {
                   //Done
                 };
-                print_r($_POST);
             };
         };
    </script>	
@@ -78,7 +86,7 @@
 
 <div id="content">
 	<div id="userDialogue">
-            <form id="question" method="POST" action="localhost:4567">
+            <form id="question" method="POST" action="http://localhost:4567">
                 <input type="Submit" name="Submit" />
 		</form>	
 		<div class="userInput">

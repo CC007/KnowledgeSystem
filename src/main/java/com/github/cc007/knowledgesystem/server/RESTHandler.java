@@ -34,7 +34,16 @@ public class RESTHandler implements Runnable {
     public void run() {
         Gson gson = new Gson();
         JsonParser parser = new JsonParser();
+        options("/", (request, response)->{
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Method", "POST");
+            response.header("Access-Control-Allow-Headers", "Content-Type");
+            return "";
+        });
         post("/", "application/json", (request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Method", "POST");
+            response.header("Access-Control-Allow-Headers", "Content-Type");
             JsonElement data = parser.parse(request.body());
             int id;
             RESTView view;
@@ -97,7 +106,7 @@ public class RESTHandler implements Runnable {
 
             //prevent sending the same inquiry twice
             view.setNewKnowledgeSystemData(false);
-
+            response.header("Content-Type", "application/json; charset=UTF-8");
             Map<String, Object> retVal = new HashMap<>();
             retVal.put("id", id);
             retVal.put("respId", getNewResponseId());

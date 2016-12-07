@@ -81,9 +81,9 @@ public class InferenceSystem {
                         }
                     }
                 }
-            }
-            if (!change) {
-                break;
+                if (!change) {
+                    break;
+                }
             }
         }
         view.showResult(goalItem, knowledgeBase);
