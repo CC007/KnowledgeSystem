@@ -5,7 +5,6 @@
  */
 package com.github.cc007.knowledgesystem.server;
 
-import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import com.github.cc007.knowledgesystem.view.RESTView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
