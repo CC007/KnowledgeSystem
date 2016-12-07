@@ -77,13 +77,15 @@ public class InferenceSystem {
                                 default:
                                     knowledgeBase.setItem(view.inquire(item.copy()));
                                     change = true;
+                                    break;
                             }
                         }
                     }
-                }
-                if (!change) {
                     break;
                 }
+            }
+            if (!change) {
+                break;
             }
         }
         view.showResult(goalItem, knowledgeBase);

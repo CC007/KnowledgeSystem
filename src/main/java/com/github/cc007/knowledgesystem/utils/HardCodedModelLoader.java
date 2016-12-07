@@ -62,7 +62,7 @@ public class HardCodedModelLoader extends ModelLoader {
         ruleBase.addRule(new RuleBuilder(onderWLZ).addCondition(heeftIndicatie).addCondition(WLZnietTrue).build());
         
         Condition heeftDekking = new EqualityCondition("dekking", "Ja", true);
-        Condition zorgverzekeringNietTrue = new EqualityCondition("zorgverzekering", false);
+        Condition zorgverzekeringNietTrue = new EqualityCondition("zorgverzekering", true, false);
         KnowledgeItem onderZorgverzekering = knowledgeBase.getItem("zorgverzekering").copy().setValue(true);
         ruleBase.addRule(new RuleBuilder(onderZorgverzekering).addCondition(heeftDekking).addCondition(zorgverzekeringNietTrue).build());
         
