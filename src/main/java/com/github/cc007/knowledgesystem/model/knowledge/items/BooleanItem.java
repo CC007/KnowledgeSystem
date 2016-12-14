@@ -26,7 +26,7 @@ public class BooleanItem extends KnowledgeItem<Boolean> {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "boolean";
     }
 

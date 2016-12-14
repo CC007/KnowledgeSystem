@@ -2,108 +2,144 @@
 
 <html>
 
-<head>
+    <head>
 
-    <link rel="stylesheet" type="text/css" href="./css/default.css">
-    <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,900" rel="stylesheet">
-    <script type="text/javascript">
-        function init(){
-            var form = document.getElementById("question");
-            form.onsubmit = function (e) {
-                // stop the regular form submission
-                e.preventDefault();
-                // collect the form data while iterating over the inputs
-                var data = {};
-                for (var i = 0, ii = form.length; i < ii; ++i) {
-                  var input = form[i];
-                  if (input.name) {
-                    data[input.name] = input.value;
-                  }
-                }
-                var request = new Object();
-                if(data["id"] !== undefined){
-                    request.id = data["ïd"];
-                    request.name = data["name"];
-                    request.type = data["type"];
-                    request.value = data["value"];
-                }
-                alert("Request: "+ JSON.stringify(request));
-                // construct an HTTP request
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        var response = JSON.parse(xhr.responseText);
-                        console.log(response.knowledge.origin);
-                        if(response.knowledge.origin == "CHOICESELECTION"){
-                            
-                            var node = document.createElement("select");          
-                            node.setAttribute("name", response.knowledge.name);
-                            for(var i=0; i < response.knowledge.options.length; i++){
-                                
-                                var optionNode = document.createElement("option");                 
-                                node.setAttribute("value", response.knowledge.options[i]);
-                                var textNode = document.createTextNode(response.knowledge.options[i]);
-                                optionNode.appendChild(textNode);
-                                node.appendChild(optionNode);
-                            }
-                            document.getElementById("question").appendChild(node);   
+        <link rel="stylesheet" type="text/css" href="./css/default.css">
+        <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,900" rel="stylesheet">
+        <script type="text/javascript">
+            function init() {
+                var form = document.getElementById("question");
+                form.onsubmit = function (e) {
+                    // stop the regular form submission
+                    e.preventDefault();
+                    // collect the form data while iterating over the inputs
+                    var data = {};
+                    for (var i = 0, ii = form.length; i < ii; ++i) {
+                        var input = form[i];
+                        if (input.name) {
+                            data[input.name] = input.value;
                         }
                     }
+                    console.log(JSON.stringify(data));
+                    var request = new Object();
+                    if (data["id"] !== undefined) {
+                        request.id = data["id"];
+                        request.name = data["name"];
+                        request.type = data["type"];
+                        request.value = data["value"];
+                    }
+                    console.log("Request: " + JSON.stringify(request));
+                    // construct an HTTP request
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            console.log(xhr.responseText)
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.type === "inquiry") {
+                                setQuestion(response);
+                            } else {
+                                setResult(response);
+                            }
+                        }
+                    };
+                    xhr.open(form.method, form.action, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+                    // send the collected data as JSON
+                    xhr.send(JSON.stringify(request));
+
+                    xhr.onloadend = function () {
+                        //Done
+                    };
                 };
-                xhr.open(form.method, form.action, true);
-                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            }
 
-                // send the collected data as JSON
-                var json = JSON.stringify(request);
-                alert(json);
-                xhr.send(json);
+            function setQuestion(response) {
+                console.log(response.knowledge.origin);
+                clearNode();
+                document.getElementById("question").appendChild(document.createTextNode(response.knowledge.question));
+                document.getElementById("question").appendChild(document.createElement("br"));
+                setInput("hidden", "id", response.id);
+                setInput("hidden", "type", response.knowledge.type);
+                setInput("hidden", "name", response.knowledge.name);
+                if (response.knowledge.origin === "CHOICESELECTION") {
+                    setChoiceSelection(response.knowledge.options);
+                }
+                document.getElementById("question").appendChild(document.createElement("br"));
+                setInput("submit", "Submit", "Volgende vraag");
+            }
 
-                xhr.onloadend = function () {
-                  //Done
-                };
-            };
-        };
-   </script>	
-   <title>Hello world</title>
-</head>
+            function setResult(response) {
 
-<body onload="init()">
-<!-- Loads the script that handles the dialogue -->	
-<!--script src="./js/client.js"></script-->	
+            }
+            
+            function clearNode(){
+                var node = document.getElementById("question");
+                while (node.firstChild) {
+                    node.removeChild(node.firstChild);
+                }
+            }
+            function setInput(type, name, value = "") {
+                var node = document.createElement("input");
+                node.setAttribute("type", type);
+                node.setAttribute("name", name);
+                node.setAttribute("value", value);
+                document.getElementById("question").appendChild(node);
+            }
 
-<div id="header">
-	<div id="contactBar">
-		<a href="mailto://annetonnes@gmail.com"> ✉ Annet Onnes</a>
-		<a href="mailto://rik.s@hotmail.com"> ✉ Rik Schaaf</a>
-		<a href="mailto://jellevisser1994@hotmail.com"> ✉ Jelle Visser</a>
-	</div>
-	<div id="titleBar">
-		<a href="https://wij.groningen.nl/" id="logo" title="To homepage" target="_blank"> WIJ GRONINGEN </a>
-		<a href="https://www.rug.nl/ocasys/gmw/vak/show?code=KIB.PKT10" id="sublogo" target="_blank"> KNOWLEDGE TECHNOLOGY <br/> PRACTICAL</a>
-	</div>
-	<div id="navBar">
-		<ul id="nav">
-			<li><a href="index.html"> START </a></li>
-			<li><a href="index.html?p=details"> DETAILS </a></li>
-			<li><a href="index.html?p=about"> ABOUT </a></li>
-		</ul>
-	</div>
-</div>
+            function setChoiceSelection(options) {
+                var node = document.createElement("select");
+                node.setAttribute("name", "value");
+                for (var i = 0; i < options.length; i++) {
+                    var optionNode = document.createElement("option");
+                    node.setAttribute("value", i);
+                    var textNode = document.createTextNode(options[i]);
+                    optionNode.appendChild(textNode);
+                    node.appendChild(optionNode);
+                }
+                document.getElementById("question").appendChild(node);
+            }
+        </script>	
+        <title>Hello world</title>
+    </head>
 
-<div id="content">
-	<div id="userDialogue">
-            <form id="question" method="POST" action="http://localhost:4567">
-                <input type="Submit" name="Submit" />
-		</form>	
-		<div class="userInput">
-			<div class="button">
-				<p id="buttonText">Start</p>
-			</div>
-		</div>
-	</div>
-</div>
-	
-</body>
+    <body onload="init()">
+        <!-- Loads the script that handles the dialogue -->	
+        <!--script src="./js/client.js"></script-->	
+
+        <div id="header">
+            <div id="contactBar">
+                <a href="mailto://annetonnes@gmail.com"> ✉ Annet Onnes</a>
+                <a href="mailto://rik.s@hotmail.com"> ✉ Rik Schaaf</a>
+                <a href="mailto://jellevisser1994@hotmail.com"> ✉ Jelle Visser</a>
+            </div>
+            <div id="titleBar">
+                <a href="https://wij.groningen.nl/" id="logo" title="To homepage" target="_blank"> WIJ GRONINGEN </a>
+                <a href="https://www.rug.nl/ocasys/gmw/vak/show?code=KIB.PKT10" id="sublogo" target="_blank"> KNOWLEDGE TECHNOLOGY <br/> PRACTICAL</a>
+            </div>
+            <div id="navBar">
+                <ul id="nav">
+                    <li><a href="index.html"> START </a></li>
+                    <li><a href="index.html?p=details"> DETAILS </a></li>
+                    <li><a href="index.html?p=about"> ABOUT </a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="content">
+            <div id="userDialogue">
+                <form id="question" method="POST" action="http://localhost:4567">
+                    <input type="submit" name="Submit" value="Start"/>
+                </form>	
+                <!--div class="userInput">
+                    <div class="button">
+                        <p id="buttonText">Start</p>
+                    </div>
+                </div-->
+            </div>
+        </div>
+
+    </body>
 
 
 </html>

@@ -67,7 +67,13 @@ public class RESTHandler implements Runnable {
                         try {
                             switch (respMsg.getType()) {
                                 case "integer":
-                                    view.getKnowledge().setValue(((Number) value).intValue());
+                                    view.getKnowledge().setValue(Integer.parseInt((String) value));
+                                    break;
+                                case "decimal":
+                                    view.getKnowledge().setValue(Double.parseDouble((String) value));
+                                    break;
+                                case "boolean":
+                                    view.getKnowledge().setValue(Boolean.parseBoolean((String) value));
                                     break;
                                 default:
                                     view.getKnowledge().setValue(value);

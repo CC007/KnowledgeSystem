@@ -36,6 +36,9 @@ public class InferenceSystem {
         int i = 0;
         while (!goalFound) {
             int ruleCounter = 0;
+            for (KnowledgeItem item : knowledgeBase) {
+                System.out.println(item.getName()+ " ("+item.getType() + "): " + item.getValue());
+            }
             for (; ruleCounter < ruleBase.size(); i = (i + 1) % ruleBase.size()) {
                 Logger.getLogger(InferenceSystem.class.getName()).info("[ctrl]  Checking conditions for rule " + i);
                 Rule rule = ruleBase.getRule(i);

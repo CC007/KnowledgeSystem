@@ -26,7 +26,7 @@ public class IntegerItem extends KnowledgeItem<Integer> {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "integer";
     }
 

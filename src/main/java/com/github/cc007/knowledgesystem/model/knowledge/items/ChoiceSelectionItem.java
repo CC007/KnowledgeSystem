@@ -32,7 +32,7 @@ public class ChoiceSelectionItem extends KnowledgeItem<Integer> {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "integer";
     }
 

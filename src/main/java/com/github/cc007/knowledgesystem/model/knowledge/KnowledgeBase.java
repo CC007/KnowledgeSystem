@@ -7,13 +7,14 @@ package com.github.cc007.knowledgesystem.model.knowledge;
 
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  *
  * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
  */
-public class KnowledgeBase {
+public class KnowledgeBase implements Iterable<KnowledgeItem>{
 
     private final List<KnowledgeItem> items;
 
@@ -44,4 +45,10 @@ public class KnowledgeBase {
         items.add(newItem);
     }
 
+    @Override
+    public Iterator<KnowledgeItem> iterator() {
+        return items.iterator();
+    }
+
+    
 }

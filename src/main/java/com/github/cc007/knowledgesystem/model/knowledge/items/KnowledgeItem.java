@@ -52,7 +52,7 @@ public abstract class KnowledgeItem<T> {
         setGoalResponse(item.goalResponse);
     }
 
-    protected abstract String getType();
+    public abstract String getType();
 
     public abstract KnowledgeItem<T> copy();
 

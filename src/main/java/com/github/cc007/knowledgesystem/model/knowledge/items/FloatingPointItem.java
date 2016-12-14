@@ -26,7 +26,7 @@ public class FloatingPointItem extends KnowledgeItem<Double> {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "decimal";
     }
 

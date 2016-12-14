@@ -26,7 +26,7 @@ public class StringItem extends KnowledgeItem<String> {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "text";
     }
 
