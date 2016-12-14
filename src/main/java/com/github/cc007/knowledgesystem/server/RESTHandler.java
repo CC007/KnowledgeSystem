@@ -5,11 +5,14 @@
  */
 package com.github.cc007.knowledgesystem.server;
 
+import com.github.cc007.knowledgesystem.model.knowledge.items.ChoiceSelectionItem;
+import com.github.cc007.knowledgesystem.model.knowledge.items.MultipleChoiceSelectionItem;
 import com.github.cc007.knowledgesystem.view.RESTView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +37,7 @@ public class RESTHandler implements Runnable {
     public void run() {
         Gson gson = new Gson();
         JsonParser parser = new JsonParser();
-        options("/", (request, response)->{
+        options("/", (request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Method", "POST");
             response.header("Access-Control-Allow-Headers", "Content-Type");
@@ -66,6 +69,12 @@ public class RESTHandler implements Runnable {
                     if (view.getKnowledge().getName().equals(name)) {
                         try {
                             switch (respMsg.getType()) {
+                                case "index":
+                                    view.getKnowledge().setValue(((ChoiceSelectionItem) view.getKnowledge()).getIndex((String) value));
+                                    break;
+                                case "indexlist":
+                                    view.getKnowledge().setValue(((MultipleChoiceSelectionItem) view.getKnowledge()).getIndices((List<String>) value));
+                                    break;
                                 case "integer":
                                     view.getKnowledge().setValue(Integer.parseInt((String) value));
                                     break;

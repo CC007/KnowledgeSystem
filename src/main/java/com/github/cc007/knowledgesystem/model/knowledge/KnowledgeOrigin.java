@@ -11,7 +11,9 @@ package com.github.cc007.knowledgesystem.model.knowledge;
  */
 public enum KnowledgeOrigin {
     TEXTINPUT,
-    VALUEINPUT,
+    INTEGERINPUT,
+    DECIMALINPUT,
+    BOOLEANINPUT,
     CHOICESELECTION,
     INFERRED,
     GIVEN

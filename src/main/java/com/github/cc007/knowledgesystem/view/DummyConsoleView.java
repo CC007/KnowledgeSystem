@@ -52,7 +52,7 @@ public class DummyConsoleView implements View {
                 si.setValue(textValue);
                 newItem = si;
                 return newItem;
-            case VALUEINPUT:
+            case INTEGERINPUT:
                 Logger.getLogger(DummyConsoleView.class.getName()).info("[view]  Value input question selected ");
                 if (item instanceof BooleanItem) {
                     System.out.println("(boolean)");
