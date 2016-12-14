@@ -39,7 +39,7 @@ public class YMLFile {
     Map<String, Object> root;
 
     public YMLFile() throws IOException {
-        this("categories.yml");
+        this("knowledge.yml");
     }
 
     public YMLFile(String filename) throws IOException {
