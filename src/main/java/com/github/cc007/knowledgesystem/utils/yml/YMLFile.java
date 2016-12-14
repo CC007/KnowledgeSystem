@@ -38,10 +38,6 @@ public class YMLFile {
 
     Map<String, Object> root;
 
-    public YMLFile() throws IOException {
-        this("knowledge.yml");
-    }
-
     public YMLFile(String filename) throws IOException {
         String result;
         ClassLoader classLoader = getClass().getClassLoader();
