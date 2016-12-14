@@ -1,0 +1,146 @@
+Vul alle vragen waarheidsgetrouw in om er voor te zorgen dat deze online hulp een advies geeft zo dicht als mogelijk bij dat van een consulent.
+
+
+In welke wijk bent uw woonachtige?
+Dropdown: Noord Groningen/Selwerd
+
+Maakt u op het moment gebruik van een voorziening ontvangen via de WMO, of heeft u dat in het verleden gedaan?
+Ja/Nee
+
+
+Selecteer de situatie die het meest op u van toepassing is.
+
+Ik heb problemen met mobiliteit binnenshuis.
+Ik heb problemen met mobiliteit in situaties als boodschappen doen of buren bezoeken.
+Ik heb moeite met het bezoeken van verder gelegen plaatsen, zoals het ziekenhuis of familie.
+
+
+---Trechter---
+Als ze iets antwoorden waardoor ze niet meer onder de WMO vallen 'vliegen ze eruit'. De vragen zijn direct aan goals gekoppeld.
+Stap 1: Wetten
+UWV -> Heeft u een betaalde baan, waarbij uw problemen in de weg komen te staan? (Ja/Nee)
+Leerlingvervoer -> Gaat het om een minderjarige die naar school gaat? (Ja/Nee)
+WLZ -> Heeft u een positieve indicatie ontvangen onder de Wet Langdurige Zorg? (Ja/Nee, ik ben afgewezen/Nee, geen aanvraag gedaan/Nog in behandeling)
+Zorgverzekeringswet -> Kan de compensatie gedekt worden door de zorgverzekering?
+
+Stap 2: Voorliggende voorzieningen
+Selecteer uit de onderstaande lijst wijk voorzieningen waarvan u denkt ondersteuning te kunnen gebruiken.
+Selecteer voorziening waar u nog nooit in aanraking mee bent gekomen, nog nooit van heeft gehoord, maar ook voorzieningen waar u nu eventueel met plezier gebruik van maakt.
+
+-Scootmobiel pool.
+-Rolstoel verhuur.
+-Wandelvrijwilligers.
+-Deeltaxi.
+
+Stap 3: Algemeen gebruik
+Selecteer uit de onderstaande lijst van hulpmiddelen, welke u denkt te kunnen gebruiken.
+
+- Reguliere rolstoel
+- Krukken
+- scootmobiel
+etc
+
+
+---Dit was de trechter---
+Nu wordt het moeilijker.
+
+De volgende vragen zijn bedoeld om een beeld te krijgen van uw leef situatie.
+
+---Wonen---
+Wonen (kies 1)
+-Ik woon zelfstandig en alleen.
+-Ik woon zelfstandig met een partner.
+-Ik woon professioneel begeleid.
+-Ik woon bij mantelzorgers.
+[altijd]
+
+---Sociale omgeving---
+Sociale kring (kies 1)
+-Mijn sociale kring is klein, maar dichtbij (in dezelfde wijk/stad)
+-Mijn sociale kring is klein en wijd verspreid (in andere steden en/of provincies)
+-Mijn sociale kring is groot en dichtbij (in dezelfde wijk/stad)
+-Mijn sociale kring is groot, maar wijd verspreid (in andere steden en/of provincies)
+-Mijn sociale kring is verwaardeloosbaar.
+
+Sociale kring (kan meerdere)
+-Een groot deel van mijn sociale kring bestaat uit familie
+-Een groot deel van mijn sociale kring heeft vergelijkbare problemen als ik
+-Een groot deel van mijn sociale kring is bereid mij te helpen
+
+Door mijn beperking worden mijn sociale contacten verminderd? (kies 1)
+- Nee
+- Deels
+- Ja
+
+---Functioneren---
+
+Geef aan in hoeverre u problemen heeft in het verrichten van huishoudelijke taken. (Kies 1)
+- Alles gaat prima
+- Ik heb alleen problemen met grotere, langegerektere taken zoals boodschappen doen en de kinderen naar school brengen.
+- Ik heb problemen met kleine taken binnenshuis zoals koken en de was doen en grotere taken.
+
+Ik maak nog regelmatig gebruik van het OV (voor meer dan 50% van mijn uitstapjes)
+Ja/Nee
+
+Ik kan de dichtsbijzijnde bushalte nog lopen bereiken (zonder hulpmiddelen) (800 meter vraag)
+Ja/Nee
+
+Stel u straat is open gebroken en de taxi staat meerdere huizen verderop. Zou het u lukken om zonder hulpmiddelen naar de taxi te lopen? (100 meter vraag)
+Ja/Nee
+
+
+Rules
+baan vraag ja -> UWV goal
+leerling vraag ja -> leerling goal
+WLZ vraag ja -> WLZ goal
+zorgverzekering vraag ja -> zorgverzekering goal
+baanvraag nee, leerling vraag nee, WLZ vraag nee, zorgverzekering vraag nee -> verder
+
+Scootmobiel pool, Rolstoel verhuur Wandelvrijwilliger ja -> voorziening goal
+Scootmobiel pool, Rolstoel verhuur Wandelvrijwilliger nee, Deeltaxi ja -> verder
+geen -> verder
+
+Algemeen gebruik
+Reguliere rolstoel of Krukken ja -> algemeen gebruik goal
+geen of alleen scootmobiel -> verder
+
+Alles verder -> WMO true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mogelijke compensaties
+- Deeltaxi
+- Elektrische rolstoel
+- Scootmobiel
+
+Andere goals
+- Ga naar UWV
+- Ga naar leerlingenvervoer
+- Ga naar WLZ
+- Ga naar zorgverzekerings wet
+- Er zijn andere voorziening, die niet via het WMO worden geregeld, mogelijk voor u beschikbaar. Zoals X,Y
+- Er zijn oplossing beschikbaar voor uw die algemeen verkrijgbaar zijn. Zoals X, Y.
+- Gegeven de beschreven sociale situatie is het waarschijnlijk, dat u niet in aanmerking komt voor een compensatie verstrekt door de WMO.
+
+
+
+
+
+
+
+
