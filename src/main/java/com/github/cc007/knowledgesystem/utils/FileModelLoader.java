@@ -13,15 +13,10 @@ import java.io.File;
  */
 public abstract class FileModelLoader {
 
-    protected final File file;
-
-    public FileModelLoader(File file) {
-        this.file = file;
-    }
+    protected final String fileName;
 
     public FileModelLoader(String fileName) {
-        this.file = new File(fileName);
+        this.fileName = fileName;
     }
-
 
 }
