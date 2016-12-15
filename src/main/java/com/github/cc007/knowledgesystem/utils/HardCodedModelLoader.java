@@ -37,7 +37,7 @@ public class HardCodedModelLoader extends ModelLoader {
 
         //fill the knowledge base with the variables
         knowledgeBase.setItem(new ChoiceSelectionItem("baan", jaNeeList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Heeft u een betaalde baan, waarbij uw problemen in de weg komen te staan?"));
-        knowledgeBase.setItem(new ChoiceSelectionItem("leerling", jaNeeList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Gaat het om een minderjarige die naar school gaat?"));
+        knowledgeBase.setItem(new ChoiceSelectionItem("leerling", jaNeeList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Gaat het om een minderjarige die naar school gaat?").setTip("Wil je een schoolbus?"));
         knowledgeBase.setItem(new ChoiceSelectionItem("lzIndicatie", jaNeeList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Heeft u een positieve indicatie ontvangen onder de Wet Langdurige Zorg?"));
         knowledgeBase.setItem(new ChoiceSelectionItem("dekking", jaNeeList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Kan de compensatie gedekt worden door de zorgverzekering?"));
         knowledgeBase.setItem(new BooleanItem("wetten", KnowledgeOrigin.INFERRED, false));
