@@ -1,8 +1,9 @@
+* { box-sizing: border-box; }
+
 body {
 	padding: 0;
 	margin: 0;
 	font-family: FuturaCondensedBold, Arial, Verdana, sans-serif;
-	box-sizing: border-box;
 }
 
 a {
@@ -33,26 +34,36 @@ a {
 
 }
 
+#titleBar > * {
+	vertical-align:middle;
+}
+
 #logo {
-	border: solid #005e39 5px;
 	display: inline-block;
+	border: solid #005e39 5px;
+	height: 50px;
 	padding: 3px;
+}
+
+#logo a {
 	color: #005e39;
 	font-family: 'Maven Pro', sans-serif;
 	font-weight: 900;
-	height: 40px;
-	font-size: 31px;
+	font-size: 29px;
 }
 
 #sublogo {
-	border: solid #005e39 5px;
-	display: inline-block;
-	padding: 3px;
-	color: white;
+	display: inline-block;	
 	background-color: #005e39;
+	padding: 5px;
+	height: 50px;
+}
+
+#sublogo a {
+	color: white;
 	font-family: 'Maven Pro', sans-serif;
 	font-weight: 900;
-	height: 40px;
+	font-size: 17px;
 }
 
 #navBar {
@@ -67,10 +78,13 @@ a {
 	color: #005e39;
 	font-family: 'Maven Pro', sans-serif;
 	font-weight: 900;
+	height: 100%;
 }
 
 #nav li {
 	float: left;
+	height: 100%;
+
 }
 
 #nav li a {
@@ -83,11 +97,11 @@ a {
 #nav li a:hover {
 	background-color: #005e39;
 	color: white;
+	height: 100%;
 }
 
 
 #content{
-	border: solid red 3px;
 	margin-left: 5%;
 	margin-right: 5%;
 	margin-top: 20px;
@@ -98,15 +112,38 @@ h1 {
 	font-weight: 900;
 }
 
-.button {
-    color: #005e39;
-    text-align: center;
-    display: block;
-    padding: 10px;
+h3 {
+	font-family: 'Maven Pro', sans-serif;
+	font-weight: 900;
+	font-size: 16pt;
+	color: #005e39;
+	line-height: 0px;
 }
 
-.button:hover {
-	background-color: #005e39;
-	color: white;
+#userDialogue {
+	width: 75%;
+	float: right;
+	padding: 10px;
 }
 
+#tipBox {
+	background-color: #f2f2f2;
+	width: 25%;
+	float: left;
+	min-height: 50px;
+	padding: 10px;
+}
+
+#startButton {
+	display: block;
+	margin: 0 auto;
+}
+
+input[type=submit] {
+    padding:5px 15px; 
+    background: #f2f2f2; 
+    margin: 5px;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
