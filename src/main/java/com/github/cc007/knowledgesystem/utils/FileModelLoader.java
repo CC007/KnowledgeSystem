@@ -5,8 +5,6 @@
  */
 package com.github.cc007.knowledgesystem.utils;
 
-import java.io.File;
-
 /**
  *
  * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
