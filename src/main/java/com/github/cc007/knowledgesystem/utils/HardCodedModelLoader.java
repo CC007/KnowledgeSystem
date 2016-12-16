@@ -9,16 +9,11 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
 import com.github.cc007.knowledgesystem.model.knowledge.items.BooleanItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.ChoiceSelectionItem;
-import com.github.cc007.knowledgesystem.model.knowledge.items.FloatingPointItem;
-import com.github.cc007.knowledgesystem.model.knowledge.items.IntegerItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
-import com.github.cc007.knowledgesystem.model.knowledge.items.StringItem;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
 import com.github.cc007.knowledgesystem.model.rules.RuleBuilder;
 import com.github.cc007.knowledgesystem.model.rules.conditions.Condition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.EqualityCondition;
-import com.github.cc007.knowledgesystem.model.rules.conditions.ValueCondition;
-import com.github.cc007.knowledgesystem.model.rules.conditions.ValueOperator;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +38,7 @@ public class HardCodedModelLoader extends ModelLoader {
         knowledgeBase.setItem(new BooleanItem("wetten", KnowledgeOrigin.INFERRED, false));
         knowledgeBase.setItem(new ChoiceSelectionItem("voorzieningen", voorzieningenList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Selecteer uit de onderstaande lijst wijk voorzieningen waarvan u denkt ondersteuning te kunnen gebruiken."));
         knowledgeBase.setItem(new ChoiceSelectionItem("algemeenGebruik", algemeenGebruikList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Selecteer uit de onderstaande lijst van hulpmiddelen, welke u denkt te kunnen gebruiken."));
-        knowledgeBase.setItem(new BooleanItem("WMO", KnowledgeOrigin.INFERRED, false));
+        knowledgeBase.setItem(new BooleanItem("WMO", KnowledgeOrigin.INFERRED, true).setGoalResponse("U komt waarschijnlijk in aanmerking voor compensatie door de WMO. Neem contact op met de WMO consulent voor meer informatie."));
 
         knowledgeBase.setItem(new BooleanItem("UWV", KnowledgeOrigin.INFERRED, true).setGoalResponse("Ga naar UWV voor een compensatie."));
         knowledgeBase.setItem(new BooleanItem("leerlingwet", KnowledgeOrigin.INFERRED, true).setGoalResponse("Ga naar leerlingenwet voor een compensatie."));
@@ -51,42 +46,49 @@ public class HardCodedModelLoader extends ModelLoader {
         knowledgeBase.setItem(new BooleanItem("zorgverzekering", KnowledgeOrigin.INFERRED, true).setGoalResponse("Ga naar uw zorgverzekering voor een compensatie."));
 
         //fill the rule base with the rules
+        
+        //rule 0
         Condition heeftBaan = new EqualityCondition("baan", jaNeeList.indexOf("Ja"), true);
-        Condition UWVnietTrue = new EqualityCondition("UWV", true, false);
+        Condition uwvNietTrue = new EqualityCondition("UWV", true, false);
         KnowledgeItem onderUWV = knowledgeBase.getItem("UWV").copy().setValue(true);
-        ruleBase.addRule(new RuleBuilder(onderUWV).addCondition(heeftBaan).addCondition(UWVnietTrue).build());
+        ruleBase.addRule(new RuleBuilder(onderUWV).addCondition(heeftBaan).addCondition(uwvNietTrue).build());
 
+        //rule 1
         Condition isLeerling = new EqualityCondition("leerling", jaNeeList.indexOf("Ja"), true);
         Condition leerlingwetNietTrue = new EqualityCondition("leerlingwet", true, false);
         KnowledgeItem onderLeerlingwet = knowledgeBase.getItem("leerlingwet").copy().setValue(true);
         ruleBase.addRule(new RuleBuilder(onderLeerlingwet).addCondition(isLeerling).addCondition(leerlingwetNietTrue).build());
 
+        //rule 2
         Condition heeftIndicatie = new EqualityCondition("lzIndicatie", jaNeeList.indexOf("Ja"), true);
-        Condition WLZnietTrue = new EqualityCondition("WLZ", true, false);
+        Condition wlzNietTrue = new EqualityCondition("WLZ", true, false);
         KnowledgeItem onderWLZ = knowledgeBase.getItem("WLZ").copy().setValue(true);
-        ruleBase.addRule(new RuleBuilder(onderWLZ).addCondition(heeftIndicatie).addCondition(WLZnietTrue).build());
+        ruleBase.addRule(new RuleBuilder(onderWLZ).addCondition(heeftIndicatie).addCondition(wlzNietTrue).build());
 
+        //rule 3
         Condition heeftDekking = new EqualityCondition("dekking", jaNeeList.indexOf("Ja"), true);
         Condition zorgverzekeringNietTrue = new EqualityCondition("zorgverzekering", true, false);
         KnowledgeItem onderZorgverzekering = knowledgeBase.getItem("zorgverzekering").copy().setValue(true);
         ruleBase.addRule(new RuleBuilder(onderZorgverzekering).addCondition(heeftDekking).addCondition(zorgverzekeringNietTrue).build());
 
+        //rule 4
         Condition heeftGeenBaan = new EqualityCondition("baan", jaNeeList.indexOf("Nee"), true);
         Condition isGeenLeerling = new EqualityCondition("leerling", jaNeeList.indexOf("Nee"), true);
         Condition heeftGeenIndicatie = new EqualityCondition("lzIndicatie", jaNeeList.indexOf("Nee"), true);
         Condition heeftGeenDekking = new EqualityCondition("dekking", jaNeeList.indexOf("Nee"), true);
-        Condition wettenNietTrue = new EqualityCondition("wetten", true, false);
+        Condition wettenNietTrue = new EqualityCondition("wetten", false, false);
         KnowledgeItem onderWetten = knowledgeBase.getItem("wetten").copy().setValue(false);
         ruleBase.addRule(new RuleBuilder(onderWetten).addCondition(heeftGeenBaan).addCondition(isGeenLeerling).addCondition(heeftGeenIndicatie).addCondition(heeftGeenDekking).addCondition(wettenNietTrue).build());
 
+        //rule 5
         Condition valtOnderWetten = new EqualityCondition("wetten", false);
         Condition scootmobielPool = new EqualityCondition("voorzieningen", voorzieningenList.indexOf("Scootmobiel pool"), false);
         Condition rolstoelVerhuur = new EqualityCondition("voorzieningen", voorzieningenList.indexOf("Rolstoel verhuur"), false);
         Condition wandelvrijwilligers = new EqualityCondition("voorzieningen", voorzieningenList.indexOf("Wandelvrijwilligers"), false);
         Condition algemeenGebruik = new EqualityCondition("algemeenGebruik", algemeenGebruikList.indexOf("Scootmobiel"), false);
-        Condition WMOnietTrue = new EqualityCondition("WMO", true, false);
+        Condition wmoNietTrue = new EqualityCondition("WMO", true, false);
         KnowledgeItem WMO = knowledgeBase.getItem("WMO").copy().setValue(true);
-        ruleBase.addRule(new RuleBuilder(WMO).addCondition(valtOnderWetten).addCondition(scootmobielPool).addCondition(rolstoelVerhuur).addCondition(wandelvrijwilligers).addCondition(algemeenGebruik).addCondition(WMOnietTrue).build());
+        ruleBase.addRule(new RuleBuilder(WMO).addCondition(valtOnderWetten).addCondition(scootmobielPool).addCondition(rolstoelVerhuur).addCondition(wandelvrijwilligers).addCondition(algemeenGebruik).addCondition(wmoNietTrue).build());
 
     }
 }

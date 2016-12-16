@@ -8,7 +8,9 @@ function init() {
         for (var i = 0, ii = form.length; i < ii; ++i) {
             var input = form[i];
             if (input.name) {
-                data[input.name] = input.value;
+                if (input.type !== "radio" || input.checked) {
+                    data[input.name] = input.value;
+                }
             }
         }
         console.log(JSON.stringify(data));
@@ -54,7 +56,13 @@ function setQuestion(response) {
     setInput("hidden", "type", response.knowledge.type);
     setInput("hidden", "name", response.knowledge.name);
     if (response.knowledge.origin === "CHOICESELECTION") {
-        setChoiceSelection(response.knowledge.options);
+        for (var i = 0; i < response.knowledge.options.length; i++) {
+            setInput("radio", "value", response.knowledge.options[i]);
+            document.getElementById("question").appendChild(document.createTextNode(response.knowledge.options[i]));
+            document.getElementById("question").appendChild(document.createElement("br"));
+        }
+        //setChoiceSelection(response.knowledge.options);
+
     }
     document.getElementById("question").appendChild(document.createElement("br"));
     setInput("submit", "Submit", "Volgende vraag");
@@ -64,10 +72,18 @@ function setQuestion(response) {
 }
 
 function setResult(response) {
-
+    if (response.goal !== undefined) {
+        console.log("Result:");
+        clearNode();
+        document.getElementById("question").appendChild(document.createTextNode(response.goal.goalResponse));
+    }else{
+        console.log("No result");
+        clearNode();
+        document.getElementById("question").appendChild(document.createTextNode("Het is onbekend of u in aanmerking komt. Contacteer een WMO consulent voor meer informatie."));
+    }
 }
 
-function clearNode(){
+function clearNode() {
     var node = document.getElementById("question");
     while (node.firstChild) {
         node.removeChild(node.firstChild);
