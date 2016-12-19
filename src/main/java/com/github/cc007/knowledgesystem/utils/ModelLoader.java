@@ -7,8 +7,6 @@ package com.github.cc007.knowledgesystem.utils;
 
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
-import java.io.File;
-import java.net.URI;
 
 /**
  *
@@ -18,15 +16,15 @@ public abstract class ModelLoader {
 
     private static ModelLoader currentLoader;
 
-    public static void setCurrentRuleLoader(ModelLoader newLoader) {
+    public static void setCurrentLoader(ModelLoader newLoader) {
         currentLoader = newLoader;
     }
 
-    public static ModelLoader getCurrentRuleLoader() {
+    public static ModelLoader getCurrentLoader() {
         return currentLoader;
     }
     public static void loadModel(RuleBase ruleBase, KnowledgeBase knowledgeBase){
-        getCurrentRuleLoader().load(ruleBase, knowledgeBase);
+        currentLoader.load(ruleBase, knowledgeBase);
     }
     public abstract void load(RuleBase ruleBase, KnowledgeBase knowledgeBase);
 }

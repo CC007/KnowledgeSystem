@@ -8,10 +8,10 @@ package com.github.cc007.knowledgesystem.server;
 import com.github.cc007.knowledgesystem.controller.InferenceSystem;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
-import com.github.cc007.knowledgesystem.utils.HardCodedModelLoader;
 import com.github.cc007.knowledgesystem.utils.ModelLoader;
 import com.github.cc007.knowledgesystem.utils.YMLFileModelLoader;
 import com.github.cc007.knowledgesystem.view.RESTView;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +26,6 @@ public class Session implements Runnable {
     public Session(RESTHandler restHandler) {
         this.knowledgeBase = new KnowledgeBase();
         this.ruleBase = new RuleBase();
-        ModelLoader.setCurrentRuleLoader(new YMLFileModelLoader("kennis.yml"));
         ModelLoader.loadModel(ruleBase, knowledgeBase);
         this.view = new RESTView(restHandler);
     }

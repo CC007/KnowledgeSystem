@@ -26,7 +26,7 @@ public class Program {
         KnowledgeBase knowledgeBase = new KnowledgeBase();
         RuleBase ruleBase = new RuleBase();
         View view = new DummyConsoleView();
-        ModelLoader.setCurrentRuleLoader(new HardCodedModelLoader());
+        ModelLoader.setCurrentLoader(new HardCodedModelLoader());
         ModelLoader.loadModel(ruleBase, knowledgeBase);
         InferenceSystem system = new InferenceSystem(ruleBase, knowledgeBase, view);
         system.start();

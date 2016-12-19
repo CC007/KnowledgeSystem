@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -33,6 +34,8 @@ public class YMLFileModelLoader extends FileModelLoader {
 
     private final Map<String, List> listsMap;
 
+    private static final Logger log = Logger.getLogger(YMLFileModelLoader.class.getName());
+
     public YMLFileModelLoader(String fileName) {
         super(fileName);
         this.listsMap = new HashMap<>();
@@ -41,10 +44,10 @@ public class YMLFileModelLoader extends FileModelLoader {
 
     public void load(RuleBase ruleBase, KnowledgeBase knowledgeBase) {
         try {
-            //open YAML file and get its root node
+            log.info("open YAML file and get its root node");
             YMLFile knowledge = new YMLFile(fileName);
             YMLNode root = knowledge.getRootNode();
-
+                        
             // Read the different options list from the file
             // Store these in the HashMap
             setLists(root);
@@ -62,13 +65,14 @@ public class YMLFileModelLoader extends FileModelLoader {
             // Add previously unknown knowledge items to the KB
             setRules(root, knowledgeBase, ruleBase);
 
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             Logger.getLogger(YMLFileModelLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     private void setLists(YMLNode root) {
+        log.info("Set the lists");
         List<YMLNode> lists = root.getNodeList("lists").getNodes();
 
         for (YMLNode list : lists) {
@@ -79,6 +83,7 @@ public class YMLFileModelLoader extends FileModelLoader {
     }
 
     private void setQuestions(YMLNode root, KnowledgeBase knowledgeBase) {
+        log.info("Put the question knowledge items into the knowledge base");
         List<YMLNode> questions = root.getNodeList("questions").getNodes();
 
         for (YMLNode question : questions) {
@@ -87,14 +92,14 @@ public class YMLFileModelLoader extends FileModelLoader {
             String questionText = question.getString("question");
             String questionTip = question.getString("tip");
             String questionOptions;
-
+            log.info(questionType);
             KnowledgeItem newItem = null;
             switch (questionType) {
                 case "choiceSelection":
                     questionOptions = question.getString("options");
                     newItem = new ChoiceSelectionItem(questionName, listsMap.get(questionOptions), KnowledgeOrigin.CHOICESELECTION, false);
                     break;
-                case "multiChoiceSelection":
+                case "multipleChoiceSelection":
                     questionOptions = question.getString("options");
                     newItem = new MultipleChoiceSelectionItem(questionName, listsMap.get(questionOptions), KnowledgeOrigin.MULTICHOICESELECTION, false);
                     break;
@@ -110,6 +115,7 @@ public class YMLFileModelLoader extends FileModelLoader {
     }
 
     private void setGoals(YMLNode root, KnowledgeBase knowledgeBase) {
+        log.info("Put the goal knowledge items into the knowledge base");
         List<YMLNode> goals = root.getNodeList("goals").getNodes();
 
         for (YMLNode goal : goals) {
@@ -122,6 +128,7 @@ public class YMLFileModelLoader extends FileModelLoader {
     }
 
     private void setRules(YMLNode root, KnowledgeBase knowledgeBase, RuleBase ruleBase) {
+        log.info("Put the rules into the rule base and add missing knowledge items to the knowledge base");
         List<YMLNode> rules = root.getNodeList("rules").getNodes();
 
         for (YMLNode rule : rules) {
@@ -164,9 +171,9 @@ public class YMLFileModelLoader extends FileModelLoader {
             List<YMLNode> conditions = rule.getNodeList("conditions").getNodes();
             for (YMLNode condition : conditions) {
                 Condition newCondition = null;
-                String conditionName = condition.getNode("condition").getString("name");
-                String conditionType = condition.getNode("condition").getString("type");
-                String conditionValue = condition.getNode("condition").getString("value");
+                String conditionName = condition.getString("name");
+                String conditionType = condition.getString("type");
+                String conditionValue = condition.getString("value");
 
                 switch (conditionType) {
                     case "equals":
