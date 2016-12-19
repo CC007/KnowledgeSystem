@@ -7,13 +7,15 @@ package com.github.cc007.knowledgesystem.model.knowledge.items;
 
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author Rik Schaaf aka CC007 (http://coolcat007.nl/)
  */
-public class MultipleChoiceSelectionItem extends KnowledgeItem<List<Integer>> {
+public class MultipleChoiceSelectionItem extends KnowledgeItem<Set<Integer>> {
 
     protected final List<String> options;
 
@@ -22,7 +24,7 @@ public class MultipleChoiceSelectionItem extends KnowledgeItem<List<Integer>> {
         this.options = options;
     }
 
-    public MultipleChoiceSelectionItem(String name, List<String> options, List<Integer> indexes, KnowledgeOrigin origin, boolean goal) {
+    public MultipleChoiceSelectionItem(String name, List<String> options, Set<Integer> indexes, KnowledgeOrigin origin, boolean goal) {
         super(name, indexes, origin, goal);
         this.options = options;
     }
@@ -51,15 +53,15 @@ public class MultipleChoiceSelectionItem extends KnowledgeItem<List<Integer>> {
         return options;
     }
 
-    public List<String> getSelectedValues() {
-        List<String> selectedValues = new ArrayList<>();
+    public Set<String> getSelectedValues() {
+        Set<String> selectedValues = new HashSet<>();
         for (Integer index : value) {
             selectedValues.add(options.get(index));
         }
         return selectedValues;
     }
 
-    public List<Integer> getSelectedIndices() {
+    public Set<Integer> getSelectedIndices() {
         return value;
     }
 
@@ -77,6 +79,14 @@ public class MultipleChoiceSelectionItem extends KnowledgeItem<List<Integer>> {
             indices.add(options.indexOf(value));
         }
         return indices;
+    }
+
+    public String getValue(Integer index) {
+        return options.get(index);
+    }
+
+    public Integer getIndex(String value) {
+        return options.indexOf(value);
     }
 
 }
