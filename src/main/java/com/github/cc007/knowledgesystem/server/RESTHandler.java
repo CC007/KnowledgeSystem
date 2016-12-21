@@ -37,13 +37,13 @@ public class RESTHandler implements Runnable {
     public void run() {
         Gson gson = new Gson();
         JsonParser parser = new JsonParser();
-        options("/", (request, response) -> {
+        options("/rest", (request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Method", "POST");
             response.header("Access-Control-Allow-Headers", "Content-Type");
             return "";
         });
-        post("/", "application/json", (request, response) -> {
+        post("/rest", "application/json", (request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Method", "POST");
             response.header("Access-Control-Allow-Headers", "Content-Type");
