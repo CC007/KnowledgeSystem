@@ -10,6 +10,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import com.github.cc007.knowledgesystem.model.rules.Rule;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
 import com.github.cc007.knowledgesystem.model.rules.conditions.Condition;
+import com.github.cc007.knowledgesystem.model.rules.conditions.EqualityCondition;
 import com.github.cc007.knowledgesystem.view.View;
 import java.util.logging.Logger;
 
@@ -33,11 +34,28 @@ public class InferenceSystem {
         Logger.getLogger(InferenceSystem.class.getName()).info("[ctrl] Starting inference...");
         boolean goalFound = false;
         KnowledgeItem goalItem = null;
+
+        System.out.println("RB:");
+        int ruleCnt = 1;
+        for (Rule rule : ruleBase) {
+            System.out.println("rule " + ruleCnt);
+            System.out.println(" conditions:");
+            for (Condition condition : rule.getConditions()) {
+                System.out.println(" - " + condition.getKnowledgeItemName());
+                if (condition instanceof EqualityCondition) {
+                    EqualityCondition eqCondition = (EqualityCondition) condition;
+                    System.out.println("   " + eqCondition.getValue() + " (" + eqCondition.isEqual() + ")");
+                }
+            }
+            System.out.println(" concequence: " + rule.getConsequence().getName() + " (" + rule.getConsequence().getType() + "): " + rule.getConsequence().getValue());
+            ruleCnt++;
+        }
         int i = 0;
         while (!goalFound) {
             int ruleCounter = 0;
+            System.out.println("KB:");
             for (KnowledgeItem item : knowledgeBase) {
-                System.out.println(item.getName()+ " ("+item.getType() + "): " + item.getValue());
+                System.out.println(item.getName() + " (" + item.getType() + "): " + item.getValue());
             }
             for (; ruleCounter < ruleBase.size(); i = (i + 1) % ruleBase.size()) {
                 Logger.getLogger(InferenceSystem.class.getName()).info("[ctrl]  Checking conditions for rule " + i);

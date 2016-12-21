@@ -42,4 +42,12 @@ public class EqualityCondition<T> extends Condition {
         return !item.getValue().equals(value);
     }
 
+    public T getValue() {
+        return value;
+    }
+
+    public boolean isEqual() {
+        return equal;
+    }
+
 }

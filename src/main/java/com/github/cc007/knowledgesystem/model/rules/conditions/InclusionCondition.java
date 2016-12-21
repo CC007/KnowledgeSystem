@@ -61,4 +61,14 @@ public class InclusionCondition extends Condition {
         return (MultipleChoiceSelectionItem) knowledgeBase.getItem(knowledgeItemName);
 
     }
+
+    public boolean isIncluded() {
+        return included;
+    }
+
+    public int getValue() {
+        return value;
+    }
+    
+    
 }

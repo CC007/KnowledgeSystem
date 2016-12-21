@@ -47,7 +47,7 @@ public class YMLFileModelLoader extends FileModelLoader {
             log.info("open YAML file and get its root node");
             YMLFile knowledge = new YMLFile(fileName);
             YMLNode root = knowledge.getRootNode();
-                        
+
             // Read the different options list from the file
             // Store these in the HashMap
             setLists(root);
@@ -173,8 +173,13 @@ public class YMLFileModelLoader extends FileModelLoader {
                 Condition newCondition = null;
                 String conditionName = condition.getString("name");
                 String conditionType = condition.getString("type");
-                String conditionValue = condition.getString("value");
-
+                Object conditionValue = condition.getString("value");
+                KnowledgeItem item = knowledgeBase.getItem(conditionName);
+                if (item instanceof ChoiceSelectionItem) {
+                    conditionValue = ((ChoiceSelectionItem) item).getIndex((String) conditionValue);
+                } else if (item instanceof MultipleChoiceSelectionItem) {
+                    conditionValue = ((MultipleChoiceSelectionItem) item).getIndices((List<String>) conditionValue);
+                }
                 switch (conditionType) {
                     case "equals":
                         newCondition = new EqualityCondition(conditionName, conditionValue);
@@ -183,10 +188,10 @@ public class YMLFileModelLoader extends FileModelLoader {
                         newCondition = new EqualityCondition(conditionName, conditionValue, false);
                         break;
                     case "contains":
-                        newCondition = new InclusionCondition(conditionName, knowledgeBase, conditionValue);
+                        newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue);
                         break;
                     case "notContains":
-                        newCondition = new InclusionCondition(conditionName, knowledgeBase, conditionValue, false);
+                        newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue, false);
                         break;
                     default:
                         throw new UnsupportedOperationException("Value conditions not implemented yet");

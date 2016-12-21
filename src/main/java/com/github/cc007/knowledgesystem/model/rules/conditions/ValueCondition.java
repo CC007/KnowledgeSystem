@@ -51,4 +51,13 @@ public class ValueCondition<T extends Comparable<T>> extends Condition {
                 return false;
         }
     }
+
+    public T getValue() {
+        return value;
+    }
+
+    public ValueOperator getOperator() {
+        return operator;
+    }
+    
 }
