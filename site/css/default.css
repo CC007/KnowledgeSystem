@@ -105,6 +105,8 @@ a {
 	margin-left: 5%;
 	margin-right: 5%;
 	margin-top: 20px;
+	display: flex;
+	align-items: stretch;
 }
 
 h1 {
@@ -122,14 +124,12 @@ h3 {
 
 #userDialogue {
 	width: 75%;
-	float: right;
 	padding: 10px;
 }
 
 #tipBox {
 	background-color: #f2f2f2;
 	width: 25%;
-	float: left;
 	min-height: 50px;
 	padding: 10px;
 }
