@@ -28,13 +28,13 @@ public class EqualityCondition<T> extends Condition {
     }
 
     @Override
-    public boolean check(KnowledgeBase knowledgeBase) {
+    public Boolean check(KnowledgeBase knowledgeBase) {
         KnowledgeItem item = knowledgeBase.getItem(knowledgeItemName);
         if (item == null) {
-            return false;
+            return null;
         }
         if (!item.isValueSet()) {
-            return !equal;
+            return null;
         }
         if (equal) {
             return item.getValue().equals(value);

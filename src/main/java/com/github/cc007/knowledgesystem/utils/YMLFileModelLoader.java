@@ -159,13 +159,7 @@ public class YMLFileModelLoader extends FileModelLoader {
 
             // Make the consequence the base of the rule and add the condition that the consequence isn't true yet
             RuleBuilder newRule = new RuleBuilder(consequence);
-            switch (consequenceType) {
-                case "boolean":
-                    newRule.addCondition(new EqualityCondition(consequenceName, rule.getNode("consequence").getBoolean("value"), false));
-                    break;
-                //TODO other types
-            }
-
+            
             // A rule can have multiple conditions
             // We add each condition to the existing rule
             List<YMLNode> conditions = rule.getNodeList("conditions").getNodes();
