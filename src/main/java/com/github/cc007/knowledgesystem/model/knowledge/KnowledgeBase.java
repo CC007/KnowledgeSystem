@@ -9,6 +9,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  *
@@ -50,5 +51,7 @@ public class KnowledgeBase implements Iterable<KnowledgeItem>{
         return items.iterator();
     }
 
-    
+    public Stream<KnowledgeItem> stream(){
+        return items.stream();
+    }
 }

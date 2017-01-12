@@ -8,6 +8,7 @@ package com.github.cc007.knowledgesystem.model.rules;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  *
@@ -27,6 +28,10 @@ public class RuleBase implements Iterable<Rule> {
 
     public Iterator<Rule> iterator() {
         return rules.iterator();
+    }
+
+    public Stream<Rule> stream() {
+        return rules.stream();
     }
 
     public int size() {

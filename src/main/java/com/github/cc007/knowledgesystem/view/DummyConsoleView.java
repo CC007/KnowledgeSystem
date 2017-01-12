@@ -25,14 +25,14 @@ public class DummyConsoleView implements View {
     public <T> KnowledgeItem<T> inquire(KnowledgeItem<T> item) {
         Scanner in = new Scanner(System.in);
         KnowledgeItem newItem;
-        Logger.getLogger(DummyConsoleView.class.getName()).info("[view] Find out which question to ask");
+        System.out.println("[view] Find out which question to ask");
         System.out.println(item.getQuestion());
         if (item.hasTip()) {
             System.out.println(item.getTip());
         }
         switch (item.getOrigin()) {
             case CHOICESELECTION:
-                Logger.getLogger(DummyConsoleView.class.getName()).info("[view]  Choice selection question selected");
+                System.out.println("[view]  Choice selection question selected");
                 ChoiceSelectionItem csi = (ChoiceSelectionItem) item;
                 int i = 0;
                 for (String option : csi.getOptions()) {
@@ -45,7 +45,7 @@ public class DummyConsoleView implements View {
                 newItem = csi;
                 return newItem;
             case TEXTINPUT:
-                Logger.getLogger(DummyConsoleView.class.getName()).info("[view]  Text input question selected");
+                System.out.println("[view]  Text input question selected");
                 StringItem si = (StringItem) item;
                 System.out.println();
                 String textValue = in.next();
@@ -53,7 +53,7 @@ public class DummyConsoleView implements View {
                 newItem = si;
                 return newItem;
             case INTEGERINPUT:
-                Logger.getLogger(DummyConsoleView.class.getName()).info("[view]  Value input question selected ");
+                System.out.println("[view]  Value input question selected ");
                 if (item instanceof BooleanItem) {
                     System.out.println("(boolean)");
                     BooleanItem bi = (BooleanItem) item;

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class ServerProgram {
 
     public static void main(String[] args) {
-        Logger.getLogger(Session.class.getName()).info("set yml file model loader as current loader");
+        System.out.println("set yml file model loader as current loader");
         //ModelLoader.setCurrentLoader(new YMLFileModelLoader("kennis.yml"));
         ModelLoader.setCurrentLoader(new HardCodedModelLoader());
         Thread t = new Thread(new RESTHandler());

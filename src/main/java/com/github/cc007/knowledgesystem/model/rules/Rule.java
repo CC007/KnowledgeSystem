@@ -34,39 +34,39 @@ public class Rule {
     }
 
     private boolean checkWithInput(KnowledgeBase knowledgeBase) {
-        Logger.getLogger(Rule.class.getName()).info("Checking " + consequence.getName() + ":");
+        System.out.println("Checking " + consequence.getName() + ":");
         if (knowledgeBase.getItem(consequence.getName()).isValueSet()) {
-        Logger.getLogger(Rule.class.getName()).info("x Concequence already set");
+        System.out.println("x Concequence already set");
             return false;
         }
-        Logger.getLogger(Rule.class.getName()).info("- Concequence not yet set");
-        Logger.getLogger(Rule.class.getName()).info("- Checking conditions");
+        System.out.println("- Concequence not yet set");
+        System.out.println("- Checking conditions");
         for (Condition condition : conditions) {
-            Logger.getLogger(Rule.class.getName()).info(" - check value of " + condition.getKnowledgeItemName());
+            System.out.println(" - check value of " + condition.getKnowledgeItemName());
             Boolean check = condition.check(knowledgeBase);
             if (check != null && check) {
-                Logger.getLogger(Rule.class.getName()).info("  + Condition met");
+                System.out.println("  + Condition met");
                 continue;
             }
-            Logger.getLogger(Rule.class.getName()).info("  - Condition not met");
-            Logger.getLogger(Rule.class.getName()).info(" - Check if value is set and its (expected) origin");
+            System.out.println("  - Condition not met");
+            System.out.println(" - Check if value is set and its (expected) origin");
             if (check != null) {
-                Logger.getLogger(Rule.class.getName()).info("  x Value already set");
+                System.out.println("  x Value already set");
                 return false;
             }
             KnowledgeItem item = knowledgeBase.getItem(condition.getKnowledgeItemName());
             if (item == null) {
-                Logger.getLogger(Rule.class.getName()).info(" x Item not available");
+                System.out.println(" x Item not available");
                 return false;
             }
-            Logger.getLogger(Rule.class.getName()).info("  - Value not set");
+            System.out.println("  - Value not set");
             switch (item.getOrigin()) {
                 case GIVEN:
                 case INFERRED:
-                    Logger.getLogger(Rule.class.getName()).info("  x Given or inferred value origin expected");
+                    System.out.println("  x Given or inferred value origin expected");
                     return false;
                 default:
-                    Logger.getLogger(Rule.class.getName()).info("  + Correct value origin expected");
+                    System.out.println("  + Correct value origin expected");
                     continue;
 
             }

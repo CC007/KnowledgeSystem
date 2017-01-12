@@ -38,8 +38,8 @@ public class HardCodedModelLoader extends ModelLoader {
         knowledgeBase.setItem(new BooleanItem("wetten", KnowledgeOrigin.INFERRED, false));
         knowledgeBase.setItem(new ChoiceSelectionItem("voorzieningen", voorzieningenList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Selecteer uit de onderstaande lijst wijk voorzieningen waarvan u denkt ondersteuning te kunnen gebruiken."));
         knowledgeBase.setItem(new ChoiceSelectionItem("algemeenGebruik", algemeenGebruikList, KnowledgeOrigin.CHOICESELECTION, false).setQuestion("Selecteer uit de onderstaande lijst van hulpmiddelen, welke u denkt te kunnen gebruiken."));
+        
         knowledgeBase.setItem(new BooleanItem("WMO", KnowledgeOrigin.INFERRED, true).setGoalResponse("U komt waarschijnlijk in aanmerking voor compensatie door de WMO. Neem contact op met de WMO consulent voor meer informatie."));
-
         knowledgeBase.setItem(new BooleanItem("UWV", KnowledgeOrigin.INFERRED, true).setGoalResponse("Ga naar UWV voor een compensatie."));
         knowledgeBase.setItem(new BooleanItem("leerlingwet", KnowledgeOrigin.INFERRED, true).setGoalResponse("Ga naar leerlingenwet voor een compensatie."));
         knowledgeBase.setItem(new BooleanItem("WLZ", KnowledgeOrigin.INFERRED, true).setGoalResponse("Ga naar WLZ voor een compensatie."));
