@@ -1,9 +1,9 @@
 knowledge:
   lists:
   - name: jaNeeList
-  	options: 
-  		- Ja
-  		- Nee
+    options: 
+      - Ja
+      - Nee
   - name: wijkList
     options:
       - Beijum
