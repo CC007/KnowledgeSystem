@@ -35,6 +35,7 @@ public class InferenceSystem {
         boolean goalFound = false;
         KnowledgeItem goalItem = null;
 
+        // print the rule base for debugging purposes
         System.out.println("RB:");
         int ruleCnt = 1;
         for (Rule rule : ruleBase) {
@@ -50,13 +51,19 @@ public class InferenceSystem {
             System.out.println(" concequence: " + rule.getConsequence().getName() + " (" + rule.getConsequence().getType() + "): " + rule.getConsequence().getValue());
             ruleCnt++;
         }
+        
+        //continue looping until the goal is found
         int i = 0;
         while (!goalFound) {
             int ruleCounter = 0;
+            
+            // print the knowledge base for debugging purposes
             System.out.println("KB:");
             for (KnowledgeItem item : knowledgeBase) {
                 System.out.println(item.getName() + " (" + item.getType() + "): " + item.getValue());
             }
+            
+            // loop using forward chaining to see if rules can be applied without user input (continue looping until none of the rules can be applied anymore)
             for (; ruleCounter < ruleBase.size(); i = (i + 1) % ruleBase.size()) {
                 Logger.getLogger(InferenceSystem.class.getName()).info("[ctrl]  Checking conditions for rule " + i);
                 Rule rule = ruleBase.getRule(i);
@@ -75,9 +82,13 @@ public class InferenceSystem {
                     }
                 }
             }
+            
+            // break out of the loop when the goal is found
             if (goalFound) {
                 break;
             }
+            
+            // loop using forward chaining to see if rules can be applied with user input (loop once)
             Logger.getLogger(InferenceSystem.class.getName()).info("[ctrl] User input required");
             boolean change = false;
             for (Rule rule : ruleBase) {

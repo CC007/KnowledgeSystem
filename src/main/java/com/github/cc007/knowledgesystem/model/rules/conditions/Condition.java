@@ -19,7 +19,7 @@ public abstract class Condition {
         this.knowledgeItemName = knowledgeItemName;
     }
 
-    public abstract boolean check(KnowledgeBase knowledgeBase);
+    public abstract Boolean check(KnowledgeBase knowledgeBase);
 
     public String getKnowledgeItemName() {
         return knowledgeItemName;
