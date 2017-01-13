@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
 
@@ -37,14 +38,21 @@ import org.yaml.snakeyaml.Yaml;
 public class YMLFile {
 
     Map<String, Object> root;
-
+    Logger log = Logger.getLogger(YMLFile.class.getName());
     public YMLFile(String filename) throws IOException {
         String result;
+        log.info("get class loader");
         ClassLoader classLoader = getClass().getClassLoader();
+        log.info("get input stream of file");
         InputStream is = classLoader.getResourceAsStream(filename);
+        log.info("get string from input stream");
         result = IOUtils.toString(is);
+        log.info("Result: " + result);
+        log.info("close input stream");
         is.close();
+        log.info("set root node from the string");
         this.root = (Map) (new Yaml().load(result));
+        log.info("done loading");
     }
 
     public YMLNode getRootNode() {

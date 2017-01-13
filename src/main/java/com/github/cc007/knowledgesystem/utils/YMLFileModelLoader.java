@@ -9,6 +9,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
 import com.github.cc007.knowledgesystem.model.knowledge.items.BooleanItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.ChoiceSelectionItem;
+import com.github.cc007.knowledgesystem.model.knowledge.items.IntegerItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.MultipleChoiceSelectionItem;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -44,8 +44,9 @@ public class YMLFileModelLoader extends FileModelLoader {
 
     public void load(RuleBase ruleBase, KnowledgeBase knowledgeBase) {
         try {
-            log.info("open YAML file and get its root node");
+            log.info("Open YAML file");
             YMLFile knowledge = new YMLFile(fileName);
+            log.info("Get the YAML root node");
             YMLNode root = knowledge.getRootNode();
 
             // Read the different options list from the file
@@ -65,7 +66,7 @@ public class YMLFileModelLoader extends FileModelLoader {
             // Add previously unknown knowledge items to the KB
             setRules(root, knowledgeBase, ruleBase);
 
-        } catch (IOException | NullPointerException ex) {
+        } catch (IOException | NullPointerException | UnsupportedOperationException ex) {
             Logger.getLogger(YMLFileModelLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -128,9 +129,7 @@ public class YMLFileModelLoader extends FileModelLoader {
     }
 
     private void setRules(YMLNode root, KnowledgeBase knowledgeBase, RuleBase ruleBase) {
-        log.info("Put the rules into the rule base and add missing knowledge items to the knowledge base");
         List<YMLNode> rules = root.getNodeList("rules").getNodes();
-
         for (YMLNode rule : rules) {
             // We first retrieve the knowledge item
             String consequenceName = rule.getNode("consequence").getString("name");
@@ -140,12 +139,16 @@ public class YMLFileModelLoader extends FileModelLoader {
                 switch (consequenceType) {
                     case "boolean":
                         knowledgeItem = new BooleanItem(consequenceName, KnowledgeOrigin.INFERRED, false);
-                        knowledgeBase.setItem(knowledgeItem);
+                        break;
+                    case "integer":
+                        knowledgeItem = new IntegerItem(consequenceName, KnowledgeOrigin.INFERRED, false);
                         break;
                     //TODO other types
                     default:
                         throw new UnsupportedOperationException("Only boolean supported up until now");
+
                 }
+                knowledgeBase.setItem(knowledgeItem);
             }
 
             // Then we create a copy of the item to be used as consequence and set its value
@@ -159,7 +162,7 @@ public class YMLFileModelLoader extends FileModelLoader {
 
             // Make the consequence the base of the rule and add the condition that the consequence isn't true yet
             RuleBuilder newRule = new RuleBuilder(consequence);
-            
+
             // A rule can have multiple conditions
             // We add each condition to the existing rule
             List<YMLNode> conditions = rule.getNodeList("conditions").getNodes();
