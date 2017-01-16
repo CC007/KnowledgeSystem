@@ -33,6 +33,7 @@ public class ValueCondition<T extends Comparable<T>> extends Condition {
         if (!item.isValueSet()) {
             return null;
         }
+        System.out.println("Values: " + value + " (expected), " + item.getValue() + " (actual)");
         switch (operator) {
             case EQUAL:
                 return item.getValue().equals(value);

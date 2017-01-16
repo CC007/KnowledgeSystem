@@ -61,7 +61,7 @@ public class InferenceSystem {
                 break;
             }
 
-            forwardChainingWithInput();
+            backwardChainingWithInput();
         }
         view.showResult(goalItem, knowledgeBase);
     }
@@ -95,8 +95,8 @@ public class InferenceSystem {
         // loop using forward chaining to see if rules can be applied without user input (continue looping until none of the rules can be applied anymore)
         int checkedRuleCounter = 0;
         for (; checkedRuleCounter < ruleBase.size(); currentCounter = (currentCounter + 1) % ruleBase.size()) {
-            System.out.println("[ctrl]  Checking conditions for rule " + currentCounter);
             Rule rule = ruleBase.getRule(currentCounter);
+            System.out.println("[ctrl]  Checking conditions for rule " + currentCounter + " (" + rule.getConsequence().getName() +")");
             if (rule.checkConditions(knowledgeBase, false)) {
                 checkedRuleCounter = 0;
                 KnowledgeItem item = rule.getConsequence();

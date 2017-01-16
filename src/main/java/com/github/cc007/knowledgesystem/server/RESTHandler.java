@@ -60,38 +60,35 @@ public class RESTHandler implements Runnable {
                         private final boolean stopped = true;
                     };
                 } else if (data.getAsJsonObject().has("id")) {
-                    // inquiry response
-                    ResponseMessage respMsg = new Gson().fromJson(data, ResponseMessage.class);
-                    id = respMsg.getId();
-                    view = views.get(id);
-                    String name = respMsg.getName();
-                    Object value = respMsg.getValue();
-                    if (view.getKnowledge().getName().equals(name)) {
-                        try {
-                            switch (respMsg.getType()) {
-                                case "index":
-                                    view.getKnowledge().setValue(((ChoiceSelectionItem) view.getKnowledge()).getIndex((String) value));
-                                    break;
-                                case "indexlist":
-                                    view.getKnowledge().setValue(((MultipleChoiceSelectionItem) view.getKnowledge()).getIndices((List<String>) value));
-                                    break;
-                                case "integer":
-                                    view.getKnowledge().setValue(Integer.parseInt((String) value));
-                                    break;
-                                case "decimal":
-                                    view.getKnowledge().setValue(Double.parseDouble((String) value));
-                                    break;
-                                case "boolean":
-                                    view.getKnowledge().setValue(Boolean.parseBoolean((String) value));
-                                    break;
-                                default:
-                                    view.getKnowledge().setValue(value);
-                            }
-                        } catch (Exception e) {
-                            Logger.getLogger(RESTHandler.class.getName()).log(Level.SEVERE, null, e);
+                    if (!data.getAsJsonObject().has("back")) {
+                        // inquiry response
+                        ResponseMessage respMsg = new Gson().fromJson(data, ResponseMessage.class);
+                        id = respMsg.getId();
+                        view = views.get(id);
+                        setNewKnowledge(view, respMsg);
+                    } else {
+                        BackMessage respMsg = new Gson().fromJson(data, BackMessage.class);
+                        int oldId = respMsg.getId();
+                        RESTView oldView = views.get(oldId);
+
+                        // get the list of previous choises and remove the last choice
+                        List<ResponseMessage> choices = oldView.getChoices();
+                        choices.remove(choices.get(choices.size() - 1));
+
+                        // start a new session
+                        id = getNewId();
+                        Session newSession = new Session(this);
+                        Thread t = new Thread(newSession);
+                        t.start();
+                        view = newSession.getView();
+                        views.put(id, view);
+
+                        // recreate the choices from the choice list
+                        for (ResponseMessage choice : choices) {
+                            waitForKnowledge(view);
+                            setNewKnowledge(view, choice);
                         }
                     }
-                    view.setNewRestHandlerData(true);
                 } else {
                     // first visit
                     id = getNewId();
@@ -108,19 +105,8 @@ public class RESTHandler implements Runnable {
                 };
             }
 
-            //wait for next inquiry or result
-            synchronized (view.knowledgeSystemLock) {
-                while (!view.hasNewKnowledgeSystemData()) {
-                    try {
-                        view.knowledgeSystemLock.wait();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(RESTHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
+            waitForKnowledge(view);
 
-            //prevent sending the same inquiry twice
-            view.setNewKnowledgeSystemData(false);
             response.header("Content-Type", "application/json; charset=UTF-8");
             Map<String, Object> retVal = new HashMap<>();
             retVal.put("id", id);
@@ -137,6 +123,53 @@ public class RESTHandler implements Runnable {
             }
             return retVal;
         }, gson::toJson);
+    }
+
+    private void setNewKnowledge(RESTView view, ResponseMessage respMsg) {
+        String name = respMsg.getName();
+        Object value = respMsg.getValue();
+        if (view.getKnowledge().getName().equals(name)) {
+            try {
+                switch (respMsg.getType()) {
+                    case "index":
+                        view.getKnowledge().setValue(((ChoiceSelectionItem) view.getKnowledge()).getIndex((String) value));
+                        break;
+                    case "indexlist":
+                        view.getKnowledge().setValue(((MultipleChoiceSelectionItem) view.getKnowledge()).getIndices((List<String>) value));
+                        break;
+                    case "integer":
+                        view.getKnowledge().setValue(Integer.parseInt((String) value));
+                        break;
+                    case "decimal":
+                        view.getKnowledge().setValue(Double.parseDouble((String) value));
+                        break;
+                    case "boolean":
+                        view.getKnowledge().setValue(Boolean.parseBoolean((String) value));
+                        break;
+                    default:
+                        view.getKnowledge().setValue(value);
+                }
+            } catch (Exception e) {
+                Logger.getLogger(RESTHandler.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        view.setNewRestHandlerData(true);
+    }
+
+    private void waitForKnowledge(RESTView view) {
+        //wait for next inquiry or result
+        synchronized (view.knowledgeSystemLock) {
+            while (!view.hasNewKnowledgeSystemData()) {
+                try {
+                    view.knowledgeSystemLock.wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(RESTHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        //prevent sending the same inquiry twice
+        view.setNewKnowledgeSystemData(false);
     }
 
     public int getNewId() {

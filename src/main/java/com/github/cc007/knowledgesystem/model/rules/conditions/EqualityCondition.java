@@ -7,6 +7,7 @@ package com.github.cc007.knowledgesystem.model.rules.conditions;
 
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,6 +37,7 @@ public class EqualityCondition<T> extends Condition {
         if (!item.isValueSet()) {
             return null;
         }
+        System.out.println("Values: " + value + " (expected), " + item.getValue() + " (actual)");
         if (equal) {
             return item.getValue().equals(value);
         }

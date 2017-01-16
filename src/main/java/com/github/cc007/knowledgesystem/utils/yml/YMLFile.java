@@ -41,16 +41,10 @@ public class YMLFile {
     Logger log = Logger.getLogger(YMLFile.class.getName());
     public YMLFile(String filename) throws IOException {
         String result;
-        log.info("get class loader");
         ClassLoader classLoader = getClass().getClassLoader();
-        log.info("get input stream of file");
         InputStream is = classLoader.getResourceAsStream(filename);
-        log.info("get string from input stream");
         result = IOUtils.toString(is);
-        log.info("Result: " + result);
-        log.info("close input stream");
         is.close();
-        log.info("set root node from the string");
         this.root = (Map) (new Yaml().load(result));
         log.info("done loading");
     }

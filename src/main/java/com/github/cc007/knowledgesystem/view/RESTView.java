@@ -8,6 +8,8 @@ package com.github.cc007.knowledgesystem.view;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import com.github.cc007.knowledgesystem.server.RESTHandler;
+import com.github.cc007.knowledgesystem.server.ResponseMessage;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +23,7 @@ public class RESTView implements View {
     private volatile KnowledgeItem knowledge;
     private volatile KnowledgeBase context;
     private volatile boolean goalReached;
+    private List<ResponseMessage> choices;
     public final Object knowledgeSystemLock;
     private volatile boolean newKnowledgeSystemData;
     public final Object restHandlerLock;
@@ -103,6 +106,14 @@ public class RESTView implements View {
 
     public KnowledgeBase getContext() {
         return context;
+    }
+
+    public List<ResponseMessage> getChoices() {
+        return choices;
+    }
+    
+    public void addChoice (ResponseMessage choice){
+        this.choices.add(choice);
     }
 
 }
