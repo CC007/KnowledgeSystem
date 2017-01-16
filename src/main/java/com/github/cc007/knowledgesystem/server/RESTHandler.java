@@ -55,25 +55,33 @@ public class RESTHandler implements Runnable {
             if (data != null && data.isJsonObject()) {
                 if (data.getAsJsonObject().has("stop")) {
                     // stop the server
+                    System.out.println("[rest] new stop request");
                     stop();
                     return new Object() {
                         private final boolean stopped = true;
                     };
                 } else if (data.getAsJsonObject().has("id")) {
                     if (!data.getAsJsonObject().has("back")) {
+                        System.out.println("[rest] new response request");
                         // inquiry response
                         ResponseMessage respMsg = new Gson().fromJson(data, ResponseMessage.class);
                         id = respMsg.getId();
                         view = views.get(id);
                         setNewKnowledge(view, respMsg);
                     } else {
+                        System.out.println("[rest] new previous question request");
                         BackMessage respMsg = new Gson().fromJson(data, BackMessage.class);
                         int oldId = respMsg.getId();
                         RESTView oldView = views.get(oldId);
-
+                        oldView.setStopped(true);
+                        System.out.println("[rest] old id:" + oldId);
+                        oldView.setNewRestHandlerData(true);
+                        
                         // get the list of previous choises and remove the last choice
                         List<ResponseMessage> choices = oldView.getChoices();
-                        choices.remove(choices.get(choices.size() - 1));
+                        if (choices.size() > 0) {
+                            choices.remove(choices.get(choices.size() - 1));
+                        }
 
                         // start a new session
                         id = getNewId();
@@ -82,6 +90,7 @@ public class RESTHandler implements Runnable {
                         t.start();
                         view = newSession.getView();
                         views.put(id, view);
+                        System.out.println("[rest] new id:" + oldId);
 
                         // recreate the choices from the choice list
                         for (ResponseMessage choice : choices) {
@@ -90,6 +99,7 @@ public class RESTHandler implements Runnable {
                         }
                     }
                 } else {
+                    System.out.println("[rest] new session request");
                     // first visit
                     id = getNewId();
                     Session newSession = new Session(this);
@@ -126,6 +136,7 @@ public class RESTHandler implements Runnable {
     }
 
     private void setNewKnowledge(RESTView view, ResponseMessage respMsg) {
+        System.out.println("[rest]  set new rest handler data");
         String name = respMsg.getName();
         Object value = respMsg.getValue();
         if (view.getKnowledge().getName().equals(name)) {
@@ -153,6 +164,8 @@ public class RESTHandler implements Runnable {
                 Logger.getLogger(RESTHandler.class.getName()).log(Level.SEVERE, null, e);
             }
         }
+        view.addChoice(respMsg);
+        System.out.println("[rest]  Signal that new rest hanlder data is made available");
         view.setNewRestHandlerData(true);
     }
 
