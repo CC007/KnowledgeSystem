@@ -17,9 +17,13 @@ function init() {
         var request = new Object();
         if (data["id"] !== undefined) {
             request.id = data["id"];
-            request.name = data["name"];
-            request.type = data["type"];
-            request.value = data["value"];
+            if(data["submit"] == "Vorige"){
+                request.back = true;
+            }else{
+                request.name = data["name"];
+                request.type = data["type"];
+                request.value = data["value"];
+            }
         }
         console.log("Request: " + JSON.stringify(request));
         // construct an HTTP request
@@ -65,7 +69,8 @@ function setQuestion(response) {
 
     }
     document.getElementById("question").appendChild(document.createElement("br"));
-    setInput("submit", "Submit", "Volgende vraag");
+    setInput("submit", "Submit", "Vorige");
+    setInput("submit", "Submit", "Volgende");
     if (response.knowledge.tip) {
         document.getElementById("tipContent").appendChild(document.createTextNode(response.knowledge.tip));
     }
@@ -93,6 +98,7 @@ function clearNode() {
         tip.removeChild(tip.firstChild);
     }
 }
+
 function setInput(type, name, value = "") {
     var node = document.createElement("input");
     node.setAttribute("type", type);
