@@ -46,6 +46,7 @@ public class InclusionCondition extends Condition {
         if (!item.isValueSet()) {
             return null;
         }
+        System.out.println("Values: " + index + " (expected), " + item.getValue() + " (actual)");
         if (included) {
             return item.getSelectedIndices().contains(index);
         } else {

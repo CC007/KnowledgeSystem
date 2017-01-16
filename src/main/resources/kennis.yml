@@ -160,14 +160,14 @@ rules:
 - conditions:
   - name: probleemGebied
     type: equals
-    value: mobiliteitsproblemen
+    value: Mobiliteitsproblemen
   consequence:
     name: mobiliteitsprobleem
     type: boolean
     value: true
 - conditions:
   - name: mobiliteitsprobleem
-    type: boolean
+    type: equals
     value: true
   - name: schaalProbleem
     type: equals
@@ -178,7 +178,7 @@ rules:
     value: 1
 - conditions:
   - name: mobiliteitsprobleem
-    type: boolean
+    type: equals
     value: true
   - name: schaalProbleem
     type: equals
@@ -189,7 +189,7 @@ rules:
     value: 2
 - conditions:
   - name: mobiliteitsprobleem
-    type: boolean
+    type: equals
     value: true
   - name: schaalProbleem
     type: equals
@@ -202,6 +202,9 @@ rules:
 
 # Moet de WMO het oplossen?
 - conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
   - name: baan
     type: equals
     value: Ja
@@ -211,6 +214,9 @@ rules:
     value: true
 
 - conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
   - name: leerling
     type: equals
     value: Ja
@@ -220,24 +226,33 @@ rules:
     value: true
 
 - conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
   - name: lzIndicatie
     type: equals
-    value: Ja
+    value: Ja, ik heb een negatieve beschikking ontvangen.
   consequence:
     name: WLZ
     type: boolean
     value: true
 
 - conditions:
-  - name: zorgverzekering
+  - name: mobiliteitsprobleem
     type: equals
-    value: Ja
+    value: true
+  - name: dekking
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
   consequence:
     name: zorgverzekering
     type: boolean
     value: true
 
 - conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
   - name: baan
     type: equals
     value: Nee
@@ -277,6 +292,7 @@ rules:
   - name: schaal
     type: less
     value: 3
+    #TODO fix buitenWens
   - name: buitenWens
     type: equals
     value: true
@@ -288,6 +304,7 @@ rules:
   - name: schaal
     type: less
     value: 4
+    #TODO fix buitenWens
   - name: buitenWens
     type: equals
     value: true
