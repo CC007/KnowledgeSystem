@@ -17,12 +17,12 @@ import com.github.cc007.knowledgesystem.model.rules.RuleBuilder;
 import com.github.cc007.knowledgesystem.model.rules.conditions.Condition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.EqualityCondition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.InclusionCondition;
+import com.github.cc007.knowledgesystem.model.rules.conditions.IsSetCondition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.ValueCondition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.ValueOperator;
 import com.github.cc007.knowledgesystem.utils.yml.YMLFile;
 import com.github.cc007.knowledgesystem.utils.yml.YMLNode;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,8 +184,11 @@ public class YMLFileModelLoader extends FileModelLoader {
                 if (item == null) {
                     throw new IllegalArgumentException("The knowledge item with the name '" + conditionName + "' isn't added to the knowledge base yet. Add a question, goal or rule consequence with this knowledge item's name");
                 }
-                Object conditionValue = getConditionValue(condition, item);
-                log.info("- " + conditionName + "(" + conditionType + "): " + conditionValue);
+                Object conditionValue = null;
+                if (conditionType.equals("isset")) {
+                    conditionValue = getConditionValue(condition, item);
+                    log.info("- " + conditionName + "(" + conditionType + "): " + conditionValue);
+                }
                 switch (conditionType) {
                     case "equals":
                         newCondition = new EqualityCondition(conditionName, conditionValue);
@@ -204,6 +207,9 @@ public class YMLFileModelLoader extends FileModelLoader {
                         break;
                     case "greater":
                         newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.GREATER);
+                        break;
+                    case "isset":
+                        newCondition = new IsSetCondition(conditionName);
                         break;
                     default:
                         throw new UnsupportedOperationException("Condition not implemented yet");
