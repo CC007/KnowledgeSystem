@@ -178,7 +178,7 @@ questions:
 
 - name: socialeKring
   type: choiceSelection
-  question: Heeft u mensen in uw sociale kring die u kunnen bij staan door bijvoorbeeld te taxi-en
+  question: Heeft u mensen in uw sociale kring die u kunnen bijstaan of geniet u professionele hulp?
   options: jaNeeList
   tip: ""
 
