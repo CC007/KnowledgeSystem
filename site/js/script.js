@@ -27,7 +27,15 @@ function handleSubmit(submitButtonName) {
         } else {
             request.name = data["name"];
             request.type = data["type"];
-            request.value = data["value"];
+            if (data["origin"] === "MULTICHOICESELECTION") {
+                var value = [];
+                for (var i = 0; data["value" + i] !== undefined; i++) {
+                    value[i] = data["value" + i];
+                }
+                request.value = value;
+            } else {
+                request.value = data["value"];
+            }
         }
     }
     console.log("Request: " + JSON.stringify(request));
@@ -67,6 +75,7 @@ function setQuestion(response) {
     setInput("hidden", "id", response.id);
     setInput("hidden", "type", response.knowledge.type);
     setInput("hidden", "name", response.knowledge.name);
+    setInput("hidden", "origin", response.knowledge.origin);
     if (response.knowledge.origin === "CHOICESELECTION") {
         for (var i = 0; i < response.knowledge.options.length; i++) {
             node = setInput("radio", "value", response.knowledge.options[i]);
@@ -84,11 +93,8 @@ function setQuestion(response) {
     }
     if (response.knowledge.origin === "MULTICHOICESELECTION") {
         for (var i = 0; i < response.knowledge.options.length; i++) {
-            node = setInput("checkbox", "value", response.knowledge.options[i]);
+            node = setInput("checkbox", "value" + i, response.knowledge.options[i]);
             node.setAttribute("id", response.knowledge.options[i]);
-            if (i == 0) {
-                node.setAttribute("checked", "checked");
-            }
             var label = document.createElement("label");
             label.appendChild(document.createTextNode(response.knowledge.options[i]));
             label.setAttribute("for", response.knowledge.options[i]);
@@ -117,7 +123,7 @@ function setResult(response) {
     }
     document.getElementById("question").appendChild(document.createElement("br"));
     node = setInput("submit", "Restart", "Terug naar begin");
-    node.setAttribute("onclick","handleSubmit(\"Restart\");")
+    node.setAttribute("onclick", "handleSubmit(\"Restart\");")
 }
 
 function clearNode() {

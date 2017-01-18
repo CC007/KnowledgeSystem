@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -146,7 +147,7 @@ public class RESTHandler implements Runnable {
                         view.getKnowledge().setValue(((ChoiceSelectionItem) view.getKnowledge()).getIndex((String) value));
                         break;
                     case "indexlist":
-                        view.getKnowledge().setValue(((MultipleChoiceSelectionItem) view.getKnowledge()).getIndices((List<String>) value));
+                        view.getKnowledge().setValue(new HashSet<>(((MultipleChoiceSelectionItem) view.getKnowledge()).getIndices((List<String>) value)));
                         break;
                     case "integer":
                         view.getKnowledge().setValue(Integer.parseInt((String) value));
