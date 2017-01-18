@@ -42,6 +42,11 @@ lists:
     - Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
     - Ja, ik heb een negatieve beschikking ontvangen.
     - Nee, ik heb geen concluderend contact gehad.
+- name: voorzieningenList
+  options: 
+    - Ja, die kunnen mij niet of onvoldoende helpen
+    - Ja, maar ik heb nog geen contact opgenomen
+    - Nee
 - name: frequentieList
   options:
     - Iedere dag
@@ -135,10 +140,10 @@ questions:
 
 
 
-- name: voorzieningen
+- name: voorzieningenVraag
   type: choiceSelection
   question: Kent u voorzieningen in de wijk die u kunnen helpen bij uw probleem?
-  options: jaNeeList
+  options: voorzieningenList
   tip: ""
 
 - name: opgelost
@@ -164,7 +169,7 @@ questions:
   type: choiceSelection
   question: Hoe vaak wordt gehinderd door uw problemen bij activiteiten buitens huis?
   options: frequentieList
-  tip: Vul in hoe vaak u idealieter wenst een activiteit buitens huis te kunnen voltooien.
+  tip: Vul in hoe vaak u idealiter wenst een activiteit buitens huis te kunnen voltooien.
 - name: kind
   type: choiceSelection
   question: Gaat het om een kind wonend in een gezin?
@@ -174,6 +179,12 @@ questions:
 - name: socialeKring
   type: choiceSelection
   question: Heeft u mensen in uw sociale kring die u kunnen bij staan door bijvoorbeeld te taxi-en
+  options: jaNeeList
+  tip: ""
+
+- name: transfer
+  type: choiceSelection
+  question: Is het mogelijk om een transfer te maken voor u?
   options: jaNeeList
   tip: ""
 
@@ -192,6 +203,8 @@ goals:
   response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
 - name: geenMobiliteitsproblemen
   response: Hier kunnen we momenteel niks mee, sorry!
+- name: voorzieningen
+  response: Wanneer er voorliggende voorzieningen die u kunnen helpen kunt u geen aanspraak maken op de WMO.
 # - name: rolstoelPermanent
 #   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
 # - name: rolstoelScootmobiel
@@ -210,7 +223,8 @@ goals:
 #   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
 - name: mantelzorgGoal
   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
-
+- name: probleemOplossenGoal
+  response: duh
 
 rules:
 # Wat is het probleem?
@@ -477,6 +491,37 @@ rules:
 #     type: boolean
 #     value: true
 
+#   #voorzieningen
+# - conditions:
+#   - name: voorzieningenVraag
+#     type: equals
+#     value: Ja, die kunnen mij niet of onvoldoende helpen
+#   consequence:
+#     name: geenVoorzieningen
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: voorzieningenVraag
+#     type: equals
+#     value: Ja, maar ik heb nog geen contact opgenomen
+#   consequence:
+#     name: voorzieningen
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: voorzieningenVraag
+#     type: equals
+#     value: Nee
+#   consequence:
+#     name: geenVoorzieningen
+#     type: boolean
+#     value: true
+
+
+
 #   #oplossen ja of nee eind condities
 # - conditions:
 #   - name: wetten
@@ -488,13 +533,16 @@ rules:
 #   - name: opnieuwWMO
 #     type: equals
 #     value: true
+#   - name: geenVoorzieningen
+#     type: equals
+#     value: true
 #   consequence:
 #     name: probleemOplossen
 #     type: boolean
 #     value: true
 
 
-# # Hoe gaan we het oplossen
+# Hoe gaan we het oplossen
 - conditions:
   # - name: probleemOplossen
   #   type: equals
@@ -542,9 +590,9 @@ rules:
   # - name: schaalProbleem
   #   type: contains
   #   value: 2
-  - name: buitenWens
-    type: contains
-    value: 2
+  # - name: buitenWens
+  #   type: contains
+  #   value: 2
   - name: mantelzorg
     type: equals
     value: false
