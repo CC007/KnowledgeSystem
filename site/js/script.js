@@ -82,6 +82,21 @@ function setQuestion(response) {
         }
         //setChoiceSelection(response.knowledge.options);
     }
+    if (response.knowledge.origin === "MULTIPLECHOICESELECTION") {
+        for (var i = 0; i < response.knowledge.options.length; i++) {
+            node = setInput("checkbox", "value", response.knowledge.options[i]);
+            node.setAttribute("id", response.knowledge.options[i]);
+            if (i == 0) {
+                node.setAttribute("checked", "checked");
+            }
+            var label = document.createElement("label");
+            label.appendChild(document.createTextNode(response.knowledge.options[i]));
+            label.setAttribute("for", response.knowledge.options[i]);
+            document.getElementById("question").appendChild(label);
+            document.getElementById("question").appendChild(document.createElement("br"));
+        }
+        //setChoiceSelection(response.knowledge.options);
+    }
     document.getElementById("question").appendChild(document.createElement("br"));
     node = setInput("submit", "Submit1", "Vorige");
     node.setAttribute("onclick", "handleSubmit(\"Vorige\");");
