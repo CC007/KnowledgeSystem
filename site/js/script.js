@@ -82,7 +82,7 @@ function setQuestion(response) {
         }
         //setChoiceSelection(response.knowledge.options);
     }
-    if (response.knowledge.origin === "MULTIPLECHOICESELECTION") {
+    if (response.knowledge.origin === "MULTICHOICESELECTION") {
         for (var i = 0; i < response.knowledge.options.length; i++) {
             node = setInput("checkbox", "value", response.knowledge.options[i]);
             node.setAttribute("id", response.knowledge.options[i]);

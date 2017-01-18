@@ -214,291 +214,291 @@ goals:
 
 rules:
 # Wat is het probleem?
-- conditions:
-  - name: probleemGebied
-    type: notEquals
-    value: Mobiliteitsproblemen
-  consequence: 
-    name: geenMobiliteitsproblemen
-    type: boolean
-    value: true
+# - conditions:
+#   - name: probleemGebied
+#     type: notEquals
+#     value: Mobiliteitsproblemen
+#   consequence: 
+#     name: geenMobiliteitsproblemen
+#     type: boolean
+#     value: true
 
 
-- conditions:
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
-  - name: wijk
-    type: isset
-  consequence:
-    name: introCompleet
-    type: boolean
-    value: true
+# - conditions:
+#   - name: probleemGebied
+#     type: equals
+#     value: Mobiliteitsproblemen
+#   - name: wijk
+#     type: isset
+#   consequence:
+#     name: introCompleet
+#     type: boolean
+#     value: true
 
-#Moet de WMO dit oplossen?
- # opnieuw WMO
-- conditions:
-  - name: eerderWMO
-    type: equals
-    value: Nee
-  consequence:
-    name: opnieuwWMO
-    type: boolean
-    value: true
-- conditions:
-  - name: eerderWMO
-    type: equals
-    value: Ja
-  - name: situatieGewijzigd
-    type: equals
-    value: Ja
-  consequence:
-    name: opnieuwWMO
-    type: boolean
-    value: true
-- conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  - name: eerderWMO
-    type: equals
-    value: Ja
-  - name: situatieGewijzigd
-    type: equals
-    value: Nee
-  consequence:
-    name: nietopnieuwWMO
-    type: boolean
-    value: true
+# #Moet de WMO dit oplossen?
+#  # opnieuw WMO
+# - conditions:
+#   - name: eerderWMO
+#     type: equals
+#     value: Nee
+#   consequence:
+#     name: opnieuwWMO
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: eerderWMO
+#     type: equals
+#     value: Ja
+#   - name: situatieGewijzigd
+#     type: equals
+#     value: Ja
+#   consequence:
+#     name: opnieuwWMO
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: eerderWMO
+#     type: equals
+#     value: Ja
+#   - name: situatieGewijzigd
+#     type: equals
+#     value: Nee
+#   consequence:
+#     name: nietopnieuwWMO
+#     type: boolean
+#     value: true
   
-  #UWV
-- conditions:
-  - name: baan
-    type: equals
-    value: Nee
-  consequence:
-    name: geenUWV
-    type: boolean
-    value: true
-- conditions:
-  - name: baan
-    type: equals
-    value: Ja
-  - name: contactUWV
-    type: equals
-    value: Ja, ik heb een negatieve beschikking ontvangen.
-  consequence:
-    name: geenUWV
-    type: boolean
-    value: true
-- conditions:
-  - name: baan
-    type: equals
-    value: Ja
-  - name: contactUWV
-    type: equals
-    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-  consequence:
-    name: geenUWV
-    type: boolean
-    value: true
-- conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  - name: baan
-    type: equals
-    value: Ja
-  - name: contactUWV
-    type: equals
-    value: Nee, ik heb geen concluderend contact gehad.
-  consequence:
-    name: UWV
-    type: boolean
-    value: true
+#   #UWV
+# - conditions:
+#   - name: baan
+#     type: equals
+#     value: Nee
+#   consequence:
+#     name: geenUWV
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: baan
+#     type: equals
+#     value: Ja
+#   - name: contactUWV
+#     type: equals
+#     value: Ja, ik heb een negatieve beschikking ontvangen.
+#   consequence:
+#     name: geenUWV
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: baan
+#     type: equals
+#     value: Ja
+#   - name: contactUWV
+#     type: equals
+#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+#   consequence:
+#     name: geenUWV
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: baan
+#     type: equals
+#     value: Ja
+#   - name: contactUWV
+#     type: equals
+#     value: Nee, ik heb geen concluderend contact gehad.
+#   consequence:
+#     name: UWV
+#     type: boolean
+#     value: true
 
-    #LEERLINGWET
-- conditions:
-  - name: leerling
-    type: equals
-    value: Nee
-  consequence:
-    name: geenLeerlingwet
-    type: boolean
-    value: true
-- conditions:
-  - name: leerling
-    type: equals
-    value: Ja
-  - name: contactLeerlingwet
-    type: equals
-    value: Ja, ik heb een negatieve beschikking ontvangen.
-  consequence:
-    name: geenLeerlingwet
-    type: boolean
-    value: true
-- conditions:
-  - name: leerling
-    type: equals
-    value: Ja
-  - name: contactLeerlingwet
-    type: equals
-    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-  consequence:
-    name: geenLeerlingwet
-    type: boolean
-    value: true
-- conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  - name: leerling
-    type: equals
-    value: Ja
-  - name: contactLeerlingwet
-    type: equals
-    value: Nee, ik heb geen concluderend contact gehad.
-  consequence:
-    name: leerlingwet
-    type: boolean
-    value: true
-
-
-    #WETLANGDURIGEZORG
-- conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  - name: lzIndicatie
-    type: equals
-    value: Nee, ik heb geen concluderend contact gehad.
-  consequence:
-    name: WLZ
-    type: boolean
-    value: true
-- conditions:
-  - name: lzIndicatie
-    type: equals
-    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-  consequence:
-    name: geenWLZ
-    type: boolean
-    value: true
-- conditions:
-  - name: lzIndicatie
-    type: equals
-    value: Ja, ik heb een negatieve beschikking ontvangen.
-  consequence:
-    name: geenWLZ
-    type: boolean
-    value: true
+#     #LEERLINGWET
+# - conditions:
+#   - name: leerling
+#     type: equals
+#     value: Nee
+#   consequence:
+#     name: geenLeerlingwet
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: leerling
+#     type: equals
+#     value: Ja
+#   - name: contactLeerlingwet
+#     type: equals
+#     value: Ja, ik heb een negatieve beschikking ontvangen.
+#   consequence:
+#     name: geenLeerlingwet
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: leerling
+#     type: equals
+#     value: Ja
+#   - name: contactLeerlingwet
+#     type: equals
+#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+#   consequence:
+#     name: geenLeerlingwet
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: leerling
+#     type: equals
+#     value: Ja
+#   - name: contactLeerlingwet
+#     type: equals
+#     value: Nee, ik heb geen concluderend contact gehad.
+#   consequence:
+#     name: leerlingwet
+#     type: boolean
+#     value: true
 
 
-    #VERZEKERING
-- conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  - name: contactDekking
-    type: equals
-    value: Nee, ik heb geen concluderend contact gehad.
-  consequence:
-    name: dekking
-    type: boolean
-    value: true
-- conditions:
-  - name: contactDekking
-    type: equals
-    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-  consequence:
-    name: geenDekking
-    type: boolean
-    value: true
-- conditions:
-  - name: contactDekking
-    type: equals
-    value: Ja, ik heb een negatieve beschikking ontvangen.
-  consequence:
-    name: geenDekking
-    type: boolean
-    value: true
+#     #WETLANGDURIGEZORG
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: lzIndicatie
+#     type: equals
+#     value: Nee, ik heb geen concluderend contact gehad.
+#   consequence:
+#     name: WLZ
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: lzIndicatie
+#     type: equals
+#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+#   consequence:
+#     name: geenWLZ
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: lzIndicatie
+#     type: equals
+#     value: Ja, ik heb een negatieve beschikking ontvangen.
+#   consequence:
+#     name: geenWLZ
+#     type: boolean
+#     value: true
 
-    #WETTEN
-- conditions:
-  - name: geenUWV
-    type: equals
-    value: true
-  - name: geenLeerlingwet
-    type: equals
-    value: true
-  - name: geenWLZ
-    type: equals
-    value: true
-  - name: geenDekking
-    type: equals
-    value: true
-  consequence:
-    name: wetten
-    type: boolean
-    value: false
 
- #Termijn
-- conditions:
-  - name: termijnProbleem
-    type: equals
-    value: Korter dan zes maanden
-  - name: uitleenVraag
-    type: equals
-    value: Ja, deze instantie kan mij niet volledig helpen
-  consequence:
-    name: geenUitleen
-    type: boolean
-    value: true
-- conditions:
-  - name: termijnProbleem
-    type: equals
-    value: Langer dan zes maanden
-  consequence:
-    name: geenUitleen
-    type: boolean
-    value: true
-- conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  - name: termijnProbleem
-    type: equals
-    value: Korter dan zes maanden
-  - name: uitleenVraag
-    type: equals
-    value: Nee
-  consequence:
-    name: uitleen
-    type: boolean
-    value: true
+#     #VERZEKERING
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: contactDekking
+#     type: equals
+#     value: Nee, ik heb geen concluderend contact gehad.
+#   consequence:
+#     name: dekking
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: contactDekking
+#     type: equals
+#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+#   consequence:
+#     name: geenDekking
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: contactDekking
+#     type: equals
+#     value: Ja, ik heb een negatieve beschikking ontvangen.
+#   consequence:
+#     name: geenDekking
+#     type: boolean
+#     value: true
 
-  #oplossen ja of nee eind condities
-- conditions:
-  - name: wetten
-    type: equals
-    value: false
-  - name: geenUitleen
-    type: equals
-    value: true
-  - name: opnieuwWMO
-    type: equals
-    value: true
-  consequence:
-    name: probleemOplossen
-    type: boolean
-    value: true
+#     #WETTEN
+# - conditions:
+#   - name: geenUWV
+#     type: equals
+#     value: true
+#   - name: geenLeerlingwet
+#     type: equals
+#     value: true
+#   - name: geenWLZ
+#     type: equals
+#     value: true
+#   - name: geenDekking
+#     type: equals
+#     value: true
+#   consequence:
+#     name: wetten
+#     type: boolean
+#     value: false
+
+#  #Termijn
+# - conditions:
+#   - name: termijnProbleem
+#     type: equals
+#     value: Korter dan zes maanden
+#   - name: uitleenVraag
+#     type: equals
+#     value: Ja, deze instantie kan mij niet volledig helpen
+#   consequence:
+#     name: geenUitleen
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: termijnProbleem
+#     type: equals
+#     value: Langer dan zes maanden
+#   consequence:
+#     name: geenUitleen
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: introCompleet
+#     type: equals
+#     value: true
+#   - name: termijnProbleem
+#     type: equals
+#     value: Korter dan zes maanden
+#   - name: uitleenVraag
+#     type: equals
+#     value: Nee
+#   consequence:
+#     name: uitleen
+#     type: boolean
+#     value: true
+
+#   #oplossen ja of nee eind condities
+# - conditions:
+#   - name: wetten
+#     type: equals
+#     value: false
+#   - name: geenUitleen
+#     type: equals
+#     value: true
+#   - name: opnieuwWMO
+#     type: equals
+#     value: true
+#   consequence:
+#     name: probleemOplossen
+#     type: boolean
+#     value: true
 
 
 # # Hoe gaan we het oplossen
 - conditions:
-  - name: probleemOplossen
-    type: equals
-    value: true
+  # - name: probleemOplossen
+  #   type: equals
+  #   value: true
   - name: frequentie
     type: equals
     value: Minder dan eens per maand
@@ -507,9 +507,9 @@ rules:
     type: boolean
     value: true
 - conditions:
-  - name: probleemOplossen
-    type: equals
-    value: true
+  # - name: probleemOplossen
+  #   type: equals
+  #   value: true
   - name: kind
     type: equals
     value: Ja
@@ -526,25 +526,25 @@ rules:
     name: mantelzorg
     type: boolean
     value: false
-- conditions:
-  - name: socialeKring
-    type: equals
-    value: Ja
-  consequence:
-    name: mantelzorg
-    type: boolean
-    value: true
+# - conditions:
+#   - name: socialeKring
+#     type: equals
+#     value: Ja
+#   consequence:
+#     name: mantelzorg
+#     type: boolean
+#     value: true
 
 - conditions:
-  - name: probleemOplossen
-    type: equals
-    value: true
-  - name: schaalProbleem
-    type: equals
-    value: Buiten ongeveer een 1,5 km radius rondom mijn woning
-  # - name: buitenWens
+  # - name: probleemOplossen
+  #   type: equals
+  #   value: true
+  # - name: schaalProbleem
   #   type: contains
-  #   value: Buiten ongeveer een 1,5 km radius rondom mijn woning
+  #   value: 2
+  - name: buitenWens
+    type: contains
+    value: 2
   - name: mantelzorg
     type: equals
     value: false
@@ -558,10 +558,10 @@ rules:
 #     value: true
 #   - name: schaalProbleem
 #     type: contains
-#     value: Buiten ongeveer een 1,5 km radius rondom mijn woning
+#     value: 2
 #   - name: buitenWens
 #     type: contains
-#     value: Buiten ongeveer een 1,5 km radius rondom mijn woning
+#     value: 2
 #   - name: mantelzorg
 #     type: equals
 #     value: true
