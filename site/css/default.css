@@ -136,10 +136,10 @@ h3 {
 
 #startButton {
 	display: block;
-	margin: 0 auto;
+	/*margin: 0 auto;*/
 }
 
-input[type=submit] {
+input[type=submit], input[type=button] {
     padding:5px 15px; 
     background: #f2f2f2; 
     margin: 5px;
