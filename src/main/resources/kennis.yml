@@ -122,10 +122,17 @@ questions:
 
 
 - name: voorzieningen
-  type: multipleChoiceSelection
+  type: choiceSelection
   question: Kent u voorzieningen in de wijk die u kunnen helpen bij uw probleem?
   options: jaNeeList
   tip: ""
+
+- name: opgelost
+  type: choiceSelection
+  question: Lost de ontvangen hulp uw probleem volledig op?
+  options: jaNeeList
+  tip: Vul zolang er nog problemen resterend zijn 'Nee' in.
+
 
 #Hoe gaan we het oplossen?
   # mobiliteitsproblemen
@@ -174,15 +181,30 @@ goals:
   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
 - name: mantelzorg
   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
+- name: nietopnieuwWMO
+  response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
 
 rules:
 # Wat is het probleem?
-
-#Moet de WMO dit oplossen?
 - conditions:
   - name: probleemGebied
     type: equals
     value: Mobiliteitsproblemen
+  # - name: wijk
+  #   type: isset
+  consequence:
+    name: introCompleet
+    type: boolean
+    value: true
+
+
+
+
+
+
+
+#Moet de WMO dit oplossen?
+- conditions:
   - name: baan
     type: equals
     value: Ja
@@ -192,9 +214,6 @@ rules:
     value: true
 
 - conditions:
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
   - name: leerling
     type: equals
     value: Ja
@@ -204,9 +223,6 @@ rules:
     value: true
 
 - conditions:
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
   - name: lzIndicatie
     type: equals
     value: Ja, ik heb een negatieve beschikking ontvangen.
@@ -216,9 +232,6 @@ rules:
     value: true
 
 - conditions:
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
   - name: dekking
     type: equals
     value: Ja, ik heb een negatieve beschikking ontvangen.
@@ -228,9 +241,6 @@ rules:
     value: true
 
 - conditions:
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
   - name: baan
     type: equals
     value: Nee
@@ -248,6 +258,7 @@ rules:
     type: boolean
     value: false
 
+ #Termijn
 - conditions:
   - name: termijnProbleem
     type: equals
@@ -281,12 +292,13 @@ rules:
     type: boolean
     value: true
 
+ # opnieuw WMO
 - conditions:
   - name: eerderWMO
     type: equals
     value: Nee, ik heb geen contact gehad.
   consequence:
-    name: probleemOplossen
+    name: opnieuwWMO
     type: boolean
     value: true
 - conditions:
@@ -296,6 +308,30 @@ rules:
   - name: situatieGewijzigd
     type: equals
     value: Ja
+  consequence:
+    name: opnieuwWMO
+    type: boolean
+    value: true
+- conditions:
+  - name: eerderWMO
+    type: notequals
+    value: Nee, ik heb geen contact gehad.
+  - name: situatieGewijzigd
+    type: equals
+    value: Nee
+  consequence:
+    name: nietopnieuwWMO
+    type: boolean
+    value: true
+
+
+  #oplossen ja of nee eind condities
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+
+
   - name: wetten
     type: equals
     value: false
