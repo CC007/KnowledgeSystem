@@ -48,6 +48,12 @@ lists:
     - Meerdere malen per week
     - Meerdere malen per maand
     - Minder dan eens per maand
+- name: buitenList
+  options:
+    - Alleen thuis
+    - In mijn wijk (radius 1,5 km rond huis)
+    - Buiten mijn wijk (naar familie of het ziekenhuis)
+    - In mijn wijk en er buiten
 # - name: algemeenGebruikQuestionList
 #   options:
 #     - Scootmobiel
@@ -71,11 +77,6 @@ questions:
   question: Waaronder zou u zeggen dat uw probleem valt?
   options: probleemGebiedList
   tip: Als uw problemen in meerdere gebieden vallen in uw ervaring, loop dan meerdere malen door de vragen voor de individuele problemen.
-- name: kind
-  type: choiceSelection
-  question: Gaat het om een kind wonend in een gezin?
-  options: jaNeeList
-  tip: ""
 
 # Moet de WMO het oplossen?
 - name: baan
@@ -150,8 +151,13 @@ questions:
 #Hoe gaan we het oplossen?
   # mobiliteitsproblemen
 - name: schaalProbleem
-  type: choiceSelection
+  type: multipleChoiceSelection
   question: Geef aan waar u problemen ervaart met uw mobiliteit.
+  options: schaalList
+  tip: ""
+- name: buitenWens
+  type: multipleChoiceSelection
+  question: Geef aan in welke regio(s) u zich wenst te bewegen.
   options: schaalList
   tip: ""
 - name: frequentie
@@ -159,13 +165,17 @@ questions:
   question: Hoe vaak wordt gehinderd door uw problemen bij activiteiten buitens huis?
   options: frequentieList
   tip: Vul in hoe vaak u idealieter wenst een activiteit buitens huis te kunnen voltooien.
+- name: kind
+  type: choiceSelection
+  question: Gaat het om een kind wonend in een gezin?
+  options: jaNeeList
+  tip: ""
 
-
-# - name: algemeenGebruik
-#   type: multipleChoiceSelection
-#   question: Selecteer uit de onderstaande lijst van hulpmiddelen, welke u denkt te kunnen gebruiken.
-#   options: algemeenGebruikQuestionList
-#   tip: ""
+- name: socialeKring
+  type: choiceSelection
+  question: Heeft u mensen in uw sociale kring die u kunnen bij staan door bijvoorbeeld te taxi-en
+  options: jaNeeList
+  tip: ""
 
 goals:
 - name: UWV
@@ -182,24 +192,24 @@ goals:
   response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
 - name: geenMobiliteitsproblemen
   response: Hier kunnen we momenteel niks mee, sorry!
-- name: rolstoelPermanent
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
-- name: rolstoelScootmobiel
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel en scootmobiel gebruik.
-# - name: rolstoelIncidenteel
-#   response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
+# - name: rolstoelPermanent
+#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
+# - name: rolstoelScootmobiel
+#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel en scootmobiel gebruik.
+- name: rolstoelIncidenteel
+  response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
 # - name: scootmobiel
 #   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
-# - name: collectiefVervoer
-#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
+- name: CVP
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
 # - name: elektrischeRolstoel
 #   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel.
-# - name: busaanpassing
-#   response: Mogelijk komen jullie in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
+- name: busaanpassing
+  response: Mogelijk komen jullie in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
 # - name: rollator
 #   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
-# - name: mantelzorg
-#   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
+- name: mantelzorgGoal
+  response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
 
 
 rules:
@@ -486,96 +496,77 @@ rules:
 
 # # Hoe gaan we het oplossen
 - conditions:
-  - name: schaalProbleem
-    type: equals
-    value: In en om de woning en daarbuiten
-  consequence:
-    name: schaal
-    type: integer
-    value: 1
-- conditions:
-  - name: schaalProbleem
-    type: equals
-    value: In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
-  consequence:
-    name: schaal
-    type: integer
-    value: 2
-- conditions:
-  - name: schaalProbleem
-    type: equals
-    value: Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
-  consequence:
-    name: schaal
-    type: integer
-    value: 3
-
-
-# - conditions:
-#   - name: frequentie
-#     type: notEquals
-#     value: Minder dan eens per maand
-#   consequence:
-#     name: buitenWens
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: frequentie
-#     type: equals
-#     value: Minder dan eens per maand
-#   consequence:
-#     name: buitenWens
-#     type: boolean
-#     value: false
-
-- conditions:
   - name: probleemOplossen
     type: equals
     value: true
-  - name: schaal
+  - name: frequentie
     type: equals
-    value: 1
+    value: Minder dan eens per maand
   consequence:
-    name: rolstoelPermanent
+    name: rolstoelIncidenteel
     type: boolean
     value: true
 - conditions:
   - name: probleemOplossen
     type: equals
     value: true
-  - name: schaal
+  - name: kind
     type: equals
-    value: 2
+    value: Ja
   consequence:
-    name: rolstoelScootmobiel
+    name: busaanpassing
+    type: boolean
+    value: true
+
+- conditions:
+  - name: socialeKring
+    type: equals
+    value: Nee
+  consequence:
+    name: mantelzorg
+    type: boolean
+    value: false
+- conditions:
+  - name: socialeKring
+    type: equals
+    value: Ja
+  consequence:
+    name: mantelzorg
+    type: boolean
+    value: true
+
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: equals
+    value: Buiten ongeveer een 1,5 km radius rondom mijn woning
+  # - name: buitenWens
+  #   type: contains
+  #   value: Buiten ongeveer een 1,5 km radius rondom mijn woning
+  - name: mantelzorg
+    type: equals
+    value: false
+  consequence:
+    name: CVP
     type: boolean
     value: true
 # - conditions:
-#   - name: wetten
+#   - name: probleemOplossen
 #     type: equals
-#     value: false
-#   - name: schaal
-#     type: less
-#     value: 3
+#     value: true
+#   - name: schaalProbleem
+#     type: contains
+#     value: Buiten ongeveer een 1,5 km radius rondom mijn woning
 #   - name: buitenWens
+#     type: contains
+#     value: Buiten ongeveer een 1,5 km radius rondom mijn woning
+#   - name: mantelzorg
 #     type: equals
 #     value: true
 #   consequence:
-#     name: scootmobiel
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: wetten
-#     type: equals
-#     value: false
-#   - name: schaal
-#     type: less
-#     value: 4
-#   - name: buitenWens
-#     type: equals
-#     value: true
-#   consequence:
-#     name: collectiefVervoer
+#     name: mantelzorgGoal
 #     type: boolean
 #     value: true
 
