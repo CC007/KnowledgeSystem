@@ -29,8 +29,12 @@ function handleSubmit(submitButtonName) {
             request.type = data["type"];
             if (data["origin"] === "MULTICHOICESELECTION") {
                 var value = [];
+                var cnt = 0;
                 for (var i = 0; data["value" + i] !== undefined; i++) {
-                    value[i] = data["value" + i];
+                    if (document.getElementById("value" + i).checked === true) {
+                        value[cnt] = data["value" + i];
+                        cnt++;
+                    }
                 }
                 request.value = value;
             } else {
@@ -94,10 +98,10 @@ function setQuestion(response) {
     if (response.knowledge.origin === "MULTICHOICESELECTION") {
         for (var i = 0; i < response.knowledge.options.length; i++) {
             node = setInput("checkbox", "value" + i, response.knowledge.options[i]);
-            node.setAttribute("id", response.knowledge.options[i]);
+            node.setAttribute("id", "value" + i);
             var label = document.createElement("label");
             label.appendChild(document.createTextNode(response.knowledge.options[i]));
-            label.setAttribute("for", response.knowledge.options[i]);
+            label.setAttribute("for", "value" + i);
             document.getElementById("question").appendChild(label);
             document.getElementById("question").appendChild(document.createElement("br"));
         }
