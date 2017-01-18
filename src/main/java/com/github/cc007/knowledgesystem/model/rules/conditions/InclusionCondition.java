@@ -17,11 +17,11 @@ import com.github.cc007.knowledgesystem.model.knowledge.items.MultipleChoiceSele
 public class InclusionCondition extends Condition {
 
     private boolean included;
-    private int value;
+    private int index;
 
-    public InclusionCondition(String knowledgeItemName, int value, boolean included) {
+    public InclusionCondition(String knowledgeItemName, int index, boolean included) {
         super(knowledgeItemName);
-        this.value = value;
+        this.index = index;
         this.included = included;
     }
 
@@ -38,18 +38,19 @@ public class InclusionCondition extends Condition {
     }
 
     @Override
-    public boolean check(KnowledgeBase knowledgeBase) {
+    public Boolean check(KnowledgeBase knowledgeBase) {
         MultipleChoiceSelectionItem item = castItem(knowledgeItemName, knowledgeBase);
         if (item == null) {
-            return false;
+            return null;
         }
         if (!item.isValueSet()) {
-            return false;
+            return null;
         }
+        System.out.println("Values: " + index + " (expected), " + item.getValue() + " (actual)");
         if (included) {
-            return item.getSelectedIndices().contains(value);
+            return item.getSelectedIndices().contains(index);
         } else {
-            return !item.getSelectedIndices().contains(value);
+            return !item.getSelectedIndices().contains(index);
         }
 
     }
@@ -66,8 +67,8 @@ public class InclusionCondition extends Condition {
         return included;
     }
 
-    public int getValue() {
-        return value;
+    public int getIndex() {
+        return index;
     }
     
     

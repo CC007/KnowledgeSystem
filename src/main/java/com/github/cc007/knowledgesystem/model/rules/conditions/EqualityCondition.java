@@ -7,6 +7,7 @@ package com.github.cc007.knowledgesystem.model.rules.conditions;
 
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,14 +29,15 @@ public class EqualityCondition<T> extends Condition {
     }
 
     @Override
-    public boolean check(KnowledgeBase knowledgeBase) {
+    public Boolean check(KnowledgeBase knowledgeBase) {
         KnowledgeItem item = knowledgeBase.getItem(knowledgeItemName);
         if (item == null) {
-            return false;
+            return null;
         }
         if (!item.isValueSet()) {
-            return !equal;
+            return null;
         }
+        System.out.println("Values: " + value + " (expected), " + item.getValue() + " (actual)");
         if (equal) {
             return item.getValue().equals(value);
         }

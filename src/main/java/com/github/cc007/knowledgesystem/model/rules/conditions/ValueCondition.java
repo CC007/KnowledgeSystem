@@ -25,19 +25,15 @@ public class ValueCondition<T extends Comparable<T>> extends Condition {
     }
 
     @Override
-    public boolean check(KnowledgeBase knowledgeBase) {
+    public Boolean check(KnowledgeBase knowledgeBase) {
         KnowledgeItem<T> item = knowledgeBase.getItem(knowledgeItemName);
         if (item == null) {
-            return false;
+            return null;
         }
         if (!item.isValueSet()) {
-            switch (operator) {
-                case NOTEQUAL:
-                    return true;
-                default:
-                    return false;
-            }
+            return null;
         }
+        System.out.println("Values: " + value + " (expected), " + item.getValue() + " (actual)");
         switch (operator) {
             case EQUAL:
                 return item.getValue().equals(value);

@@ -9,6 +9,7 @@ import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeOrigin;
 import com.github.cc007.knowledgesystem.model.knowledge.items.BooleanItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.ChoiceSelectionItem;
+import com.github.cc007.knowledgesystem.model.knowledge.items.IntegerItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import com.github.cc007.knowledgesystem.model.knowledge.items.MultipleChoiceSelectionItem;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
@@ -16,15 +17,17 @@ import com.github.cc007.knowledgesystem.model.rules.RuleBuilder;
 import com.github.cc007.knowledgesystem.model.rules.conditions.Condition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.EqualityCondition;
 import com.github.cc007.knowledgesystem.model.rules.conditions.InclusionCondition;
+import com.github.cc007.knowledgesystem.model.rules.conditions.ValueCondition;
+import com.github.cc007.knowledgesystem.model.rules.conditions.ValueOperator;
 import com.github.cc007.knowledgesystem.utils.yml.YMLFile;
 import com.github.cc007.knowledgesystem.utils.yml.YMLNode;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -44,8 +47,9 @@ public class YMLFileModelLoader extends FileModelLoader {
 
     public void load(RuleBase ruleBase, KnowledgeBase knowledgeBase) {
         try {
-            log.info("open YAML file and get its root node");
+            log.info("Open YAML file");
             YMLFile knowledge = new YMLFile(fileName);
+            log.info("Get the YAML root node");
             YMLNode root = knowledge.getRootNode();
 
             // Read the different options list from the file
@@ -65,7 +69,7 @@ public class YMLFileModelLoader extends FileModelLoader {
             // Add previously unknown knowledge items to the KB
             setRules(root, knowledgeBase, ruleBase);
 
-        } catch (IOException | NullPointerException ex) {
+        } catch (IOException | NullPointerException | UnsupportedOperationException ex) {
             Logger.getLogger(YMLFileModelLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -92,7 +96,6 @@ public class YMLFileModelLoader extends FileModelLoader {
             String questionText = question.getString("question");
             String questionTip = question.getString("tip");
             String questionOptions;
-            log.info(questionType);
             KnowledgeItem newItem = null;
             switch (questionType) {
                 case "choiceSelection":
@@ -128,24 +131,29 @@ public class YMLFileModelLoader extends FileModelLoader {
     }
 
     private void setRules(YMLNode root, KnowledgeBase knowledgeBase, RuleBase ruleBase) {
-        log.info("Put the rules into the rule base and add missing knowledge items to the knowledge base");
+        log.info("Put the rules into the rule base");
         List<YMLNode> rules = root.getNodeList("rules").getNodes();
-
         for (YMLNode rule : rules) {
             // We first retrieve the knowledge item
             String consequenceName = rule.getNode("consequence").getString("name");
             String consequenceType = rule.getNode("consequence").getString("type");
             KnowledgeItem knowledgeItem = knowledgeBase.getItem(consequenceName);
+
+            // add the knowledge item to the knowledge base if it isn't already there
             if (knowledgeItem == null) {
                 switch (consequenceType) {
                     case "boolean":
                         knowledgeItem = new BooleanItem(consequenceName, KnowledgeOrigin.INFERRED, false);
-                        knowledgeBase.setItem(knowledgeItem);
+                        break;
+                    case "integer":
+                        knowledgeItem = new IntegerItem(consequenceName, KnowledgeOrigin.INFERRED, false);
                         break;
                     //TODO other types
                     default:
-                        throw new UnsupportedOperationException("Only boolean supported up until now");
+                        throw new UnsupportedOperationException("Only boolean and integer supported up until now");
+
                 }
+                knowledgeBase.setItem(knowledgeItem);
             }
 
             // Then we create a copy of the item to be used as consequence and set its value
@@ -154,17 +162,16 @@ public class YMLFileModelLoader extends FileModelLoader {
                 case "boolean":
                     consequence.setValue(rule.getNode("consequence").getBoolean("value"));
                     break;
+                case "integer":
+                    consequence.setValue(rule.getNode("consequence").getInt("value"));
+                    break;
                 //TODO other types
+                default:
+                    throw new UnsupportedOperationException("Only boolean and integer supported up until now");
             }
 
             // Make the consequence the base of the rule and add the condition that the consequence isn't true yet
             RuleBuilder newRule = new RuleBuilder(consequence);
-            switch (consequenceType) {
-                case "boolean":
-                    newRule.addCondition(new EqualityCondition(consequenceName, rule.getNode("consequence").getBoolean("value"), false));
-                    break;
-                //TODO other types
-            }
 
             // A rule can have multiple conditions
             // We add each condition to the existing rule
@@ -173,13 +180,11 @@ public class YMLFileModelLoader extends FileModelLoader {
                 Condition newCondition = null;
                 String conditionName = condition.getString("name");
                 String conditionType = condition.getString("type");
-                Object conditionValue = condition.getString("value");
                 KnowledgeItem item = knowledgeBase.getItem(conditionName);
-                if (item instanceof ChoiceSelectionItem) {
-                    conditionValue = ((ChoiceSelectionItem) item).getIndex((String) conditionValue);
-                } else if (item instanceof MultipleChoiceSelectionItem) {
-                    conditionValue = ((MultipleChoiceSelectionItem) item).getIndices((List<String>) conditionValue);
+                if (item == null) {
+                    throw new IllegalArgumentException("The knowledge item with the name '" + conditionName + "' isn't added to the knowledge base yet. Add a question, goal or rule consequence with this knowledge item's name");
                 }
+                Object conditionValue = getConditionValue(condition, item);
                 switch (conditionType) {
                     case "equals":
                         newCondition = new EqualityCondition(conditionName, conditionValue);
@@ -193,8 +198,14 @@ public class YMLFileModelLoader extends FileModelLoader {
                     case "notContains":
                         newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue, false);
                         break;
+                    case "less":
+                        newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.LESS);
+                        break;
+                    case "greater":
+                        newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.GREATER);
+                        break;
                     default:
-                        throw new UnsupportedOperationException("Value conditions not implemented yet");
+                        throw new UnsupportedOperationException("Condition not implemented yet");
                     //TODO value conditions
                 }
                 newRule.addCondition(newCondition);
@@ -202,6 +213,23 @@ public class YMLFileModelLoader extends FileModelLoader {
             // After the consequence and all of the conditions have been added,
             // we build the rule and add it to the rule base
             ruleBase.addRule(newRule.build());
+        }
+    }
+
+    private Object getConditionValue(YMLNode condition, KnowledgeItem item) {
+        switch (item.getType()) {
+            case "boolean":
+                return condition.getBoolean("value");
+            case "integer":
+                return condition.getInt("value");
+            case "string":
+                return condition.getString("value");
+            case "index":
+                return ((ChoiceSelectionItem) item).getIndex(condition.getString("value"));
+            case "indexlist":
+                return ((MultipleChoiceSelectionItem) item).getIndex(condition.getString("value"));
+            default:
+                throw new UnsupportedOperationException("Decimal and multiplechoice types not yet supported by YML model loader. Found type: " + item.getType());
         }
     }
 }

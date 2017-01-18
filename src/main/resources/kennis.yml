@@ -1,141 +1,318 @@
 lists:
-  - name: jaNeeList
-    options: 
-      - Ja
-      - Nee
-  - name: voorzieningenQuestionList
-    options:
-      - Scootmobiel pool
-      - Rolstoel verhuur
-      - Wandelvrijwilligers
-      - Deeltaxi
-  - name: algemeenGebruikQuestionList
-    options:
-      - Scootmobiel
-      - Reguliere rolstoel
-      - Krukken
-  - name: voorvoorzieningenList
-    options:
-      - Scootmobiel pool
-      - Rolstoel verhuur
-      - Wandelvrijwilligers
-  - name: algemeenGebruikList
-    options:
-      - Reguliere rolstoel
-      - Krukken
+- name: jaNeeList
+  options: 
+    - Ja
+    - Nee
+- name: wijkList
+  options:
+    - Beijum
+    - Corpus den Hoorn
+    - De Wijert
+    - Hoogkerk
+    - Korrewegwijk
+    - Lewenborg
+    - Oosterparkwijk
+    - Rivierenbuurt
+    - Schilderswijk/Centrum
+    - Selwerd
+    - Vinkhuizen
+- name: probleemGebiedList
+  options:
+    - Mobiliteitsproblemen
+    - Woonmoeilijkheden
+    - Huishouden
+    - Begeleiding noodzakelijk
+    - Beschermd wonen
+- name: schaalList
+  options:
+    - In en om de woning en daarbuiten
+    - In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
+    - Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
+- name: termijnList
+  options:
+    - Korter dan zes maanden
+    - Langer dan zes maanden
+- name: uitleenList
+  options:
+    - Ja, ik ontvang zorg via deze instantie
+    - Ja, deze instantie kan mij niet helpen
+    - Nee
+- name: wetList
+  options:
+    - Ja, ik krijg zorg vanuit deze instantie.
+    - Ja, hier volgde niets uit.
+    - Ja, ik heb een negatieve beschikking ontvangen.
+    - Nee, ik heb geen contact gehad.
+- name: frequentieList
+  options:
+    - Iedere dag
+    - Meerdere malen per week
+    - Meerdere malen per maand
+    - Minder dan eens per maand
+# -	name: algemeenGebruikQuestionList
+# 	options:
+# 		- Scootmobiel
+# 		- Reguliere rolstoel
+# 		- Krukken
+# - name: algemeenGebruikList
+#   options:
+#     - Reguliere rolstoel
+#     - Krukken
 
 
 questions:
-  - name: baan
-    type: choiceSelection
-    question: Heeft u een betaalde baan, waarbij uw problemen in de weg komen te staan?
-    options: jaNeeList
-    tip: ""
-  - name: leerling
-    type: choiceSelection
-    question: Gaat het om een minderjarige die naar school gaat?
-    options: jaNeeList
-    tip: ""
-  - name: lzIndicatie
-    type: choiceSelection
-    question: Heeft u een positieve indicatie ontvangen onder de Wet Langdurige Zorg?
-    options: jaNeeList
-    tip: ""
-  - name: dekking
-    type: choiceSelection
-    question: Kan de compensatie gedekt worden door de zorgverzekering?
-    options: jaNeeList
-    tip: Heeft al geprobeerd contact op te nemen met uw zorgverzekeraar?
-  - name: voorzieningen
-    type: multipleChoiceSelection
-    question: Selecteer uit de onderstaande lijst wijk voorzieningen waarvan u denkt ondersteuning te kunnen gebruiken.
-    options: voorzieningenQuestionList
-    tip: Selecteer voorziening waar u nog nooit in aanraking mee bent gekomen, nog nooit van heeft gehoord, maar ook voorzieningen waar u nu eventueel met plezier gebruik van maakt.
-  - name: algemeenGebruik
-    type: multipleChoiceSelection
-    question: Selecteer uit de onderstaande lijst van hulpmiddelen, welke u denkt te kunnen gebruiken.
-    options: algemeenGebruikQuestionList
-    tip: ""
+# Wat is het probleem?
+- name: wijk
+  type: choiceSelection
+  question: In welke wijk bent u momenteel woonachtig?
+  options: wijkList
+  tip: Kijk op https://wij.groningen.nl om uit te vinden onder welk WIJ-team u valt.
+- name: probleemGebied
+  type: choiceSelection
+  question: Waaronder zou u zeggen dat uw probleem valt?
+  options: probleemGebiedList
+  tip: Als uw problemen in meerdere gebieden vallen in uw ervaring, loop dan meerdere malen door de vragen voor de individuele problemen.
+- name: eerderWMO
+  type: choiceSelection
+  question: Bent u al eerder in aanraking gekomen met de WMO?
+  options: jaNeeList
+  tip: ""
+
+  # mobiliteitsproblemen
+- name: schaalProbleem
+  type: choiceSelection
+  question: Geef aan waar u problemen ervaart met uw mobiliteit.
+  options: schaalList
+  tip: ""
+- name: termijnProbleem
+  type: choiceSelection
+  question: Geef aan wat de termijn van u probleem is.
+  options: termijnList
+  tip: ""
+- name: uitleen
+  type: choiceSelection
+  question: Bent al naar een thuiszorgwinkel of uitleen geweest?
+  options: uitleenList
+  tip: In de regio Groningen kunt u terecht bij de Vegro.
+
+# Moet de WMO het oplossen?
+- name: baan
+  type: choiceSelection
+  question: Heeft u een betaalde baan, waarbij uw problemen in de weg komen te staan?
+  options: jaNeeList
+  tip: ""
+- name: leerling
+  type: choiceSelection
+  question: Gaat het om een minderjarige die naar school gaat?
+  options: jaNeeList
+  tip: ""
+- name: lzIndicatie
+  type: choiceSelection
+  question: Heeft u contact gehad met de overheid over uw rechten onder de Wet Langdurige Zorg?
+  options: wetList
+  tip: "Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO consulent."
+- name: dekking
+  type: choiceSelection
+  question: Heeft u contact gehad met de overheid over uw zorgverzekeraar?
+  options: wetList
+  tip: ""
+
+- name: voorzieningen
+  type: multipleChoiceSelection
+  question: Kent u voorzieningen in de wijk die u kunnen helpen bij uw probleem?
+  options: jaNeeList
+  tip: ""
+
+#Hoe gaan we het oplossen?
+- name: buitenWens
+  type: choiceSelection
+  question: Hoe vaak wordt gehinderd door uw problemen bij activiteiten buitens huis?
+  options: frequentieList
+  tip: Vul in hoe vaak u idealieter wenst een activiteit buitens huis te kunnen voltooien.
+
+
+# - name: algemeenGebruik
+#   type: multipleChoiceSelection
+#   question: Selecteer uit de onderstaande lijst van hulpmiddelen, welke u denkt te kunnen gebruiken.
+#   options: algemeenGebruikQuestionList
+#   tip: ""
 
 goals:
-  - name: UWV
-    response: Ga naar het UWV voor een compensatie.
-  - name: leerlingWet
-    response: Ga naar leerlingenwet voor een compensatie.
-  - name: WLZ
-    response: Ga naar WLZ voor een compensatie.
-  - name: zorgverzekering
-    response: Ga naar uw zorgverzekering voor een compensatie.
+- name: UWV
+  response: Ga naar het UWV voor een compensatie.
+- name: leerlingWet
+  response: Ga naar leerlingenwet voor een compensatie.
+- name: WLZ
+  response: Ga naar WLZ voor een compensatie.
+- name: zorgverzekering
+  response: Ga naar uw zorgverzekering voor een compensatie.
+- name: rolstoelPermanent
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
+- name: rolstoelIncidenteel
+  response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
+- name: scootmobiel
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
+- name: collectiefVervoer
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
 
 rules:
-  - conditions:
-      - name: baan
-        type: equals
-        value: Ja
-    consequence:
-      name: UWV
-      type: boolean
-      value: true
+# Wat is het probleem?
+- conditions:
+  - name: probleemGebied
+    type: equals
+    value: Mobiliteitsproblemen
+  consequence:
+    name: mobiliteitsprobleem
+    type: boolean
+    value: true
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: equals
+    value: In en om de woning en daarbuiten
+  consequence:
+    name: schaal
+    type: integer
+    value: 1
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: equals
+    value: In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
+  consequence:
+    name: schaal
+    type: integer
+    value: 2
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: equals
+    value: Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
+  consequence:
+    name: schaal
+    type: integer
+    value: 3
 
-  - conditions:
-      - name: leerling
-        type: equals
-        value: Ja
-    consequence:
-      name: leerlingWet
-      type: boolean
-      value: true
 
-  - conditions:
-      - name: lzIndicatie
-        type: equals
-        value: Ja
-    consequence:
-      name: WLZ
-      type: boolean
-      value: true
+# Moet de WMO het oplossen?
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: baan
+    type: equals
+    value: Ja
+  consequence:
+    name: UWV
+    type: boolean
+    value: true
 
-  - conditions:
-      - name: zorgverzekering
-        type: equals
-        value: Ja
-    consequence:
-      name: zorgverzekering
-      type: boolean
-      value: true
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: leerling
+    type: equals
+    value: Ja
+  consequence:
+    name: leerlingWet
+    type: boolean
+    value: true
 
-  - conditions:
-      - name: baan
-        type: equals
-        value: Nee
-      - name: leerling
-        type: equals
-        value: Nee
-      - name: lzIndicatie
-        type: equals
-        value: Nee
-      - name: zorgverzekering
-        type: equals
-        value: Nee
-    consequence:
-      name: wetten
-      type: boolean
-      value: false
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: lzIndicatie
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: WLZ
+    type: boolean
+    value: true
 
-  - conditions:
-      - name: wetten
-        type: equals
-        value: false
-      - name: voorzieningen
-        type: notContains
-        value: voorvoorzieningenList
-      - name: algemeenGebruik
-        type: notContains
-        value: algemeenGebruikList
-    consequence:
-      name: WMO
-      type: boolean
-      value: true
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: dekking
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: zorgverzekering
+    type: boolean
+    value: true
+
+- conditions:
+  - name: mobiliteitsprobleem
+    type: equals
+    value: true
+  - name: baan
+    type: equals
+    value: Nee
+  - name: leerling
+    type: equals
+    value: Nee
+  - name: lzIndicatie
+    type: equals
+    value: Nee
+  - name: zorgverzekering
+    type: equals
+    value: Nee
+  consequence:
+    name: wetten
+    type: boolean
+    value: false
+
+- conditions:
+  - name: wetten
+    type: equals
+    value: false
+  consequence:
+    name: WMO
+    type: boolean
+    value: true
+
+# Hoe gaan we het oplossen
+- conditions:
+  - name: schaal
+    type: equals
+    value: 1
+  consequence:
+    name: rolstoel
+    type: boolean
+    value: true
+- conditions:
+  - name: schaal
+    type: less
+    value: 3
+    #TODO fix buitenWens
+  - name: buitenWens
+    type: equals
+    value: true
+  consequence:
+    name: scootmobiel
+    type: boolean
+    value: true
+- conditions:
+  - name: schaal
+    type: less
+    value: 4
+    #TODO fix buitenWens
+  - name: buitenWens
+    type: equals
+    value: true
+  consequence:
+    name: collectiefVervoer
+    type: boolean
+    value: true
+
 
 
 

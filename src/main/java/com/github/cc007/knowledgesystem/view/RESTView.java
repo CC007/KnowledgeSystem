@@ -8,6 +8,9 @@ package com.github.cc007.knowledgesystem.view;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.knowledge.items.KnowledgeItem;
 import com.github.cc007.knowledgesystem.server.RESTHandler;
+import com.github.cc007.knowledgesystem.server.ResponseMessage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,10 +24,12 @@ public class RESTView implements View {
     private volatile KnowledgeItem knowledge;
     private volatile KnowledgeBase context;
     private volatile boolean goalReached;
+    private List<ResponseMessage> choices;
     public final Object knowledgeSystemLock;
     private volatile boolean newKnowledgeSystemData;
     public final Object restHandlerLock;
     private volatile boolean newRestHandlerData;
+    private volatile boolean stopped;
 
     public RESTView(RESTHandler restHandler) {
         this.restHandler = restHandler;
@@ -32,8 +37,10 @@ public class RESTView implements View {
         this.goalReached = false;
         this.newKnowledgeSystemData = false;
         this.newRestHandlerData = false;
+        this.choices = new ArrayList<>();
         this.knowledgeSystemLock = new Object();
         this.restHandlerLock = new Object();
+        this.stopped = false;
     }
 
     @Override
@@ -56,6 +63,10 @@ public class RESTView implements View {
 
         //set new data variable back to false now that the new data will be processed, to prevent processing it again
         setNewRestHandlerData(false);
+
+        if (stopped) {
+            Thread.currentThread().stop();
+        }
         return knowledge;
     }
 
@@ -103,6 +114,18 @@ public class RESTView implements View {
 
     public KnowledgeBase getContext() {
         return context;
+    }
+
+    public List<ResponseMessage> getChoices() {
+        return choices;
+    }
+
+    public void addChoice(ResponseMessage choice) {
+        this.choices.add(choice);
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 
 }

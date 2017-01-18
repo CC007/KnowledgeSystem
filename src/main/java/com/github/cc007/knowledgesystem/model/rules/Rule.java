@@ -27,40 +27,60 @@ public class Rule {
 
     public boolean checkConditions(KnowledgeBase knowledgeBase, boolean userInput) {
         if (!userInput) {
-            for (Condition condition : conditions) {
-                if (!condition.check(knowledgeBase)) {
-                    return false;
-                }
-            }
+            return checkWithoutInput(knowledgeBase);
         } else {
-            Logger.getLogger(Rule.class.getName()).info("- Checking conditions");
-            for (Condition condition : conditions) {
-                Logger.getLogger(Rule.class.getName()).info(" - check value of " + condition.getKnowledgeItemName());
-                if (condition.check(knowledgeBase)) {
-                    Logger.getLogger(Rule.class.getName()).info("  + Condition met");
-                    continue;
-                }
-                Logger.getLogger(Rule.class.getName()).info("  - Condition not met");
-                Logger.getLogger(Rule.class.getName()).info(" - Check if value is set and its (expected) origin");
-                KnowledgeItem item = knowledgeBase.getItem(condition.getKnowledgeItemName());
-                if (item == null) {
-                    Logger.getLogger(Rule.class.getName()).info(" x Item not available");
-                    return false;
-                }
-                if (!item.isValueSet()) {
-                    Logger.getLogger(Rule.class.getName()).info("  - Value not set");
-                    switch (item.getOrigin()) {
-                        case GIVEN:
-                        case INFERRED:
-                            Logger.getLogger(Rule.class.getName()).info("  x Given or inferred value origin expected");
-                            return false;
-                        default:
-                            Logger.getLogger(Rule.class.getName()).info("  + Correct value origin expected");
-                            continue;
+            return checkWithInput(knowledgeBase);
+        }
+    }
 
-                    }
-                }
-                Logger.getLogger(Rule.class.getName()).info("  x Value already set");
+    private boolean checkWithInput(KnowledgeBase knowledgeBase) {
+        System.out.println("Checking " + consequence.getName() + ":");
+        if (knowledgeBase.getItem(consequence.getName()).isValueSet()) {
+        System.out.println("x Concequence already set");
+            return false;
+        }
+        System.out.println("- Concequence not yet set");
+        System.out.println("- Checking conditions");
+        for (Condition condition : conditions) {
+            System.out.println(" - check value of " + condition.getKnowledgeItemName());
+            Boolean check = condition.check(knowledgeBase);
+            if (check != null && check) {
+                System.out.println("  + Condition met");
+                continue;
+            }
+            System.out.println("  - Condition not met");
+            System.out.println(" - Check if value is set and its (expected) origin");
+            if (check != null) {
+                System.out.println("  x Value already set");
+                return false;
+            }
+            KnowledgeItem item = knowledgeBase.getItem(condition.getKnowledgeItemName());
+            if (item == null) {
+                System.out.println(" x Item not available");
+                return false;
+            }
+            System.out.println("  - Value not set");
+            switch (item.getOrigin()) {
+                case GIVEN:
+                case INFERRED:
+                    System.out.println("  x Given or inferred value origin expected");
+                    return false;
+                default:
+                    System.out.println("  + Correct value origin expected");
+                    continue;
+
+            }
+        }
+        return true;
+    }
+
+    private boolean checkWithoutInput(KnowledgeBase knowledgeBase) {
+        if (knowledgeBase.getItem(consequence.getName()).isValueSet()) {
+            return false;
+        }
+        for (Condition condition : conditions) {
+            Boolean check = condition.check(knowledgeBase);
+            if (check == null || !check) {
                 return false;
             }
         }
