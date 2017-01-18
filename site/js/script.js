@@ -70,10 +70,14 @@ function setQuestion(response) {
     if (response.knowledge.origin === "CHOICESELECTION") {
         for (var i = 0; i < response.knowledge.options.length; i++) {
             node = setInput("radio", "value", response.knowledge.options[i]);
+            node.setAttribute("id", response.knowledge.options[i]);
             if (i == 0) {
                 node.setAttribute("checked", "checked");
             }
-            document.getElementById("question").appendChild(document.createTextNode(response.knowledge.options[i]));
+            var label = document.createElement("label");
+            label.appendChild(document.createTextNode(response.knowledge.options[i]));
+            label.setAttribute("for", response.knowledge.options[i]);
+            document.getElementById("question").appendChild(label);
             document.getElementById("question").appendChild(document.createElement("br"));
         }
         //setChoiceSelection(response.knowledge.options);
@@ -96,6 +100,9 @@ function setResult(response) {
         console.log("No result");
         document.getElementById("question").appendChild(document.createTextNode("Het is onbekend of u in aanmerking komt. Contacteer een WMO consulent voor meer informatie."));
     }
+    document.getElementById("question").appendChild(document.createElement("br"));
+    node = setInput("submit", "Restart", "Terug naar begin");
+    node.setAttribute("onclick","handleSubmit(\"Restart\");")
 }
 
 function clearNode() {
