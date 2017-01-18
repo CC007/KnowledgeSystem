@@ -24,7 +24,11 @@ public class IsSetCondition extends Condition {
         if (item == null) {
             return null;
         }
-        return item.isValueSet();
+        
+        if (!item.isValueSet()) {
+            return null;
+        }
+        return true;
     }
 
 }

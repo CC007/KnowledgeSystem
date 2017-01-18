@@ -39,7 +39,7 @@ lists:
     - Nee
 - name: wetList
   options:
-    - Ja, ik krijg zorg vanuit deze instantie.
+    - Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
     - Ja, ik heb een negatieve beschikking ontvangen.
     - Nee, ik heb geen concluderend contact gehad.
 - name: frequentieList
@@ -107,14 +107,14 @@ questions:
   tip: "Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO consulent."
 - name: contactDekking
   type: choiceSelection
-  question: Heeft u contact gehad met de overheid over uw zorgverzekeraar?
+  question: Heeft u contact gehad met uw zorgverzekeraar?
   options: wetList
   tip: ""
 
 - name: eerderWMO
   type: choiceSelection
   question: Bent u al eerder in aanraking gekomen met de WMO?
-  options: wetList
+  options: jaNeeList
   tip: ""
 - name: situatieGewijzigd
   type: choiceSelection
@@ -170,15 +170,20 @@ questions:
 goals:
 - name: UWV
   response: Ga naar het UWV voor een compensatie.
-- name: leerlingWet
+- name: leerlingwet
   response: Ga naar leerlingenwet voor een compensatie.
 - name: WLZ
   response: Ga naar WLZ voor een compensatie.
 - name: dekking
   response: Ga naar uw zorgverzekering voor een compensatie.
-
-- name: uitleenGoal
+- name: uitleen
   response: Waarschijnlijk kunt u terecht bij een zorg uitleeninstantie.
+- name: nietopnieuwWMO
+  response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
+- name: probleemOplossenGoal
+  response: probleem moeten oplossen
+- name: geenMobiliteitsproblemen
+  response: Hier kunnen we momenteel niks mee, sorry!
 - name: rolstoelPermanent
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
 - name: rolstoelIncidenteel
@@ -195,14 +200,20 @@ goals:
   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
 - name: mantelzorg
   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
-- name: nietopnieuwWMO
-  response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
-- name: geenProbleemMeer
-  response: Mooi dat u probleem is opgelost.
 
 
 rules:
 # Wat is het probleem?
+- conditions:
+  - name: probleemGebied
+    type: notEquals
+    value: Mobiliteitsproblemen
+  consequence: 
+    name: geenMobiliteitsproblemen
+    type: boolean
+    value: true
+
+
 - conditions:
   - name: probleemGebied
     type: equals
@@ -214,13 +225,41 @@ rules:
     type: boolean
     value: true
 
-
-
-
-
-
-
 #Moet de WMO dit oplossen?
+ # opnieuw WMO
+- conditions:
+  - name: eerderWMO
+    type: equals
+    value: Nee
+  consequence:
+    name: opnieuwWMO
+    type: boolean
+    value: true
+- conditions:
+  - name: eerderWMO
+    type: equals
+    value: Ja
+  - name: situatieGewijzigd
+    type: equals
+    value: Ja
+  consequence:
+    name: opnieuwWMO
+    type: boolean
+    value: true
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: eerderWMO
+    type: equals
+    value: Ja
+  - name: situatieGewijzigd
+    type: equals
+    value: Nee
+  consequence:
+    name: nietopnieuwWMO
+    type: boolean
+    value: true
   
   #UWV
 - conditions:
@@ -248,35 +287,21 @@ rules:
     value: Ja
   - name: contactUWV
     type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Nee
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
   consequence:
     name: geenUWV
     type: boolean
     value: true
 - conditions:
-  - name: baan
+  - name: introCompleet
     type: equals
-    value: Ja
-  - name: contactUWV
-    type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Ja
-  consequence:
-    name: geenProbleemMeer
-    type: boolean
     value: true
-- conditions:
   - name: baan
     type: equals
     value: Ja
   - name: contactUWV
     type: equals
-    value: Nee, ik heb geen contact gehad.
+    value: Nee, ik heb geen concluderend contact gehad.
   consequence:
     name: UWV
     type: boolean
@@ -308,35 +333,21 @@ rules:
     value: Ja
   - name: contactLeerlingwet
     type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Nee
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
   consequence:
     name: geenLeerlingwet
     type: boolean
     value: true
 - conditions:
-  - name: leerling
+  - name: introCompleet
     type: equals
-    value: Ja
-  - name: contactLeerlingwet
-    type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Ja
-  consequence:
-    name: geenProbleemMeer
-    type: boolean
     value: true
-- conditions:
   - name: leerling
     type: equals
     value: Ja
   - name: contactLeerlingwet
     type: equals
-    value: Nee, ik heb geen contact gehad.
+    value: Nee, ik heb geen concluderend contact gehad.
   consequence:
     name: leerlingwet
     type: boolean
@@ -345,6 +356,9 @@ rules:
 
     #WETLANGDURIGEZORG
 - conditions:
+  - name: introCompleet
+    type: equals
+    value: true
   - name: lzIndicatie
     type: equals
     value: Nee, ik heb geen concluderend contact gehad.
@@ -355,23 +369,9 @@ rules:
 - conditions:
   - name: lzIndicatie
     type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Nee
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
   consequence:
     name: geenWLZ
-    type: boolean
-    value: true
-- conditions:
-  - name: lzIndicatie
-    type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Ja
-  consequence:
-    name: geenProbleemMeer
     type: boolean
     value: true
 - conditions:
@@ -386,6 +386,9 @@ rules:
 
     #VERZEKERING
 - conditions:
+  - name: introCompleet
+    type: equals
+    value: true
   - name: contactDekking
     type: equals
     value: Nee, ik heb geen concluderend contact gehad.
@@ -396,23 +399,9 @@ rules:
 - conditions:
   - name: contactDekking
     type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Nee
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
   consequence:
     name: geenDekking
-    type: boolean
-    value: true
-- conditions:
-  - name: contactDekking
-    type: equals
-    value: Ja, ik krijg zorg vanuit deze instantie.
-  - name: opgelost
-    type: equals
-    value: Ja
-  consequence:
-    name: geenProbleemMeer
     type: boolean
     value: true
 - conditions:
@@ -449,23 +438,24 @@ rules:
     type: equals
     value: Korter dan zes maanden
   - name: uitleenVraag
-    type: notequals
-    value: Nee
+    type: equals
+    value: Ja, deze instantie kan mij niet volledig helpen
   consequence:
-    name: uitleen
+    name: geenUitleen
     type: boolean
-    value: false
-
+    value: true
 - conditions:
   - name: termijnProbleem
     type: equals
     value: Langer dan zes maanden
   consequence:
-    name: uitleen
+    name: geenUitleen
     type: boolean
-    value: false
-
+    value: true
 - conditions:
+  - name: introCompleet
+    type: equals
+    value: true
   - name: termijnProbleem
     type: equals
     value: Korter dan zes maanden
@@ -473,163 +463,128 @@ rules:
     type: equals
     value: Nee
   consequence:
-    name: uitleenGoal
+    name: uitleen
     type: boolean
     value: true
-
- # opnieuw WMO
-- conditions:
-  - name: eerderWMO
-    type: equals
-    value: Nee, ik heb geen concluderend contact gehad.
-  consequence:
-    name: opnieuwWMO
-    type: boolean
-    value: true
-- conditions:
-  - name: eerderWMO
-    type: notequals
-    value: Nee, ik heb geen concluderend contact gehad.
-  - name: situatieGewijzigd
-    type: equals
-    value: Ja
-  consequence:
-    name: opnieuwWMO
-    type: boolean
-    value: true
-- conditions:
-  - name: eerderWMO
-    type: notequals
-    value: Nee, ik heb geen concluderend contact gehad.
-  - name: situatieGewijzigd
-    type: equals
-    value: Nee
-  consequence:
-    name: nietopnieuwWMO
-    type: boolean
-    value: true
-
 
   #oplossen ja of nee eind condities
 - conditions:
-  - name: introCompleet
-    type: equals
-    value: true
-  
-
   - name: wetten
     type: equals
     value: false
-  - name: uitleen
+  - name: geenUitleen
     type: equals
-    value: false
+    value: true
+  - name: opnieuwWMO
+    type: equals
+    value: true
   consequence:
-    name: probleemOplossen
+    name: probleemOplossenGoal
     type: boolean
     value: true
 
 
-# Hoe gaan we het oplossen
-- conditions:
-  - name: probleemOplossen
-    type: equals
-    value: true
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
-  - name: schaalProbleem
-    type: equals
-    value: In en om de woning en daarbuiten
-  consequence:
-    name: schaal
-    type: integer
-    value: 1
-- conditions:
-  - name: probleemOplossen
-    type: equals
-    value: true
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
-  - name: schaalProbleem
-    type: equals
-    value: In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
-  consequence:
-    name: schaal
-    type: integer
-    value: 2
-- conditions:
-  - name: probleemOplossen
-    type: equals
-    value: true
-  - name: probleemGebied
-    type: equals
-    value: Mobiliteitsproblemen
-  - name: schaalProbleem
-    type: equals
-    value: Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
-  consequence:
-    name: schaal
-    type: integer
-    value: 3
+# # Hoe gaan we het oplossen
+# - conditions:
+#   - name: probleemOplossen
+#     type: equals
+#     value: true
+#   - name: probleemGebied
+#     type: equals
+#     value: Mobiliteitsproblemen
+#   - name: schaalProbleem
+#     type: equals
+#     value: In en om de woning en daarbuiten
+#   consequence:
+#     name: schaal
+#     type: integer
+#     value: 1
+# - conditions:
+#   - name: probleemOplossen
+#     type: equals
+#     value: true
+#   - name: probleemGebied
+#     type: equals
+#     value: Mobiliteitsproblemen
+#   - name: schaalProbleem
+#     type: equals
+#     value: In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
+#   consequence:
+#     name: schaal
+#     type: integer
+#     value: 2
+# - conditions:
+#   - name: probleemOplossen
+#     type: equals
+#     value: true
+#   - name: probleemGebied
+#     type: equals
+#     value: Mobiliteitsproblemen
+#   - name: schaalProbleem
+#     type: equals
+#     value: Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
+#   consequence:
+#     name: schaal
+#     type: integer
+#     value: 3
 
 
-- conditions:
-  - name: frequentie
-    type: notequals
-    value: Minder dan eens per maand
-  consequence:
-    name: buitenWens
-    type: boolean
-    value: true
-- conditions:
-  - name: frequentie
-    type: equals
-    value: Minder dan eens per maand
-  consequence:
-    name: buitenWens
-    type: boolean
-    value: false
+# - conditions:
+#   - name: frequentie
+#     type: notEquals
+#     value: Minder dan eens per maand
+#   consequence:
+#     name: buitenWens
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: frequentie
+#     type: equals
+#     value: Minder dan eens per maand
+#   consequence:
+#     name: buitenWens
+#     type: boolean
+#     value: false
 
-- conditions:
-  - name: schaal
-    type: equals
-    value: 1
-  - name: wetten
-    type: equals
-    value: false
-  consequence:
-    name: rolstoelPermanent
-    type: boolean
-    value: true
-- conditions:
-  - name: wetten
-    type: equals
-    value: false
-  - name: schaal
-    type: less
-    value: 3
-  - name: buitenWens
-    type: equals
-    value: true
-  consequence:
-    name: scootmobiel
-    type: boolean
-    value: true
-- conditions:
-  - name: wetten
-    type: equals
-    value: false
-  - name: schaal
-    type: less
-    value: 4
-  - name: buitenWens
-    type: equals
-    value: true
-  consequence:
-    name: collectiefVervoer
-    type: boolean
-    value: true
+# - conditions:
+#   - name: schaal
+#     type: equals
+#     value: 1
+#   - name: wetten
+#     type: equals
+#     value: false
+#   consequence:
+#     name: rolstoelPermanent
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: wetten
+#     type: equals
+#     value: false
+#   - name: schaal
+#     type: less
+#     value: 3
+#   - name: buitenWens
+#     type: equals
+#     value: true
+#   consequence:
+#     name: scootmobiel
+#     type: boolean
+#     value: true
+# - conditions:
+#   - name: wetten
+#     type: equals
+#     value: false
+#   - name: schaal
+#     type: less
+#     value: 4
+#   - name: buitenWens
+#     type: equals
+#     value: true
+#   consequence:
+#     name: collectiefVervoer
+#     type: boolean
+#     value: true
 
 
 

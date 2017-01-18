@@ -131,95 +131,99 @@ public class YMLFileModelLoader extends FileModelLoader {
     }
 
     private void setRules(YMLNode root, KnowledgeBase knowledgeBase, RuleBase ruleBase) {
-        log.info("Put the rules into the rule base");
-        List<YMLNode> rules = root.getNodeList("rules").getNodes();
-        for (YMLNode rule : rules) {
-            // We first retrieve the knowledge item
-            String consequenceName = rule.getNode("consequence").getString("name");
-            String consequenceType = rule.getNode("consequence").getString("type");
-            KnowledgeItem knowledgeItem = knowledgeBase.getItem(consequenceName);
-            log.info(consequenceName + "(" + consequenceType + ")");
-            // add the knowledge item to the knowledge base if it isn't already there
-            if (knowledgeItem == null) {
+        try {
+            log.info("Put the rules into the rule base");
+            List<YMLNode> rules = root.getNodeList("rules").getNodes();
+            for (YMLNode rule : rules) {
+                // We first retrieve the knowledge item
+                String consequenceName = rule.getNode("consequence").getString("name");
+                String consequenceType = rule.getNode("consequence").getString("type");
+                KnowledgeItem knowledgeItem = knowledgeBase.getItem(consequenceName);
+                log.info(consequenceName + "(" + consequenceType + ")");
+                // add the knowledge item to the knowledge base if it isn't already there
+                if (knowledgeItem == null) {
+                    switch (consequenceType) {
+                        case "boolean":
+                            knowledgeItem = new BooleanItem(consequenceName, KnowledgeOrigin.INFERRED, false);
+                            break;
+                        case "integer":
+                            knowledgeItem = new IntegerItem(consequenceName, KnowledgeOrigin.INFERRED, false);
+                            break;
+                        //TODO other types
+                        default:
+                            throw new UnsupportedOperationException("Only boolean and integer supported up until now");
+
+                    }
+                    knowledgeBase.setItem(knowledgeItem);
+                }
+
+                // Then we create a copy of the item to be used as consequence and set its value
+                KnowledgeItem consequence = knowledgeItem.copy();
                 switch (consequenceType) {
                     case "boolean":
-                        knowledgeItem = new BooleanItem(consequenceName, KnowledgeOrigin.INFERRED, false);
+                        consequence.setValue(rule.getNode("consequence").getBoolean("value"));
                         break;
                     case "integer":
-                        knowledgeItem = new IntegerItem(consequenceName, KnowledgeOrigin.INFERRED, false);
+                        consequence.setValue(rule.getNode("consequence").getInt("value"));
                         break;
                     //TODO other types
                     default:
                         throw new UnsupportedOperationException("Only boolean and integer supported up until now");
-
                 }
-                knowledgeBase.setItem(knowledgeItem);
+
+                // Make the consequence the base of the rule and add the condition that the consequence isn't true yet
+                RuleBuilder newRule = new RuleBuilder(consequence);
+
+                // A rule can have multiple conditions
+                // We add each condition to the existing rule
+                List<YMLNode> conditions = rule.getNodeList("conditions").getNodes();
+                for (YMLNode condition : conditions) {
+                    Condition newCondition = null;
+                    String conditionName = condition.getString("name");
+                    String conditionType = condition.getString("type");
+                    KnowledgeItem item = knowledgeBase.getItem(conditionName);
+                    if (item == null) {
+                        throw new IllegalArgumentException("The knowledge item with the name '" + conditionName + "' isn't added to the knowledge base yet. Add a question, goal or rule consequence with this knowledge item's name");
+                    }
+                    Object conditionValue = null;
+                    if (!conditionType.equals("isset")) {
+                        conditionValue = getConditionValue(condition, item);
+                        log.info("- " + conditionName + "(" + conditionType + "): " + conditionValue);
+                    }
+                    switch (conditionType) {
+                        case "equals":
+                            newCondition = new EqualityCondition(conditionName, conditionValue);
+                            break;
+                        case "notEquals":
+                            newCondition = new EqualityCondition(conditionName, conditionValue, false);
+                            break;
+                        case "contains":
+                            newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue);
+                            break;
+                        case "notContains":
+                            newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue, false);
+                            break;
+                        case "less":
+                            newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.LESS);
+                            break;
+                        case "greater":
+                            newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.GREATER);
+                            break;
+                        case "isset":
+                            newCondition = new IsSetCondition(conditionName);
+                            break;
+                        default:
+                            throw new UnsupportedOperationException("Condition not implemented yet");
+                        //TODO value conditions
+                    }
+                    newRule.addCondition(newCondition);
+                }
+                // After the consequence and all of the conditions have been added,
+                // we build the rule and add it to the rule base
+                ruleBase.addRule(newRule.build());
             }
-
-            // Then we create a copy of the item to be used as consequence and set its value
-            KnowledgeItem consequence = knowledgeItem.copy();
-            switch (consequenceType) {
-                case "boolean":
-                    consequence.setValue(rule.getNode("consequence").getBoolean("value"));
-                    break;
-                case "integer":
-                    consequence.setValue(rule.getNode("consequence").getInt("value"));
-                    break;
-                //TODO other types
-                default:
-                    throw new UnsupportedOperationException("Only boolean and integer supported up until now");
-            }
-
-            // Make the consequence the base of the rule and add the condition that the consequence isn't true yet
-            RuleBuilder newRule = new RuleBuilder(consequence);
-
-            // A rule can have multiple conditions
-            // We add each condition to the existing rule
-            List<YMLNode> conditions = rule.getNodeList("conditions").getNodes();
-            for (YMLNode condition : conditions) {
-                Condition newCondition = null;
-                String conditionName = condition.getString("name");
-                String conditionType = condition.getString("type");
-                KnowledgeItem item = knowledgeBase.getItem(conditionName);
-                if (item == null) {
-                    throw new IllegalArgumentException("The knowledge item with the name '" + conditionName + "' isn't added to the knowledge base yet. Add a question, goal or rule consequence with this knowledge item's name");
-                }
-                Object conditionValue = null;
-                if (!conditionType.equals("isset")) {
-                    conditionValue = getConditionValue(condition, item);
-                    log.info("- " + conditionName + "(" + conditionType + "): " + conditionValue);
-                }
-                switch (conditionType) {
-                    case "equals":
-                        newCondition = new EqualityCondition(conditionName, conditionValue);
-                        break;
-                    case "notEquals":
-                        newCondition = new EqualityCondition(conditionName, conditionValue, false);
-                        break;
-                    case "contains":
-                        newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue);
-                        break;
-                    case "notContains":
-                        newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue, false);
-                        break;
-                    case "less":
-                        newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.LESS);
-                        break;
-                    case "greater":
-                        newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.GREATER);
-                        break;
-                    case "isset":
-                        newCondition = new IsSetCondition(conditionName);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException("Condition not implemented yet");
-                    //TODO value conditions
-                }
-                newRule.addCondition(newCondition);
-            }
-            // After the consequence and all of the conditions have been added,
-            // we build the rule and add it to the rule base
-            ruleBase.addRule(newRule.build());
+        } catch (Exception e) {
+            log.log(Level.SEVERE, null, e);
         }
     }
 
