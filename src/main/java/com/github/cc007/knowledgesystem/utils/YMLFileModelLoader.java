@@ -198,10 +198,10 @@ public class YMLFileModelLoader extends FileModelLoader {
                             newCondition = new EqualityCondition(conditionName, conditionValue, false);
                             break;
                         case "contains":
-                            newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue);
+                            newCondition = new InclusionCondition(conditionName, (Integer) conditionValue);
                             break;
                         case "notContains":
-                            newCondition = new InclusionCondition(conditionName, knowledgeBase, (String) conditionValue, false);
+                            newCondition = new InclusionCondition(conditionName, (Integer) conditionValue, false);
                             break;
                         case "less":
                             newCondition = new ValueCondition(conditionName, (Comparable) conditionValue, ValueOperator.LESS);
@@ -238,7 +238,7 @@ public class YMLFileModelLoader extends FileModelLoader {
             case "index":
                 return ((ChoiceSelectionItem) item).getIndex(condition.getString("value"));
             case "indexlist":
-                return ((MultipleChoiceSelectionItem) item).getIndex(condition.getString("value"));
+                return condition.getInt("value");
             default:
                 throw new UnsupportedOperationException("Decimal and multiplechoice types not yet supported by YML model loader. Found type: " + item.getType());
         }
