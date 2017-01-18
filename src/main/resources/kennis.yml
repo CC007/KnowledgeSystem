@@ -49,11 +49,11 @@ lists:
     - Meerdere malen per week
     - Meerdere malen per maand
     - Minder dan eens per maand
-# -	name: algemeenGebruikQuestionList
-# 	options:
-# 		- Scootmobiel
-# 		- Reguliere rolstoel
-# 		- Krukken
+# - name: algemeenGebruikQuestionList
+#   options:
+#     - Scootmobiel
+#     - Reguliere rolstoel
+#     - Krukken
 # - name: algemeenGebruikList
 #   options:
 #     - Reguliere rolstoel
@@ -156,7 +156,7 @@ goals:
   response: Ga naar WLZ voor een compensatie.
 - name: zorgverzekering
   response: Ga naar uw zorgverzekering voor een compensatie.
-- name: uitleen
+- name: uitleenGoal
   response: Waarschijnlijk kunt u terecht bij een zorg uitleeninstantie.
 - name: rolstoelPermanent
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
@@ -249,10 +249,10 @@ rules:
     value: false
 
 - conditions:
-  - name: termijn
+  - name: termijnProbleem
     type: equals
     value: Korter dan zes maanden
-  - name: uitleen
+  - name: uitleenVraag
     type: notequals
     value: Nee
   consequence:
@@ -261,7 +261,7 @@ rules:
     value: false
 
 - conditions:
-  - name: termijn
+  - name: termijnProbleem
     type: equals
     value: Langer dan zes maanden
   consequence:
@@ -270,14 +270,14 @@ rules:
     value: false
 
 - conditions:
-  - name: termijn
+  - name: termijnProbleem
     type: equals
     value: Korter dan zes maanden
-  - name: uitleen
+  - name: uitleenVraag
     type: equals
     value: Nee
   consequence:
-    name: uitleen
+    name: uitleenGoal
     type: boolean
     value: true
 

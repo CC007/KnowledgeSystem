@@ -138,7 +138,7 @@ public class YMLFileModelLoader extends FileModelLoader {
             String consequenceName = rule.getNode("consequence").getString("name");
             String consequenceType = rule.getNode("consequence").getString("type");
             KnowledgeItem knowledgeItem = knowledgeBase.getItem(consequenceName);
-
+            log.info(consequenceName + "(" + consequenceType + ")");
             // add the knowledge item to the knowledge base if it isn't already there
             if (knowledgeItem == null) {
                 switch (consequenceType) {
@@ -185,6 +185,7 @@ public class YMLFileModelLoader extends FileModelLoader {
                     throw new IllegalArgumentException("The knowledge item with the name '" + conditionName + "' isn't added to the knowledge base yet. Add a question, goal or rule consequence with this knowledge item's name");
                 }
                 Object conditionValue = getConditionValue(condition, item);
+                log.info("- " + conditionName + "(" + conditionType + "): " + conditionValue);
                 switch (conditionType) {
                     case "equals":
                         newCondition = new EqualityCondition(conditionName, conditionValue);
