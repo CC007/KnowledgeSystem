@@ -9,9 +9,7 @@ import com.github.cc007.knowledgesystem.controller.InferenceSystem;
 import com.github.cc007.knowledgesystem.model.knowledge.KnowledgeBase;
 import com.github.cc007.knowledgesystem.model.rules.RuleBase;
 import com.github.cc007.knowledgesystem.utils.ModelLoader;
-import com.github.cc007.knowledgesystem.utils.YMLFileModelLoader;
 import com.github.cc007.knowledgesystem.view.RESTView;
-import java.util.logging.Logger;
 
 /**
  *
