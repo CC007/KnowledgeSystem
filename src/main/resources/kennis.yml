@@ -40,9 +40,8 @@ lists:
 - name: wetList
   options:
     - Ja, ik krijg zorg vanuit deze instantie.
-    - Ja, hier volgde niets uit.
     - Ja, ik heb een negatieve beschikking ontvangen.
-    - Nee, ik heb geen contact gehad.
+    - Nee, ik heb geen concluderend contact gehad.
 - name: frequentieList
   options:
     - Iedere dag
@@ -79,6 +78,39 @@ questions:
   tip: ""
 
 # Moet de WMO het oplossen?
+- name: baan
+  type: choiceSelection
+  question: Heeft u een betaalde baan, waarbij uw problemen in de weg komen te staan?
+  options: jaNeeList
+  tip: ""
+- name: contactUWV
+  type: choiceSelection
+  question: Heeft u contact gehad met het UWV over uw rechten?
+  options: wetList
+  tip: ""
+- name: leerling
+  type: choiceSelection
+  question: Gaat het om een minderjarige die naar school gaat?
+  options: jaNeeList
+  tip: ""
+- name: contactLeerlingwet
+  type: choiceSelection
+  question: Heeft u contact gehad met de overheid over uw rechten onder de leerlingwet?
+  options: wetList
+  tip: ""
+
+
+- name: lzIndicatie
+  type: choiceSelection
+  question: Heeft u contact gehad met de overheid over uw rechten onder de Wet Langdurige Zorg?
+  options: wetList
+  tip: "Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO consulent."
+- name: contactDekking
+  type: choiceSelection
+  question: Heeft u contact gehad met de overheid over uw zorgverzekeraar?
+  options: wetList
+  tip: ""
+
 - name: eerderWMO
   type: choiceSelection
   question: Bent u al eerder in aanraking gekomen met de WMO?
@@ -99,26 +131,7 @@ questions:
   question: Bent al naar een thuiszorgwinkel of uitleen geweest?
   options: uitleenList
   tip: In de regio Groningen kunt u terecht bij de Vegro.
-- name: baan
-  type: choiceSelection
-  question: Heeft u een betaalde baan, waarbij uw problemen in de weg komen te staan?
-  options: jaNeeList
-  tip: ""
-- name: leerling
-  type: choiceSelection
-  question: Gaat het om een minderjarige die naar school gaat?
-  options: jaNeeList
-  tip: ""
-- name: lzIndicatie
-  type: choiceSelection
-  question: Heeft u contact gehad met de overheid over uw rechten onder de Wet Langdurige Zorg?
-  options: wetList
-  tip: "Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO consulent."
-- name: dekking
-  type: choiceSelection
-  question: Heeft u contact gehad met de overheid over uw zorgverzekeraar?
-  options: wetList
-  tip: ""
+
 
 
 - name: voorzieningen
@@ -161,8 +174,9 @@ goals:
   response: Ga naar leerlingenwet voor een compensatie.
 - name: WLZ
   response: Ga naar WLZ voor een compensatie.
-- name: zorgverzekering
+- name: dekking
   response: Ga naar uw zorgverzekering voor een compensatie.
+
 - name: uitleenGoal
   response: Waarschijnlijk kunt u terecht bij een zorg uitleeninstantie.
 - name: rolstoelPermanent
@@ -183,6 +197,9 @@ goals:
   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
 - name: nietopnieuwWMO
   response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
+- name: geenProbleemMeer
+  response: Mooi dat u probleem is opgelost.
+
 
 rules:
 # Wat is het probleem?
@@ -190,8 +207,8 @@ rules:
   - name: probleemGebied
     type: equals
     value: Mobiliteitsproblemen
-  # - name: wijk
-  #   type: isset
+  - name: wijk
+    type: isset
   consequence:
     name: introCompleet
     type: boolean
@@ -204,55 +221,223 @@ rules:
 
 
 #Moet de WMO dit oplossen?
+  
+  #UWV
+- conditions:
+  - name: baan
+    type: equals
+    value: Nee
+  consequence:
+    name: geenUWV
+    type: boolean
+    value: true
 - conditions:
   - name: baan
     type: equals
     value: Ja
+  - name: contactUWV
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: geenUWV
+    type: boolean
+    value: true
+- conditions:
+  - name: baan
+    type: equals
+    value: Ja
+  - name: contactUWV
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
+    type: equals
+    value: Nee
+  consequence:
+    name: geenUWV
+    type: boolean
+    value: true
+- conditions:
+  - name: baan
+    type: equals
+    value: Ja
+  - name: contactUWV
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
+    type: equals
+    value: Ja
+  consequence:
+    name: geenProbleemMeer
+    type: boolean
+    value: true
+- conditions:
+  - name: baan
+    type: equals
+    value: Ja
+  - name: contactUWV
+    type: equals
+    value: Nee, ik heb geen contact gehad.
   consequence:
     name: UWV
     type: boolean
     value: true
 
+    #LEERLINGWET
+- conditions:
+  - name: leerling
+    type: equals
+    value: Nee
+  consequence:
+    name: geenLeerlingwet
+    type: boolean
+    value: true
 - conditions:
   - name: leerling
     type: equals
     value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
   consequence:
-    name: leerlingWet
+    name: geenLeerlingwet
+    type: boolean
+    value: true
+- conditions:
+  - name: leerling
+    type: equals
+    value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
+    type: equals
+    value: Nee
+  consequence:
+    name: geenLeerlingwet
+    type: boolean
+    value: true
+- conditions:
+  - name: leerling
+    type: equals
+    value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
+    type: equals
+    value: Ja
+  consequence:
+    name: geenProbleemMeer
+    type: boolean
+    value: true
+- conditions:
+  - name: leerling
+    type: equals
+    value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Nee, ik heb geen contact gehad.
+  consequence:
+    name: leerlingwet
     type: boolean
     value: true
 
+
+    #WETLANGDURIGEZORG
 - conditions:
   - name: lzIndicatie
     type: equals
-    value: Ja, ik heb een negatieve beschikking ontvangen.
+    value: Nee, ik heb geen concluderend contact gehad.
   consequence:
     name: WLZ
     type: boolean
     value: true
-
 - conditions:
-  - name: dekking
+  - name: lzIndicatie
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
+    type: equals
+    value: Nee
+  consequence:
+    name: geenWLZ
+    type: boolean
+    value: true
+- conditions:
+  - name: lzIndicatie
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
+    type: equals
+    value: Ja
+  consequence:
+    name: geenProbleemMeer
+    type: boolean
+    value: true
+- conditions:
+  - name: lzIndicatie
     type: equals
     value: Ja, ik heb een negatieve beschikking ontvangen.
   consequence:
-    name: zorgverzekering
+    name: geenWLZ
     type: boolean
     value: true
 
+
+    #VERZEKERING
 - conditions:
-  - name: baan
+  - name: contactDekking
+    type: equals
+    value: Nee, ik heb geen concluderend contact gehad.
+  consequence:
+    name: dekking
+    type: boolean
+    value: true
+- conditions:
+  - name: contactDekking
+    type: equals
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
     type: equals
     value: Nee
-  - name: leerling
+  consequence:
+    name: geenDekking
+    type: boolean
+    value: true
+- conditions:
+  - name: contactDekking
     type: equals
-    value: Nee
-  - name: lzIndicatie
+    value: Ja, ik krijg zorg vanuit deze instantie.
+  - name: opgelost
     type: equals
-    value: Nee
-  - name: zorgverzekering
+    value: Ja
+  consequence:
+    name: geenProbleemMeer
+    type: boolean
+    value: true
+- conditions:
+  - name: contactDekking
     type: equals
-    value: Nee
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: geenDekking
+    type: boolean
+    value: true
+
+    #WETTEN
+- conditions:
+  - name: geenUWV
+    type: equals
+    value: true
+  - name: geenLeerlingwet
+    type: equals
+    value: true
+  - name: geenWLZ
+    type: equals
+    value: true
+  - name: geenDekking
+    type: equals
+    value: true
   consequence:
     name: wetten
     type: boolean
@@ -296,7 +481,7 @@ rules:
 - conditions:
   - name: eerderWMO
     type: equals
-    value: Nee, ik heb geen contact gehad.
+    value: Nee, ik heb geen concluderend contact gehad.
   consequence:
     name: opnieuwWMO
     type: boolean
@@ -304,7 +489,7 @@ rules:
 - conditions:
   - name: eerderWMO
     type: notequals
-    value: Nee, ik heb geen contact gehad.
+    value: Nee, ik heb geen concluderend contact gehad.
   - name: situatieGewijzigd
     type: equals
     value: Ja
@@ -315,7 +500,7 @@ rules:
 - conditions:
   - name: eerderWMO
     type: notequals
-    value: Nee, ik heb geen contact gehad.
+    value: Nee, ik heb geen concluderend contact gehad.
   - name: situatieGewijzigd
     type: equals
     value: Nee
@@ -330,7 +515,7 @@ rules:
   - name: introCompleet
     type: equals
     value: true
-
+  
 
   - name: wetten
     type: equals
