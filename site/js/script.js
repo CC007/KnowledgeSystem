@@ -37,7 +37,7 @@ function handleSubmit(submitButtonName) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             console.log(xhr.responseText);
             clearNode();
-            if(xhr.responseText == "<html><body><h2>500 Internal Error</h2></body></html>"){
+            if (xhr.responseText == "<html><body><h2>500 Internal Error</h2></body></html>") {
                 document.getElementById("question").appendChild(document.createTextNode("An error occured on the server side"));
                 return;
             }
@@ -69,12 +69,14 @@ function setQuestion(response) {
     setInput("hidden", "name", response.knowledge.name);
     if (response.knowledge.origin === "CHOICESELECTION") {
         for (var i = 0; i < response.knowledge.options.length; i++) {
-            setInput("radio", "value", response.knowledge.options[i]);
+            node = setInput("radio", "value", response.knowledge.options[i]);
+            if (i == 0) {
+                node.setAttribute("checked", "checked");
+            }
             document.getElementById("question").appendChild(document.createTextNode(response.knowledge.options[i]));
             document.getElementById("question").appendChild(document.createElement("br"));
         }
         //setChoiceSelection(response.knowledge.options);
-
     }
     document.getElementById("question").appendChild(document.createElement("br"));
     node = setInput("submit", "Submit1", "Vorige");
