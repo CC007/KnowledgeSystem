@@ -176,7 +176,7 @@ questions:
   options: jaNeeList
   tip: ""
 
-- name: socialeKring
+- name: mantelzorg
   type: choiceSelection
   question: Heeft u mensen in uw sociale kring die u kunnen bijstaan of geniet u professionele hulp?
   options: jaNeeList
@@ -566,61 +566,40 @@ rules:
     type: boolean
     value: true
 
-- conditions:
-  - name: socialeKring
-    type: equals
-    value: Nee
-  consequence:
-    name: mantelzorg
-    type: boolean
-    value: false
-# - conditions:
-#   - name: socialeKring
-#     type: equals
-#     value: Ja
-#   consequence:
-#     name: mantelzorg
-#     type: boolean
-#     value: true
 
+#Alleen CVP pas
 - conditions:
   # - name: probleemOplossen
   #   type: equals
   #   value: true
-  # - name: schaalProbleem
-  #   type: contains
-  #   value: 2
-  # - name: buitenWens
-  #   type: contains
-  #   value: 2
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 2
   - name: mantelzorg
     type: equals
-    value: false
+    value: Nee
   consequence:
     name: CVP
     type: boolean
     value: true
+
+#Elektrische rolstoel
 # - conditions:
-#   - name: probleemOplossen
+#   - name: transfer
 #     type: equals
-#     value: true
+#     value: Nee
 #   - name: schaalProbleem
 #     type: contains
-#     value: 2
+#     value: 0
 #   - name: buitenWens
 #     type: contains
-#     value: 2
-#   - name: mantelzorg
-#     type: equals
-#     value: true
-#   consequence:
-#     name: mantelzorgGoal
-#     type: boolean
-#     value: true
-
-
-
-
+#     value: 0
+#   - name: buitenWens
+#     type: contains
+#     value: 1
 
 
 
