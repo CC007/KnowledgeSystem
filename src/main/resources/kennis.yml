@@ -180,26 +180,26 @@ goals:
   response: Waarschijnlijk kunt u terecht bij een zorg uitleeninstantie.
 - name: nietopnieuwWMO
   response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
-- name: probleemOplossenGoal
-  response: probleem moeten oplossen
 - name: geenMobiliteitsproblemen
   response: Hier kunnen we momenteel niks mee, sorry!
 - name: rolstoelPermanent
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
-- name: rolstoelIncidenteel
-  response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
-- name: scootmobiel
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
-- name: collectiefVervoer
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
-- name: elektrischeRolstoel
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel.
-- name: busaanpassing
-  response: Mogelijk komen jullie in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
-- name: rollator
-  response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
-- name: mantelzorg
-  response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
+- name: rolstoelScootmobiel
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel en scootmobiel gebruik.
+# - name: rolstoelIncidenteel
+#   response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
+# - name: scootmobiel
+#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
+# - name: collectiefVervoer
+#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
+# - name: elektrischeRolstoel
+#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel.
+# - name: busaanpassing
+#   response: Mogelijk komen jullie in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
+# - name: rollator
+#   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
+# - name: mantelzorg
+#   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
 
 
 rules:
@@ -479,54 +479,36 @@ rules:
     type: equals
     value: true
   consequence:
-    name: probleemOplossenGoal
+    name: probleemOplossen
     type: boolean
     value: true
 
 
 # # Hoe gaan we het oplossen
-# - conditions:
-#   - name: probleemOplossen
-#     type: equals
-#     value: true
-#   - name: probleemGebied
-#     type: equals
-#     value: Mobiliteitsproblemen
-#   - name: schaalProbleem
-#     type: equals
-#     value: In en om de woning en daarbuiten
-#   consequence:
-#     name: schaal
-#     type: integer
-#     value: 1
-# - conditions:
-#   - name: probleemOplossen
-#     type: equals
-#     value: true
-#   - name: probleemGebied
-#     type: equals
-#     value: Mobiliteitsproblemen
-#   - name: schaalProbleem
-#     type: equals
-#     value: In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
-#   consequence:
-#     name: schaal
-#     type: integer
-#     value: 2
-# - conditions:
-#   - name: probleemOplossen
-#     type: equals
-#     value: true
-#   - name: probleemGebied
-#     type: equals
-#     value: Mobiliteitsproblemen
-#   - name: schaalProbleem
-#     type: equals
-#     value: Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
-#   consequence:
-#     name: schaal
-#     type: integer
-#     value: 3
+- conditions:
+  - name: schaalProbleem
+    type: equals
+    value: In en om de woning en daarbuiten
+  consequence:
+    name: schaal
+    type: integer
+    value: 1
+- conditions:
+  - name: schaalProbleem
+    type: equals
+    value: In ongeveer een 1,5 km radius rondom mijn woning en daarbuiten
+  consequence:
+    name: schaal
+    type: integer
+    value: 2
+- conditions:
+  - name: schaalProbleem
+    type: equals
+    value: Alleen buiten ongeveer een 1,5 km radius rondom mijn woning
+  consequence:
+    name: schaal
+    type: integer
+    value: 3
 
 
 # - conditions:
@@ -546,17 +528,28 @@ rules:
 #     type: boolean
 #     value: false
 
-# - conditions:
-#   - name: schaal
-#     type: equals
-#     value: 1
-#   - name: wetten
-#     type: equals
-#     value: false
-#   consequence:
-#     name: rolstoelPermanent
-#     type: boolean
-#     value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaal
+    type: equals
+    value: 1
+  consequence:
+    name: rolstoelPermanent
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaal
+    type: equals
+    value: 2
+  consequence:
+    name: rolstoelScootmobiel
+    type: boolean
+    value: true
 # - conditions:
 #   - name: wetten
 #     type: equals
