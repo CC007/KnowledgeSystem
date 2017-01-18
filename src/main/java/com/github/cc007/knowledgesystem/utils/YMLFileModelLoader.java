@@ -185,7 +185,7 @@ public class YMLFileModelLoader extends FileModelLoader {
                     throw new IllegalArgumentException("The knowledge item with the name '" + conditionName + "' isn't added to the knowledge base yet. Add a question, goal or rule consequence with this knowledge item's name");
                 }
                 Object conditionValue = null;
-                if (conditionType.equals("isset")) {
+                if (!conditionType.equals("isset")) {
                     conditionValue = getConditionValue(condition, item);
                     log.info("- " + conditionName + "(" + conditionType + "): " + conditionValue);
                 }
