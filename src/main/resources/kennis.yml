@@ -198,13 +198,13 @@ goals:
 - name: dekking
   response: Wij verzoeken u eerst contact op te nemen met uw zorgverzekering voor een mogelijke compensatie.
 - name: uitleen
-  response: Waarschijnlijk kunt u terecht bij een uitleeninstantie. Voor kortdurende problemen kunnen zij u materieel uitlenen.
+  response: Mogelijk kunt u terecht bij een uitleeninstantie. Voor kortdurende problemen kunnen zij u materieel uitlenen.
 - name: nietopnieuwWMO
-  response: U bent al eerder bij een consulent geweest en de situatie is niet gewijzigd. Wij kunnen u helaas niet verder helpen.
+  response: U bent al eerder bij een consulent geweest en de situatie is niet gewijzigd. Hierom komt u niet in aanmerking voor andere voorzieningen.
 - name: geenMobiliteitsproblemen
   response: Op dit moment geeft deze website alleen WMO-advies over mobiliteitsproblemen. Wij verzoeken u contact op te nemen met een WMO-consulent.
 - name: voorzieningen
-  response: Wanneer er voorliggende voorzieningen die u kunnen helpen kunt u geen aanspraak maken op de WMO.
+  response: Wanneer er voorliggende voorzieningen die u kunnen helpen, kunt u geen aanspraak maken op de WMO. Wij verzoeken u contact op te nemen met de voorziening die u kan helpen.
 - name: rolstoelPermanent
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
 - name: rolstoelPermanentScootmobiel
