@@ -59,16 +59,6 @@ lists:
     - In mijn wijk (radius 1,5 km rond huis)
     - Buiten mijn wijk (naar familie of het ziekenhuis)
     - In mijn wijk en er buiten
-# - name: algemeenGebruikQuestionList
-#   options:
-#     - Scootmobiel
-#     - Reguliere rolstoel
-#     - Krukken
-# - name: algemeenGebruikList
-#   options:
-#     - Reguliere rolstoel
-#     - Krukken
-
 
 questions:
 # Wat is het probleem?
