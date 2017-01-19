@@ -34,8 +34,7 @@ lists:
     - Langer dan zes maanden
 - name: uitleenList
   options:
-    - Ja, ik ontvang zorg via deze instantie
-    - Ja, deze instantie kan mij niet helpen
+    - Ja, deze instantie kan mij niet volledig helpen
     - Nee
 - name: wetList
   options:
