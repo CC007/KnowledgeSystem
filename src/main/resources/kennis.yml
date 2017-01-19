@@ -64,7 +64,7 @@ questions:
 # Wat is het probleem?
 - name: wijk
   type: choiceSelection
-  question: In welke wijk bent u momenteel woonachtig?
+  question: In welke wijk in Groningen bent u momenteel woonachtig?
   options: wijkList
   tip: Kijk op https://wij.groningen.nl om uit te vinden onder welk WIJ-team u valt.
 - name: probleemGebied
