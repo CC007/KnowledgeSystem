@@ -110,7 +110,7 @@ questions:
   type: choiceSelection
   question: Heeft u contact gehad met de overheid over uw rechten onder de Wet Langdurige Zorg?
   options: wetList
-  tip: "Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO consulent."
+  tip: Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO-consulent.
 - name: contactDekking
   type: choiceSelection
   question: Heeft u contact gehad met uw zorgverzekeraar?
@@ -150,7 +150,7 @@ questions:
   type: choiceSelection
   question: Lost de ontvangen hulp uw probleem volledig op?
   options: jaNeeList
-  tip: Vul zolang er nog problemen resterend zijn 'Nee' in.
+  tip: Vul zolang er nog resterende problemen zijn 'Nee' in.
 
 
 #Hoe gaan we het oplossen?
@@ -162,14 +162,14 @@ questions:
   tip: ""
 - name: buitenWens
   type: multipleChoiceSelection
-  question: Geef aan in welke regio(s) u zich wenst te bewegen.
+  question: Geef aan in welke regio('s) u zich wenst te bewegen.
   options: schaalList
   tip: ""
 - name: frequentie
   type: choiceSelection
   question: Hoe vaak wordt gehinderd door uw problemen bij activiteiten buitens huis?
   options: frequentieList
-  tip: Vul in hoe vaak u idealiter wenst een activiteit buitens huis te kunnen voltooien.
+  tip: Vul in hoe vaak u idealiter wenst een activiteit buitenshuis te kunnen voltooien.
 - name: kind
   type: choiceSelection
   question: Gaat het om een kind wonend in een gezin?
@@ -178,31 +178,31 @@ questions:
 
 - name: mantelzorg
   type: choiceSelection
-  question: Heeft u mensen in uw sociale kring die u kunnen bijstaan of geniet u professionele hulp?
+  question: Heeft u mensen in uw sociale kring die u kunnen bijstaan of ontvangt u professionele hulp?
   options: jaNeeList
   tip: ""
 
 - name: transfer
   type: choiceSelection
-  question: Is het mogelijk om een transfer te maken voor u?
+  question: Bent u in staat een transfer in en uit een rolstoel te maken?
   options: jaNeeList
   tip: ""
 
 goals:
 - name: UWV
-  response: Ga naar het UWV voor een compensatie.
+  response: Wij verzoeken u eerst contact op te nemen met het UWV voor een mogelijke compensatie.
 - name: leerlingwet
-  response: Ga naar leerlingenwet voor een compensatie.
+  response: Mogelijk valt u onder de leerlingenwet. Wij verzoeken u eerst contact op te nemen met de overheid voor een mogelijke compensatie.
 - name: WLZ
-  response: Ga naar WLZ voor een compensatie.
+  response: Mogelijk valt u onder de Wet Langdurige Zorg (WLZ). Wij verzoeken u eerst contact op te nemen met het Centrum Indicatiestelling Zorg (CIZ) voor een mogelijke compensatie
 - name: dekking
-  response: Ga naar uw zorgverzekering voor een compensatie.
+  response: Wij verzoeken u eerst contact op te nemen met uw zorgverzekering voor een mogelijke compensatie.
 - name: uitleen
-  response: Waarschijnlijk kunt u terecht bij een zorg uitleeninstantie.
+  response: Waarschijnlijk kunt u terecht bij een uitleeninstantie. Voor kortdurende problemen kunnen zij u materieel uitlenen.
 - name: nietopnieuwWMO
-  response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
+  response: U bent al eerder bij een consulent geweest en de situatie is niet gewijzigd. Wij kunnen u helaas niet verder helpen.
 - name: geenMobiliteitsproblemen
-  response: Hier kunnen we momenteel niks mee, sorry!
+  response: Op dit moment geeft deze website alleen WMO-advies over mobiliteitsproblemen. Wij verzoeken u contact op te nemen met een WMO-consulent.
 - name: voorzieningen
   response: Wanneer er voorliggende voorzieningen die u kunnen helpen kunt u geen aanspraak maken op de WMO.
 - name: rolstoelPermanent
@@ -210,26 +210,26 @@ goals:
 - name: rolstoelPermanentScootmobiel
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik en scootmobiel gebruik.
 - name: rolstoelPermanentScootmobielCVP
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik, een scootmobiel en een collectief vervoer pas.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik, een scootmobiel en een collectief vervoerspas.
 - name: rolstoelPermanentCVP
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik en een collectief vervoer pas.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik en een collectief vervoerspas.
 
 - name: rolstoelIncidenteel
-  response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
+  response: Een rolstoel voor incidenteel gebruik kan u mogelijk helpen, deze valt niet onder de WMO
 - name: scootmobiel
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
 - name: scootmobielCVP
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel en collectief vervoer pas.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel en een collectief vervoerspas.
 - name: CVP
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoerspas.
 - name: elektrischeRolstoel
   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel.
 - name: elektrischeRolstoelCVP
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel en een collectief vervoer pas.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel en een collectief vervoerspas.
 - name: busaanpassing
-  response: Mogelijk komen jullie in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
 # - name: rollator
-#   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
+#   response: Mogelijk is uw probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
 - name: mantelzorgGoal
   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
 
