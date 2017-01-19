@@ -235,14 +235,14 @@ goals:
 
 rules:
 # Wat is het probleem?
-- conditions:
-  - name: probleemGebied
-    type: notEquals
-    value: Mobiliteitsproblemen
-  consequence: 
-    name: geenMobiliteitsproblemen
-    type: boolean
-    value: true
+# - conditions:
+#   - name: probleemGebied
+#     type: notEquals
+#     value: Mobiliteitsproblemen
+#   consequence: 
+#     name: geenMobiliteitsproblemen
+#     type: boolean
+#     value: true
 
 
 - conditions:
