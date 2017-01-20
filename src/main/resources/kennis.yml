@@ -34,8 +34,7 @@ lists:
     - Langer dan zes maanden
 - name: uitleenList
   options:
-    - Ja, ik ontvang zorg via deze instantie
-    - Ja, deze instantie kan mij niet helpen
+    - Ja, deze instantie kan mij niet volledig helpen
     - Nee
 - name: wetList
   options:
@@ -59,22 +58,12 @@ lists:
     - In mijn wijk (radius 1,5 km rond huis)
     - Buiten mijn wijk (naar familie of het ziekenhuis)
     - In mijn wijk en er buiten
-# - name: algemeenGebruikQuestionList
-#   options:
-#     - Scootmobiel
-#     - Reguliere rolstoel
-#     - Krukken
-# - name: algemeenGebruikList
-#   options:
-#     - Reguliere rolstoel
-#     - Krukken
-
 
 questions:
 # Wat is het probleem?
 - name: wijk
   type: choiceSelection
-  question: In welke wijk bent u momenteel woonachtig?
+  question: In welke wijk in Groningen bent u momenteel woonachtig?
   options: wijkList
   tip: Kijk op https://wij.groningen.nl om uit te vinden onder welk WIJ-team u valt.
 - name: probleemGebied
@@ -110,7 +99,7 @@ questions:
   type: choiceSelection
   question: Heeft u contact gehad met de overheid over uw rechten onder de Wet Langdurige Zorg?
   options: wetList
-  tip: "Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO consulent."
+  tip: Negatieve beschikkingen van andere instanties zorgen voor een soepeler process voor u en uw WMO-consulent.
 - name: contactDekking
   type: choiceSelection
   question: Heeft u contact gehad met uw zorgverzekeraar?
@@ -150,7 +139,7 @@ questions:
   type: choiceSelection
   question: Lost de ontvangen hulp uw probleem volledig op?
   options: jaNeeList
-  tip: Vul zolang er nog problemen resterend zijn 'Nee' in.
+  tip: Vul zolang er nog resterende problemen zijn 'Nee' in.
 
 
 #Hoe gaan we het oplossen?
@@ -162,69 +151,76 @@ questions:
   tip: ""
 - name: buitenWens
   type: multipleChoiceSelection
-  question: Geef aan in welke regio(s) u zich wenst te bewegen.
+  question: Geef aan in welke regio('s) u zich wenst te bewegen.
   options: schaalList
   tip: ""
 - name: frequentie
   type: choiceSelection
   question: Hoe vaak wordt gehinderd door uw problemen bij activiteiten buitens huis?
   options: frequentieList
-  tip: Vul in hoe vaak u idealiter wenst een activiteit buitens huis te kunnen voltooien.
+  tip: Vul in hoe vaak u idealiter wenst een activiteit buitenshuis te kunnen voltooien.
 - name: kind
   type: choiceSelection
   question: Gaat het om een kind wonend in een gezin?
   options: jaNeeList
   tip: ""
 
-- name: socialeKring
+- name: mantelzorg
   type: choiceSelection
-  question: Heeft u mensen in uw sociale kring die u kunnen bij staan door bijvoorbeeld te taxi-en
+  question: Heeft u mensen in uw sociale kring die u kunnen bijstaan of ontvangt u professionele hulp?
   options: jaNeeList
   tip: ""
 
 - name: transfer
   type: choiceSelection
-  question: Is het mogelijk om een transfer te maken voor u?
+  question: Bent u in staat een transfer in en uit een rolstoel te maken?
   options: jaNeeList
   tip: ""
 
 goals:
 - name: UWV
-  response: Ga naar het UWV voor een compensatie.
+  response: Wij verzoeken u eerst contact op te nemen met het UWV voor een mogelijke compensatie.
 - name: leerlingwet
-  response: Ga naar leerlingenwet voor een compensatie.
+  response: Mogelijk valt u onder de leerlingenwet. Wij verzoeken u eerst contact op te nemen met de overheid voor een mogelijke compensatie.
 - name: WLZ
-  response: Ga naar WLZ voor een compensatie.
+  response: Mogelijk valt u onder de Wet Langdurige Zorg (WLZ). Wij verzoeken u eerst contact op te nemen met het Centrum Indicatiestelling Zorg (CIZ) voor een mogelijke compensatie
 - name: dekking
-  response: Ga naar uw zorgverzekering voor een compensatie.
+  response: Wij verzoeken u eerst contact op te nemen met uw zorgverzekering voor een mogelijke compensatie.
 - name: uitleen
-  response: Waarschijnlijk kunt u terecht bij een zorg uitleeninstantie.
+  response: Mogelijk kunt u terecht bij een uitleeninstantie. Voor kortdurende problemen kunnen zij u materieel uitlenen.
 - name: nietopnieuwWMO
-  response: Je bent al eerder bij een consulent geweest en de situatie is niet gewijzigd.
+  response: U bent al eerder bij een consulent geweest en de situatie is niet gewijzigd. Hierom komt u niet in aanmerking voor andere voorzieningen.
 - name: geenMobiliteitsproblemen
-  response: Hier kunnen we momenteel niks mee, sorry!
+  response: Op dit moment geeft deze website alleen WMO-advies over mobiliteitsproblemen. Wij verzoeken u contact op te nemen met een WMO-consulent.
 - name: voorzieningen
-  response: Wanneer er voorliggende voorzieningen die u kunnen helpen kunt u geen aanspraak maken op de WMO.
-# - name: rolstoelPermanent
-#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
-# - name: rolstoelScootmobiel
-#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel en scootmobiel gebruik.
+  response: Wanneer er voorliggende voorzieningen die u kunnen helpen, kunt u geen aanspraak maken op de WMO. Wij verzoeken u contact op te nemen met de voorziening die u kan helpen.
+- name: rolstoelPermanent
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik.
+- name: rolstoelPermanentScootmobiel
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik en scootmobiel gebruik.
+- name: rolstoelPermanentScootmobielCVP
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik, een scootmobiel en een collectief vervoerspas.
+- name: rolstoelPermanentCVP
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een rolstoel voor permanent gebruik en een collectief vervoerspas.
+
 - name: rolstoelIncidenteel
-  response: Een rolstoel voor incidenteel gebruik kan mogelijk u helpen, deze valt niet onder de WMO
-# - name: scootmobiel
-#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
+  response: Een rolstoel voor incidenteel gebruik kan u mogelijk helpen, deze valt niet onder de WMO
+- name: scootmobiel
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel.
+- name: scootmobielCVP
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een scootmobiel en een collectief vervoerspas.
 - name: CVP
-  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoer pas.
-# - name: elektrischeRolstoel
-#   response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een collectief vervoerspas.
+- name: elektrischeRolstoel
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel.
+- name: elektrischeRolstoelCVP
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een elektrische rolstoel en een collectief vervoerspas.
 - name: busaanpassing
-  response: Mogelijk komen jullie in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
+  response: U komt mogelijk in aanmerking voor een compensatie via de WMO in de vorm van een busaanpassing.
 # - name: rollator
-#   response: Mogelijk is u probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
+#   response: Mogelijk is uw probleem te verhelpen of te verminderen met behulp van een rollator. Deze wordt helaas niet verstrekt via de WMO.
 - name: mantelzorgGoal
   response: Waarschijnlijk is situatie zo dat u voldoende wordt gesteund door (mantel)zorgers. Hierdoor kunt u waarschijnlijk geen aanspraak maken op de WMO.
-- name: probleemOplossenGoal
-  response: duh
 
 rules:
 # Wat is het probleem?
@@ -238,315 +234,315 @@ rules:
 #     value: true
 
 
-# - conditions:
-#   - name: probleemGebied
-#     type: equals
-#     value: Mobiliteitsproblemen
-#   - name: wijk
-#     type: isset
-#   consequence:
-#     name: introCompleet
-#     type: boolean
-#     value: true
+- conditions:
+  - name: probleemGebied
+    type: equals
+    value: Mobiliteitsproblemen
+  - name: wijk
+    type: isset
+  consequence:
+    name: introCompleet
+    type: boolean
+    value: true
 
-# #Moet de WMO dit oplossen?
-#  # opnieuw WMO
-# - conditions:
-#   - name: eerderWMO
-#     type: equals
-#     value: Nee
-#   consequence:
-#     name: opnieuwWMO
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: eerderWMO
-#     type: equals
-#     value: Ja
-#   - name: situatieGewijzigd
-#     type: equals
-#     value: Ja
-#   consequence:
-#     name: opnieuwWMO
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: eerderWMO
-#     type: equals
-#     value: Ja
-#   - name: situatieGewijzigd
-#     type: equals
-#     value: Nee
-#   consequence:
-#     name: nietopnieuwWMO
-#     type: boolean
-#     value: true
+#Moet de WMO dit oplossen?
+ # opnieuw WMO
+- conditions:
+  - name: eerderWMO
+    type: equals
+    value: Nee
+  consequence:
+    name: opnieuwWMO
+    type: boolean
+    value: true
+- conditions:
+  - name: eerderWMO
+    type: equals
+    value: Ja
+  - name: situatieGewijzigd
+    type: equals
+    value: Ja
+  consequence:
+    name: opnieuwWMO
+    type: boolean
+    value: true
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: eerderWMO
+    type: equals
+    value: Ja
+  - name: situatieGewijzigd
+    type: equals
+    value: Nee
+  consequence:
+    name: nietopnieuwWMO
+    type: boolean
+    value: true
   
-#   #UWV
-# - conditions:
-#   - name: baan
-#     type: equals
-#     value: Nee
-#   consequence:
-#     name: geenUWV
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: baan
-#     type: equals
-#     value: Ja
-#   - name: contactUWV
-#     type: equals
-#     value: Ja, ik heb een negatieve beschikking ontvangen.
-#   consequence:
-#     name: geenUWV
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: baan
-#     type: equals
-#     value: Ja
-#   - name: contactUWV
-#     type: equals
-#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-#   consequence:
-#     name: geenUWV
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: baan
-#     type: equals
-#     value: Ja
-#   - name: contactUWV
-#     type: equals
-#     value: Nee, ik heb geen concluderend contact gehad.
-#   consequence:
-#     name: UWV
-#     type: boolean
-#     value: true
+  #UWV
+- conditions:
+  - name: baan
+    type: equals
+    value: Nee
+  consequence:
+    name: geenUWV
+    type: boolean
+    value: true
+- conditions:
+  - name: baan
+    type: equals
+    value: Ja
+  - name: contactUWV
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: geenUWV
+    type: boolean
+    value: true
+- conditions:
+  - name: baan
+    type: equals
+    value: Ja
+  - name: contactUWV
+    type: equals
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+  consequence:
+    name: geenUWV
+    type: boolean
+    value: true
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: baan
+    type: equals
+    value: Ja
+  - name: contactUWV
+    type: equals
+    value: Nee, ik heb geen concluderend contact gehad.
+  consequence:
+    name: UWV
+    type: boolean
+    value: true
 
-#     #LEERLINGWET
-# - conditions:
-#   - name: leerling
-#     type: equals
-#     value: Nee
-#   consequence:
-#     name: geenLeerlingwet
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: leerling
-#     type: equals
-#     value: Ja
-#   - name: contactLeerlingwet
-#     type: equals
-#     value: Ja, ik heb een negatieve beschikking ontvangen.
-#   consequence:
-#     name: geenLeerlingwet
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: leerling
-#     type: equals
-#     value: Ja
-#   - name: contactLeerlingwet
-#     type: equals
-#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-#   consequence:
-#     name: geenLeerlingwet
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: leerling
-#     type: equals
-#     value: Ja
-#   - name: contactLeerlingwet
-#     type: equals
-#     value: Nee, ik heb geen concluderend contact gehad.
-#   consequence:
-#     name: leerlingwet
-#     type: boolean
-#     value: true
-
-
-#     #WETLANGDURIGEZORG
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: lzIndicatie
-#     type: equals
-#     value: Nee, ik heb geen concluderend contact gehad.
-#   consequence:
-#     name: WLZ
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: lzIndicatie
-#     type: equals
-#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-#   consequence:
-#     name: geenWLZ
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: lzIndicatie
-#     type: equals
-#     value: Ja, ik heb een negatieve beschikking ontvangen.
-#   consequence:
-#     name: geenWLZ
-#     type: boolean
-#     value: true
+    #LEERLINGWET
+- conditions:
+  - name: leerling
+    type: equals
+    value: Nee
+  consequence:
+    name: geenLeerlingwet
+    type: boolean
+    value: true
+- conditions:
+  - name: leerling
+    type: equals
+    value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: geenLeerlingwet
+    type: boolean
+    value: true
+- conditions:
+  - name: leerling
+    type: equals
+    value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+  consequence:
+    name: geenLeerlingwet
+    type: boolean
+    value: true
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: leerling
+    type: equals
+    value: Ja
+  - name: contactLeerlingwet
+    type: equals
+    value: Nee, ik heb geen concluderend contact gehad.
+  consequence:
+    name: leerlingwet
+    type: boolean
+    value: true
 
 
-#     #VERZEKERING
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: contactDekking
-#     type: equals
-#     value: Nee, ik heb geen concluderend contact gehad.
-#   consequence:
-#     name: dekking
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: contactDekking
-#     type: equals
-#     value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
-#   consequence:
-#     name: geenDekking
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: contactDekking
-#     type: equals
-#     value: Ja, ik heb een negatieve beschikking ontvangen.
-#   consequence:
-#     name: geenDekking
-#     type: boolean
-#     value: true
-
-#     #WETTEN
-# - conditions:
-#   - name: geenUWV
-#     type: equals
-#     value: true
-#   - name: geenLeerlingwet
-#     type: equals
-#     value: true
-#   - name: geenWLZ
-#     type: equals
-#     value: true
-#   - name: geenDekking
-#     type: equals
-#     value: true
-#   consequence:
-#     name: wetten
-#     type: boolean
-#     value: false
-
-#  #Termijn
-# - conditions:
-#   - name: termijnProbleem
-#     type: equals
-#     value: Korter dan zes maanden
-#   - name: uitleenVraag
-#     type: equals
-#     value: Ja, deze instantie kan mij niet volledig helpen
-#   consequence:
-#     name: geenUitleen
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: termijnProbleem
-#     type: equals
-#     value: Langer dan zes maanden
-#   consequence:
-#     name: geenUitleen
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: termijnProbleem
-#     type: equals
-#     value: Korter dan zes maanden
-#   - name: uitleenVraag
-#     type: equals
-#     value: Nee
-#   consequence:
-#     name: uitleen
-#     type: boolean
-#     value: true
-
-#   #voorzieningen
-# - conditions:
-#   - name: voorzieningenVraag
-#     type: equals
-#     value: Ja, die kunnen mij niet of onvoldoende helpen
-#   consequence:
-#     name: geenVoorzieningen
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: introCompleet
-#     type: equals
-#     value: true
-#   - name: voorzieningenVraag
-#     type: equals
-#     value: Ja, maar ik heb nog geen contact opgenomen
-#   consequence:
-#     name: voorzieningen
-#     type: boolean
-#     value: true
-# - conditions:
-#   - name: voorzieningenVraag
-#     type: equals
-#     value: Nee
-#   consequence:
-#     name: geenVoorzieningen
-#     type: boolean
-#     value: true
+    #WETLANGDURIGEZORG
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: lzIndicatie
+    type: equals
+    value: Nee, ik heb geen concluderend contact gehad.
+  consequence:
+    name: WLZ
+    type: boolean
+    value: true
+- conditions:
+  - name: lzIndicatie
+    type: equals
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+  consequence:
+    name: geenWLZ
+    type: boolean
+    value: true
+- conditions:
+  - name: lzIndicatie
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: geenWLZ
+    type: boolean
+    value: true
 
 
+    #VERZEKERING
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: contactDekking
+    type: equals
+    value: Nee, ik heb geen concluderend contact gehad.
+  consequence:
+    name: dekking
+    type: boolean
+    value: true
+- conditions:
+  - name: contactDekking
+    type: equals
+    value: Ja, ik heb onvolledige zorg ontvangen vanuit deze instantie.
+  consequence:
+    name: geenDekking
+    type: boolean
+    value: true
+- conditions:
+  - name: contactDekking
+    type: equals
+    value: Ja, ik heb een negatieve beschikking ontvangen.
+  consequence:
+    name: geenDekking
+    type: boolean
+    value: true
 
-#   #oplossen ja of nee eind condities
-# - conditions:
-#   - name: wetten
-#     type: equals
-#     value: false
-#   - name: geenUitleen
-#     type: equals
-#     value: true
-#   - name: opnieuwWMO
-#     type: equals
-#     value: true
-#   - name: geenVoorzieningen
-#     type: equals
-#     value: true
-#   consequence:
-#     name: probleemOplossen
-#     type: boolean
-#     value: true
+    #WETTEN
+- conditions:
+  - name: geenUWV
+    type: equals
+    value: true
+  - name: geenLeerlingwet
+    type: equals
+    value: true
+  - name: geenWLZ
+    type: equals
+    value: true
+  - name: geenDekking
+    type: equals
+    value: true
+  consequence:
+    name: wetten
+    type: boolean
+    value: false
+
+ #Termijn
+- conditions:
+  - name: termijnProbleem
+    type: equals
+    value: Korter dan zes maanden
+  - name: uitleenVraag
+    type: equals
+    value: Ja, deze instantie kan mij niet volledig helpen
+  consequence:
+    name: geenUitleen
+    type: boolean
+    value: true
+- conditions:
+  - name: termijnProbleem
+    type: equals
+    value: Langer dan zes maanden
+  consequence:
+    name: geenUitleen
+    type: boolean
+    value: true
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: termijnProbleem
+    type: equals
+    value: Korter dan zes maanden
+  - name: uitleenVraag
+    type: equals
+    value: Nee
+  consequence:
+    name: uitleen
+    type: boolean
+    value: true
+
+  #voorzieningen
+- conditions:
+  - name: voorzieningenVraag
+    type: equals
+    value: Ja, die kunnen mij niet of onvoldoende helpen
+  consequence:
+    name: geenVoorzieningen
+    type: boolean
+    value: true
+- conditions:
+  - name: introCompleet
+    type: equals
+    value: true
+  - name: voorzieningenVraag
+    type: equals
+    value: Ja, maar ik heb nog geen contact opgenomen
+  consequence:
+    name: voorzieningen
+    type: boolean
+    value: true
+- conditions:
+  - name: voorzieningenVraag
+    type: equals
+    value: Nee
+  consequence:
+    name: geenVoorzieningen
+    type: boolean
+    value: true
+
+
+
+  #oplossen ja of nee eind condities
+- conditions:
+  - name: wetten
+    type: equals
+    value: false
+  - name: geenUitleen
+    type: equals
+    value: true
+  - name: opnieuwWMO
+    type: equals
+    value: true
+  - name: geenVoorzieningen
+    type: equals
+    value: true
+  consequence:
+    name: probleemOplossen
+    type: boolean
+    value: true
 
 
 # Hoe gaan we het oplossen
 - conditions:
-  # - name: probleemOplossen
-  #   type: equals
-  #   value: true
+  - name: probleemOplossen
+    type: equals
+    value: true
   - name: frequentie
     type: equals
     value: Minder dan eens per maand
@@ -555,9 +551,9 @@ rules:
     type: boolean
     value: true
 - conditions:
-  # - name: probleemOplossen
-  #   type: equals
-  #   value: true
+  - name: probleemOplossen
+    type: equals
+    value: true
   - name: kind
     type: equals
     value: Ja
@@ -566,58 +562,406 @@ rules:
     type: boolean
     value: true
 
+
+#Elektrische rolstoel
 - conditions:
-  - name: socialeKring
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: transfer
     type: equals
     value: Nee
-  consequence:
-    name: mantelzorg
-    type: boolean
-    value: false
-# - conditions:
-#   - name: socialeKring
-#     type: equals
-#     value: Ja
-#   consequence:
-#     name: mantelzorg
-#     type: boolean
-#     value: true
-
-- conditions:
-  # - name: probleemOplossen
-  #   type: equals
-  #   value: true
-  # - name: schaalProbleem
-  #   type: contains
-  #   value: 2
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 1
   - name: buitenWens
     type: contains
     value: 2
   - name: mantelzorg
     type: equals
-    value: false
+    value: Ja
+  consequence:
+    name: elektrischeRolstoelCVP
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: transfer
+    type: equals
+    value: Nee
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Nee
+  consequence:
+    name: elektrischeRolstoelCVP
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: transfer
+    type: equals
+    value: Nee
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: notContains
+    value: 2
+  consequence:
+    name: elektrischeRolstoel
+    type: boolean
+    value: true
+
+
+
+#ROLSTOEL
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: transfer
+    type: equals
+    value: Ja
+  - name: mantelzorg
+    type: equals
+    value: Nee
+  consequence:
+    name: rolstoelPermanentScootmobielCVP
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: transfer
+    type: equals
+    value: Ja
+  - name: mantelzorg
+    type: equals
+    value: Ja
+  consequence:
+    name: rolstoelPermanentScootmobiel
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: notContains
+    value: 2
+  - name: transfer
+    type: equals
+    value: Ja
+  consequence:
+    name: rolstoelPermanentScootmobiel
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: notContains
+    value: 1
+  - name: buitenWens
+    type: notContains
+    value: 2
+  consequence:
+    name: rolstoelPermanent
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: notContains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Ja
+  consequence:
+    name: rolstoelPermanent
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: contains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 0
+  - name: buitenWens
+    type: notContains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Nee
+  consequence:
+    name: rolstoelPermanentCVP
+    type: boolean
+    value: true
+
+#SCOOTMOBIEL
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: notContains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: schaalProbleem
+    type: notContains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 1
+  consequence:
+    name: scootmobiel
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: notContains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Ja
+  consequence:
+    name: scootmobiel
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: notContains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Nee
+  consequence:
+    name: scootmobielCVP
+    type: boolean
+    value: true
+
+#Alleen CVP pas
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: notContains
+    value: 0
+  - name: schaalProbleem
+    type: notContains
+    value: 1  
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Nee
   consequence:
     name: CVP
     type: boolean
     value: true
-# - conditions:
-#   - name: probleemOplossen
-#     type: equals
-#     value: true
-#   - name: schaalProbleem
-#     type: contains
-#     value: 2
-#   - name: buitenWens
-#     type: contains
-#     value: 2
-#   - name: mantelzorg
-#     type: equals
-#     value: true
-#   consequence:
-#     name: mantelzorgGoal
-#     type: boolean
-#     value: true
-
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: notContains
+    value: 0
+  - name: schaalProbleem
+    type: contains
+    value: 1  
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: notContains
+    value: 1
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Nee
+  consequence:
+    name: CVP
+    type: boolean
+    value: true
+- conditions:
+  - name: probleemOplossen
+    type: equals
+    value: true
+  - name: schaalProbleem
+    type: notContains
+    value: 0
+  - name: schaalProbleem
+    type: notContains
+    value: 1  
+  - name: schaalProbleem
+    type: contains
+    value: 2
+  - name: buitenWens
+    type: contains
+    value: 2
+  - name: mantelzorg
+    type: equals
+    value: Ja
+  consequence:
+    name: mantelzorgGoal
+    type: boolean
+    value: true
 
 
 

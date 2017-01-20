@@ -36,7 +36,7 @@ public class Rule {
     private boolean checkWithInput(KnowledgeBase knowledgeBase) {
         System.out.println("Checking " + consequence.getName() + ":");
         if (knowledgeBase.getItem(consequence.getName()).isValueSet()) {
-        System.out.println("x Concequence already set");
+            System.out.println("x Concequence already set");
             return false;
         }
         System.out.println("- Concequence not yet set");
@@ -76,13 +76,16 @@ public class Rule {
 
     private boolean checkWithoutInput(KnowledgeBase knowledgeBase) {
         if (knowledgeBase.getItem(consequence.getName()).isValueSet()) {
+            System.out.println("[ctrl] value of " + consequence.getName() + " already set");
             return false;
         }
         for (Condition condition : conditions) {
             Boolean check = condition.check(knowledgeBase);
             if (check == null || !check) {
+                System.out.println("Condition " + condition.getKnowledgeItemName() + ": knowledge item is not set or not the correct value");
                 return false;
             }
+            System.out.println("Condition " + condition.getKnowledgeItemName() + " is met");
         }
         return true;
     }
