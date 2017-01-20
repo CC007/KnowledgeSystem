@@ -590,9 +590,9 @@ rules:
   # - name: schaalProbleem
   #   type: contains
   #   value: 2
-  # - name: buitenWens
-  #   type: contains
-  #   value: 2
+  - name: buitenWens
+    type: contains
+    value: 2
   - name: mantelzorg
     type: equals
     value: false

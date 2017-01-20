@@ -12,6 +12,8 @@ package com.github.cc007.knowledgesystem.ymlviewer;
 public class RuleNode {
 
     private int id;
+    private int x = -1;
+    private int y = -1;
 
     public RuleNode(int id) {
         this.id = id;
@@ -23,6 +25,22 @@ public class RuleNode {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
 }

@@ -14,6 +14,7 @@ import com.github.cc007.knowledgesystem.ymlviewer.ConsequenceConnection;
 import com.github.cc007.knowledgesystem.ymlviewer.KnowledgeNode;
 import com.github.cc007.knowledgesystem.ymlviewer.RuleNode;
 import com.github.cc007.knowledgesystem.ymlviewer.YMLViewerPanel;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import javax.swing.JPanel;
  * @author Rik
  */
 public class YMLViewer {
+
     private final KnowledgeBase knowledgeBase;
     private final RuleBase ruleBase;
 
@@ -33,14 +35,15 @@ public class YMLViewer {
         this.knowledgeBase = new KnowledgeBase();
         this.ruleBase = new RuleBase();
         ModelLoader.loadModel(ruleBase, knowledgeBase);
-        JPanel panel = new YMLViewerPanel(knowledgeBase, ruleBase, 1200, 800);
-        JFrame frame = new JFrame();
-        frame.add(panel);
+        JPanel panel = new YMLViewerPanel(knowledgeBase, ruleBase);
+        JFrame frame = new JFrame("YAML viewer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
+        frame.setLayout(new BorderLayout());
+        frame.add(panel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
-    
-    
+
     public static void main(String[] args) {
         ModelLoader.setCurrentLoader(new YMLFileModelLoader("kennis.yml"));
         YMLViewer viewer = new YMLViewer();
